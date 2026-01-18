@@ -66,9 +66,8 @@ export default function RootLayout({
         {cookieScriptId && (
           <Script
             id="cookiescript"
-            src="https://cdn.cookie-script.com/s/YOUR_COOKIE_SCRIPT_ID.js"
+            src={`https://cdn.cookie-script.com/s/${cookieScriptId}.js`}
             strategy="beforeInteractive"
-            data-cs-id={cookieScriptId}
           />
         )}
 
