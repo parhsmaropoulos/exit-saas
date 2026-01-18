@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Github, Twitter, Heart } from "lucide-react";
 
 export function Footer() {
@@ -11,11 +12,13 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-lg font-bold text-primary-foreground">
-                  S
-                </span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Exit-Saas.io Logo"
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
               <span className="text-xl font-bold text-foreground">
                 Exit-Saas<span className="text-primary">.io</span>
               </span>
