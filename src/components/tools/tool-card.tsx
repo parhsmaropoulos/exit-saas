@@ -1,14 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Star, GitCommit, Github, Box, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { DifficultyGauge } from './difficulty-gauge';
-import { Tool } from '@/types/database';
-import { formatDistanceToNow } from '@/lib/format';
-import { generateSlug } from '@/lib/slug';
+import Link from "next/link";
+import { Star, Github, Box, ArrowRight } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { DifficultyGauge } from "./difficulty-gauge";
+import { Tool } from "@/types/database";
+import { generateSlug } from "@/lib/slug";
 
 interface ToolCardProps {
   tool: Tool;
@@ -17,9 +16,10 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, index, onSelect }: ToolCardProps) {
-  const formattedStars = tool.stars >= 1000
-    ? `${(tool.stars / 1000).toFixed(1)}k`
-    : tool.stars.toString();
+  const formattedStars =
+    tool.stars >= 1000
+      ? `${(tool.stars / 1000).toFixed(1)}k`
+      : tool.stars.toString();
 
   const slug = generateSlug(tool.name);
 
@@ -83,7 +83,7 @@ export function ToolCard({ tool, index, onSelect }: ToolCardProps) {
               className="flex-1"
               onClick={(e) => {
                 e.stopPropagation();
-                window.open(tool.github_url, '_blank');
+                window.open(tool.github_url, "_blank");
               }}
             >
               <Github className="w-4 h-4 mr-2" />
