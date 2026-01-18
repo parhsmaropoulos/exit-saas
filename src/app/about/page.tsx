@@ -278,7 +278,7 @@ export default function AboutPage() {
           </p>
           <ul className="space-y-2 text-muted-foreground">
             <li>
-              Email: <span className="text-primary">hello@saas-exit.io</span>
+              Email: <span className="text-primary">support@exit-saas.io</span>
             </li>
             {/* <li>
               Twitter:{" "}

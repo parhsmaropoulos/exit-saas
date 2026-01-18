@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -41,8 +42,48 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const cookieScriptId = process.env.NEXT_PUBLIC_COOKIESCRIPT_ID;
+
   return (
     <html lang="en">
+      <head>
+        {/* CookieScript - Cookie Consent Management */}
+        {cookieScriptId && (
+          <Script
+            id="cookiescript"
+            src="https://cdn.cookie-script.com/s/YOUR_COOKIE_SCRIPT_ID.js"
+            strategy="beforeInteractive"
+            data-cs-id={cookieScriptId}
+          />
+        )}
+
+        {/* Google Analytics 4 - Only loads after cookie consent */}
+        {gaId && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${gaId}', {
+                    page_path: window.location.pathname,
+                    anonymize_ip: true,
+                    cookie_flags: 'SameSite=None;Secure'
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
       >

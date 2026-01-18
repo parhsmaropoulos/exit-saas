@@ -19,7 +19,9 @@ export function Header() {
   const navLinks = [
     { href: "/#tools", label: "Browse Tools" },
     { href: "/#calculator", label: "Calculator" },
+    { href: "/blog", label: "Blog" },
     { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (

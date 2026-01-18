@@ -1,0 +1,730 @@
+---
+title: "Docker 101 for Self-Hosting: Complete Beginner's Guide"
+description: "Learn Docker fundamentals for self-hosting. Understand containers, images, volumes, and docker-compose with practical examples for deploying real applications."
+date: "2026-01-18"
+category: "Decision Frameworks"
+slug: "docker-101-self-hosting-beginners-guide"
+---
+
+# Docker 101 for Self-Hosting: Complete Beginner's Guide
+
+Every self-hosting guide starts with "run this docker-compose command." You copy-paste without understanding what `volumes:`, `networks:`, or `depends_on:` actually do.
+
+Then something breaks. Your database loses data after a restart. Port 8080 conflicts with another container. Environment variables don't persist.
+
+You're stuck Googling error messages, patching together solutions from 5-year-old StackOverflow threads.
+
+This guide explains Docker from first principles: what containers are, why they exist, and how to use them confidently for self-hosting.
+
+## What Docker Actually Is (And Why You Need It)
+
+### The Problem Docker Solves
+
+**Traditional deployment (without Docker):**
+```bash
+# Install app dependencies directly on server
+apt install python3 python3-pip postgresql redis nginx
+pip install django gunicorn
+# Configure PostgreSQL
+# Configure NGINX
+# Set up systemd services
+# Repeat on every server
+```
+
+**Problems:**
+1. **Dependency conflicts:** App A needs Python 3.9, App B needs Python 3.11
+2. **Configuration drift:** Production server differs from staging
+3. **Unclear state:** "It works on my machine" ≠ "It works in production"
+4. **Hard to reproduce:** Setting up a new server takes hours of debugging
+
+### The Docker Solution
+
+**With Docker:**
+```bash
+# Single command deploys entire application stack
+docker-compose up -d
+
+# Application runs identically everywhere
+# All dependencies bundled
+# Isolated from other applications
+# Reproducible in 30 seconds
+```
+
+**Metaphor:**
+Traditional deployment = **Building IKEA furniture from scratch on-site**
+Docker = **Delivering pre-assembled furniture in a shipping container**
+
+## Core Docker Concepts (Actually Explained)
+
+### 1. Container vs Image (Critical Distinction)
+
+**Docker Image:**
+- Blueprint/template for an application
+- Read-only file containing:
+  - Operating system files (minimal Linux)
+  - Application code
+  - Dependencies
+  - Configuration
+- Created from a `Dockerfile`
+- Stored in Docker Hub or private registry
+
+**Docker Container:**
+- Running instance of an image
+- Like a virtual machine, but lightweight
+- Has its own:
+  - Filesystem (from image)
+  - Network interface
+  - Running processes
+- Can be started, stopped, deleted
+- Changes inside container disappear when container deleted (unless using volumes)
+
+**Analogy:**
+- **Image** = Class definition in programming
+- **Container** = Object/instance of that class
+
+**Example:**
+```bash
+# Pull an image (download the blueprint)
+docker pull nginx
+
+# Create container from image (run it)
+docker run -d --name my-web-server nginx
+
+# Same image can create multiple containers
+docker run -d --name web-server-2 nginx
+docker run -d --name web-server-3 nginx
+```
+
+### 2. Volumes (Data Persistence)
+
+**The problem:**
+Containers are ephemeral (temporary). When you delete a container, all data inside disappears.
+
+**The solution: Volumes**
+- Directories stored on the host server (outside container)
+- Mounted into container at specific path
+- Survive container deletion
+- Can be shared between containers
+
+**Without volumes:**
+```bash
+docker run -d postgres
+# Database stores data inside container
+docker stop postgres && docker rm postgres
+# All database data is GONE forever
+```
+
+**With volumes:**
+```bash
+docker run -d -v /host/data:/var/lib/postgresql/data postgres
+# Database data stored on host at /host/data
+docker stop postgres && docker rm postgres
+# Data still exists on host
+docker run -d -v /host/data:/var/lib/postgresql/data postgres
+# New container uses same data (nothing lost)
+```
+
+**Critical rule:** Always use volumes for databases, uploaded files, and any data you care about.
+
+### 3. Networks (Container Communication)
+
+**Containers are isolated by default.** They can't talk to each other without a network.
+
+**Docker creates virtual networks:**
+```bash
+# Create a network
+docker network create app-network
+
+# Run containers on same network
+docker run -d --name db --network app-network postgres
+docker run -d --name app --network app-network my-app
+
+# Inside app container, can access db via hostname "db"
+# Example: postgresql://db:5432/database
+```
+
+**Why this matters:**
+- Isolates applications from each other
+- Containers reference each other by name (not IP)
+- IP addresses can change; names stay consistent
+
+### 4. Ports (Accessing Containers)
+
+**Containers have internal ports (inside container network).**
+To access from outside, you must **publish/map** ports.
+
+**Syntax:** `-p HOST_PORT:CONTAINER_PORT`
+
+```bash
+# NGINX listens on port 80 inside container
+# Map it to port 8080 on host
+docker run -p 8080:80 nginx
+
+# Now accessible at http://your-server-ip:8080
+```
+
+**Common mistake:**
+```bash
+# Wrong: Tries to access port 80 on host (nothing listening)
+docker run nginx
+curl http://localhost:80  # Connection refused
+
+# Right: Maps container port 80 to host port 8080
+docker run -p 8080:80 nginx
+curl http://localhost:8080  # Works!
+```
+
+### 5. Environment Variables (Configuration)
+
+**Pass configuration to containers without rebuilding images:**
+
+```bash
+# Set database password
+docker run -e POSTGRES_PASSWORD=secret123 postgres
+
+# Set multiple variables
+docker run \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=secret123 \
+  -e POSTGRES_DB=myapp \
+  postgres
+```
+
+**Why use environment variables:**
+- Different config for dev/staging/production
+- Don't hardcode secrets in images
+- Easy to change without rebuilding
+
+## Docker Compose: Multi-Container Applications
+
+**Problem:** Running 5 docker commands to start your app stack is tedious.
+
+**Solution:** Docker Compose defines entire application in one file.
+
+### Basic docker-compose.yml Structure
+
+```yaml
+version: '3.8'
+
+services:
+  # Service 1: Web application
+  app:
+    image: my-app:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://db:5432/myapp
+    depends_on:
+      - db
+    volumes:
+      - ./app-data:/app/data
+
+  # Service 2: Database
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_PASSWORD=secret123
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+# Named volumes (managed by Docker)
+volumes:
+  db-data:
+```
+
+**Start entire stack:**
+```bash
+docker-compose up -d
+```
+
+**Stop entire stack:**
+```bash
+docker-compose down
+```
+
+### Real-World Example: Self-Hosting Plausible Analytics
+
+```yaml
+version: '3.8'
+
+services:
+  plausible:
+    image: plausible/analytics:latest
+    restart: always
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    depends_on:
+      - db
+      - clickhouse
+    ports:
+      - "8000:8000"
+    environment:
+      - BASE_URL=https://analytics.yourdomain.com
+      - SECRET_KEY_BASE=your-secret-key
+      - DATABASE_URL=postgres://plausible:password@db:5432/plausible_db
+      - CLICKHOUSE_DATABASE_URL=http://clickhouse:8123/plausible_events_db
+
+  db:
+    image: postgres:14
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=plausible
+      - POSTGRES_DB=plausible_db
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    restart: always
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+    environment:
+      - CLICKHOUSE_DB=plausible_events_db
+
+volumes:
+  db-data:
+  clickhouse-data:
+```
+
+**What this does:**
+1. Creates 3 containers: plausible, postgres, clickhouse
+2. Sets up networking automatically (all on same network)
+3. Creates persistent volumes for databases
+4. Maps port 8000 on host to plausible container
+5. Configures environment variables
+6. Ensures db and clickhouse start before plausible (`depends_on`)
+
+**Start Plausible:**
+```bash
+# Save file as docker-compose.yml
+docker-compose up -d
+
+# Check status
+docker-compose ps
+
+# View logs
+docker-compose logs -f plausible
+
+# Stop everything
+docker-compose down
+```
+
+[AFFILIATE_CALLOUT_HERE]
+
+Understanding Docker networking, volume management, and container orchestration takes time and experimentation. If you want production-ready Docker environments with monitoring, backups, and security hardening already configured, managed container platforms handle the infrastructure complexity.
+
+## Common Docker Commands (Cheat Sheet)
+
+### Image Management
+
+```bash
+# List images
+docker images
+
+# Pull image from Docker Hub
+docker pull nginx:latest
+
+# Build image from Dockerfile
+docker build -t my-app:latest .
+
+# Remove image
+docker rmi nginx
+
+# Remove unused images
+docker image prune
+```
+
+### Container Management
+
+```bash
+# List running containers
+docker ps
+
+# List all containers (including stopped)
+docker ps -a
+
+# Start container
+docker start my-container
+
+# Stop container
+docker stop my-container
+
+# Restart container
+docker restart my-container
+
+# Remove container
+docker rm my-container
+
+# Remove all stopped containers
+docker container prune
+```
+
+### Logs and Debugging
+
+```bash
+# View container logs
+docker logs my-container
+
+# Follow logs in real-time (like tail -f)
+docker logs -f my-container
+
+# View last 100 lines
+docker logs --tail 100 my-container
+
+# Execute command inside running container
+docker exec -it my-container bash
+
+# Example: Access PostgreSQL
+docker exec -it my-db psql -U postgres
+```
+
+### Docker Compose Commands
+
+```bash
+# Start services (creates + starts)
+docker-compose up -d
+
+# Stop services (keeps containers)
+docker-compose stop
+
+# Stop and remove containers
+docker-compose down
+
+# View logs for all services
+docker-compose logs
+
+# View logs for specific service
+docker-compose logs app
+
+# Restart specific service
+docker-compose restart app
+
+# Rebuild and restart service
+docker-compose up -d --build app
+
+# View running services
+docker-compose ps
+```
+
+## Practical Self-Hosting Example: WordPress
+
+### Step-by-Step Deployment
+
+**1. Create directory and docker-compose.yml**
+
+```bash
+mkdir wordpress-docker && cd wordpress-docker
+nano docker-compose.yml
+```
+
+**2. Paste configuration**
+
+```yaml
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: strongpassword123
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress-data:/var/www/html
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: strongpassword123
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  wordpress-data:
+  db-data:
+```
+
+**3. Launch**
+
+```bash
+docker-compose up -d
+```
+
+**4. Verify it's running**
+
+```bash
+docker-compose ps
+# Should show wordpress and db containers running
+
+docker-compose logs -f wordpress
+# Should show "Apache/2.4.XX configured -- resuming normal operations"
+```
+
+**5. Access WordPress**
+
+Visit `http://your-server-ip:8080`
+
+**6. Common troubleshooting**
+
+```bash
+# Container won't start
+docker-compose logs db
+# Look for error messages
+
+# Reset everything (WARNING: deletes data)
+docker-compose down -v
+docker-compose up -d
+
+# Access container to debug
+docker-compose exec wordpress bash
+```
+
+## Understanding Dockerfile (Creating Custom Images)
+
+**Basic Dockerfile for Node.js app:**
+
+```dockerfile
+# Start from base image
+FROM node:18
+
+# Set working directory inside container
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy application code
+COPY . .
+
+# Expose port application listens on
+EXPOSE 3000
+
+# Command to run when container starts
+CMD ["npm", "start"]
+```
+
+**Build and run:**
+
+```bash
+# Build image
+docker build -t my-node-app .
+
+# Run container
+docker run -p 3000:3000 my-node-app
+```
+
+**How it works:**
+1. `FROM`: Base image with Node.js pre-installed
+2. `WORKDIR`: All following commands execute in /app directory
+3. `COPY package*.json ./`: Copy package.json and package-lock.json
+4. `RUN npm install`: Install dependencies (runs during build)
+5. `COPY . .`: Copy all app code
+6. `EXPOSE 3000`: Document which port app uses (informational)
+7. `CMD`: Command to run when container starts
+
+## Security Best Practices
+
+### 1. Don't Run Containers as Root
+
+**Bad:**
+```dockerfile
+FROM ubuntu
+RUN apt-get update && apt-get install -y myapp
+CMD ["myapp"]
+# Runs as root (user ID 0)
+```
+
+**Good:**
+```dockerfile
+FROM ubuntu
+RUN apt-get update && apt-get install -y myapp
+RUN useradd -m appuser
+USER appuser
+CMD ["myapp"]
+# Runs as unprivileged user
+```
+
+### 2. Use Specific Image Tags
+
+**Bad:**
+```yaml
+services:
+  app:
+    image: postgres:latest
+    # "latest" tag changes over time
+    # Breaks reproducibility
+```
+
+**Good:**
+```yaml
+services:
+  app:
+    image: postgres:15.3
+    # Specific version
+    # Reproducible builds
+```
+
+### 3. Minimize Attack Surface
+
+```dockerfile
+# Bad: Full Ubuntu image (200MB+)
+FROM ubuntu:22.04
+
+# Good: Alpine Linux (5MB)
+FROM alpine:3.18
+
+# Better: Distroless (minimal attack surface)
+FROM gcr.io/distroless/nodejs:18
+```
+
+### 4. Don't Store Secrets in Images
+
+**Bad:**
+```dockerfile
+ENV DATABASE_PASSWORD=secret123
+# Password baked into image
+```
+
+**Good:**
+```yaml
+# docker-compose.yml
+environment:
+  - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+# Load from environment variable or .env file
+```
+
+## Troubleshooting Common Issues
+
+### Issue 1: Port Already in Use
+
+**Error:**
+```
+Error: bind: address already in use
+```
+
+**Solution:**
+```bash
+# Find what's using port 8080
+sudo lsof -i :8080
+
+# Kill process or use different port
+# In docker-compose.yml change:
+ports:
+  - "8081:80"  # Use 8081 instead
+```
+
+### Issue 2: Container Exits Immediately
+
+**Symptom:**
+```bash
+docker-compose ps
+# Container shows "Exit 1"
+```
+
+**Debug:**
+```bash
+# View logs
+docker-compose logs service-name
+
+# Common causes:
+# - Missing environment variable
+# - Database not ready yet
+# - Configuration error
+```
+
+**Fix database timing issue:**
+```yaml
+services:
+  app:
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+```
+
+### Issue 3: Data Loss After Restart
+
+**Cause:** No volume mounted
+
+**Fix:**
+```yaml
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Add this
+
+volumes:
+  postgres-data:  # Define volume
+```
+
+## Resource Management
+
+### Limit Container Resources
+
+**Prevent one container from consuming all RAM/CPU:**
+
+```yaml
+services:
+  app:
+    image: my-app
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'        # Max 1 CPU core
+          memory: 512M       # Max 512MB RAM
+        reservations:
+          cpus: '0.25'       # Guaranteed 0.25 CPU
+          memory: 128M       # Guaranteed 128MB
+```
+
+### Monitor Resource Usage
+
+```bash
+# Show CPU/RAM usage for all containers
+docker stats
+
+# Show for specific container
+docker stats my-container
+```
+
+## The SaaS-Exit Perspective
+
+Docker democratized self-hosting. What used to require a sysadmin now takes a single `docker-compose up` command.
+
+**Before Docker (2010s):**
+- Self-hosting required deep Linux knowledge
+- Dependency conflicts plagued deployments
+- Configuration drift made scaling impossible
+- "Works on my machine" was an unsolvable problem
+
+**After Docker (2020s):**
+- Copy docker-compose.yml, run one command
+- Application runs identically everywhere
+- Scaling is `docker-compose up --scale app=3`
+- Reproducible deployments in seconds
+
+Docker isn't perfect. It adds abstraction layers. But it removed the biggest barrier to self-hosting: deployment complexity.
+
+Browse our [tools directory](/tools) for Docker-based deployment guides for 800+ self-hosted applications.
+
+The best way to learn Docker is to deploy something. Pick one app, follow a guide, break it, fix it. You'll understand more from one failed deployment than from reading 10 tutorials.
+
+The command line is less scary than vendor lock-in.

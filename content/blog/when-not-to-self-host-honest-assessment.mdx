@@ -1,0 +1,437 @@
+---
+title: "When NOT to Self-Host: Honest Assessment"
+description: "Critical evaluation of when self-hosting is the wrong choice. Email servers, payment processing, and other services better left to SaaS providers."
+date: "2026-01-18"
+category: "Decision Frameworks"
+slug: "when-not-to-self-host-honest-assessment"
+---
+
+# When NOT to Self-Host: Honest Assessment
+
+Self-hosting isn't always the answer. Sometimes SaaS is cheaper, safer, and smarter.
+
+This site advocates for data sovereignty and cost reduction through self-hosting. But we're not dogmatic zealots telling you to self-host everything down to your DNS resolver.
+
+Some services have such high operational complexity, regulatory burden, or specialized expertise requirements that self-hosting becomes reckless.
+
+This guide identifies 8 service categories where SaaS usually wins—and explains exactly why.
+
+## 1. Email Servers (The #1 "Don't Do It")
+
+### Why Everyone Wants to Self-Host Email
+
+**Theoretical benefits:**
+- Complete privacy (no Google scanning emails)
+- Unlimited storage (your disk space)
+- Custom domains and unlimited aliases
+- No per-user fees
+
+**The reality of running your own mail server:**
+
+**Challenge 1: Deliverability is a nightmare**
+
+Sending email from your VPS will land in spam because:
+- Your server IP has no reputation
+- Gmail/Outlook use complex spam algorithms
+- One misconfigured SPF/DKIM/DMARC record = all mail blocked
+- Blacklists are easy to get on, hard to get off
+
+**Example:**
+You send 100 cold outreach emails from your self-hosted server. Gmail flags your IP for spam patterns. Now all emails to Gmail users go to spam—including critical password resets for your customers.
+
+**Challenge 2: 24/7 uptime is mandatory**
+
+Email downtime = missed business-critical communications:
+- Customer support requests bounced
+- Password reset emails never delivered
+- Invoice notifications lost
+
+**Industry standard:** 99.99% uptime = 4 minutes downtime per month.
+**Reality of self-hosting:** 99.5% uptime = 3.5 hours downtime per month.
+
+**Challenge 3: Security vulnerabilities are constant**
+
+Email servers are primary targets:
+- Exploits in Postfix, Dovecot, SpamAssassin
+- Brute force attacks on SMTP
+- Backscatter spam from forged sender addresses
+- Zero-day vulnerabilities require immediate patches
+
+**You become a 24/7 security operations team.**
+
+**Challenge 4: Regulatory compliance**
+
+If you process email from EU citizens (GDPR) or store patient data (HIPAA), your email server must comply. This requires:
+- Encryption at rest and in transit
+- Access logging and monitoring
+- Data retention policies
+- Breach notification procedures
+- Annual audits
+
+**Total cost of self-hosted email (realistic estimate):**
+- VPS: $24/month ($288/year)
+- Backup MX server (redundancy): $24/month ($288/year)
+- Spam filtering service: $10/month ($120/year)
+- Monitoring and uptime tracking: $15/month ($180/year)
+- Time spent on maintenance: 10 hours/month × $85/hour = $850/month ($10,200/year)
+- **Total: $11,076/year**
+
+**Cost of Google Workspace (10 users):**
+- $12/user/month × 10 = $120/month ($1,440/year)
+- Includes: Calendar, Drive, Meet, Security
+- **Total: $1,440/year**
+
+**Verdict: Gmail/Fastmail/ProtonMail wins by $9,636 annually.**
+
+**When self-hosting email makes sense:**
+- You're running a mail service as your product
+- You have a dedicated sysadmin
+- You process 100,000+ emails/day (economics change at scale)
+- Government/military with air-gapped requirements
+
+**For everyone else: Use a provider.**
+
+## 2. Payment Processing (Legal Minefield)
+
+### Why Self-Hosting Payments is Dangerous
+
+**What "self-hosted payment processing" means:**
+- Directly accepting credit card numbers
+- Storing payment information
+- Processing transactions yourself
+
+**Legal requirements (PCI DSS Compliance):**
+
+**Level 1 (&gt;6M transactions/year):**
+- Annual on-site audit by Qualified Security Assessor (QSA): $50,000+
+- Quarterly network scans by Approved Scanning Vendor (ASV): $10,000/year
+- Maintain compliance documentation: 500+ hours/year
+
+**Even Level 4 (&lt;20K transactions/year):**
+- Self-assessment questionnaire (100+ questions)
+- Quarterly vulnerability scans
+- Security controls (firewalls, encryption, access logs)
+- Incident response plan
+
+**Penalties for non-compliance:**
+- Fines: $5,000-100,000/month from card brands
+- Liability for fraudulent transactions
+- Lawsuit exposure if breached
+
+**Example breach cost:**
+Company with 10,000 customers suffers credit card breach.
+- Notification costs: $50,000
+- Credit monitoring (1 year): $150,000
+- Legal fees: $200,000
+- Fines and settlements: $500,000+
+- Reputation damage: Priceless
+
+**The SaaS alternative: Stripe**
+
+**Pricing:** 2.9% + $0.30 per transaction
+**What you get:**
+- PCI DSS Level 1 compliant (they handle it)
+- Fraud detection and prevention
+- Automatic 3D Secure authentication
+- Dispute handling
+- Global payment methods
+- Mobile SDKs
+- **Most importantly: You never touch card data**
+
+**Cost comparison:**
+- Processing $100,000/year in payments
+- Stripe fees: $3,200
+- Self-hosted PCI compliance: $75,000+ (audit, security, insurance)
+
+**Verdict: Stripe wins by $71,800.**
+
+**Exception:** Very high volume (>$50M/year) where 2.9% fee = $1.45M. At this scale, direct processor relationships make sense.
+
+**For 99.9% of businesses: Use Stripe, PayPal, or Square.**
+
+## 3. Video Conferencing (At Scale)
+
+### Small Teams (&lt;10 people): Self-Host Works
+
+**Jitsi Meet for 5-person team:**
+- VPS (4GB RAM): $24/month
+- TURN server: $15/month
+- **Total: $39/month ($468/year)**
+
+**Zoom Pro equivalent:**
+- $15.99/user/month × 5 = $80/month ($960/year)
+
+**Self-hosting wins by $492/year.**
+
+### Large Meetings (&gt;20 participants): SaaS Wins
+
+**Why self-hosted video breaks down at scale:**
+
+**Bandwidth requirements explode:**
+- 10-person call: 5 Mbps upload per participant
+- 50-person call: 25 Mbps upload required
+- 100-person webinar: Specialized infrastructure needed
+
+**CPU requirements:**
+- Jitsi videobridge transcodes video
+- 50-participant call: 8-16 CPU cores required
+- 100-participant call: Dedicated server cluster
+
+**Network complexity:**
+- TURN server for NAT traversal
+- STUN server for connection discovery
+- SFU (Selective Forwarding Unit) architecture
+- Load balancing across multiple bridges
+
+**Real-world cost example:**
+
+**Self-hosted for 100-person weekly all-hands:**
+- High-performance VPS (16 vCPU, 32GB RAM): $160/month
+- TURN server (high bandwidth): $80/month
+- Bandwidth overage fees: $50/month
+- DevOps maintenance: 8 hours/month × $85 = $680/month
+- **Total: $970/month ($11,640/year)**
+
+**Zoom Business (100 users):**
+- $19.99/user/month × 100 = $1,999/month
+- Unlimited meetings
+- Cloud recording included
+- Phone support
+- **Total: $1,999/month ($23,988/year)**
+
+**Wait, self-hosting wins financially?**
+
+**Not quite. Hidden costs:**
+- Call quality issues = lost productivity
+- No recording transcription
+- No breakout rooms (Jitsi limited)
+- Mobile app experience inferior
+- Participant troubleshooting time
+
+**Realistic assessment:**
+For companies with 50+ employees doing daily video calls, Zoom's reliability is worth the premium.
+
+**Verdict: Self-host for &lt;20 regular participants. Use Zoom/Google Meet for larger or mission-critical meetings.**
+
+## 4. Accounting Software (Regulatory Compliance)
+
+### Why Self-Hosting Accounting is Risky
+
+**Accounting software requirements:**
+- Tax calculation accuracy (changes annually)
+- Audit trails (legally required)
+- Financial reporting compliance (GAAP/IFRS)
+- Multi-currency support
+- Bank reconciliation
+- Payroll integration (if applicable)
+
+**Example: Tax calculation errors**
+
+Your self-hosted accounting system calculates sales tax incorrectly for California transactions. Over 2 years, you under-collect $15,000 in sales tax.
+
+**Consequence:**
+- You owe the $15,000 to California
+- Plus penalties: 10% ($1,500)
+- Plus interest
+- Plus audit fees if they investigate further
+
+**QuickBooks Online would have calculated correctly** because Intuit employs tax specialists who update rates automatically.
+
+**Cost comparison:**
+- QuickBooks Online Plus: $90/month ($1,080/year)
+- Self-hosted Akaunting: $0 (open source)
+
+**But hidden costs of self-hosting:**
+- Accountant review of accuracy: 4 hours × $200/hour = $800
+- Tax miscalculation risk: Potentially $10,000+
+- Missing features (automatic bank feeds, tax forms)
+- Time spent on manual data entry: 5 hours/month × $85 = $5,100/year
+
+**Verdict: Accounting is worth paying for.** QuickBooks, Xero, FreshBooks win.
+
+**Exception:** Very simple businesses (freelancers with &lt;100 transactions/year) can use open-source tools carefully.
+
+## 5. DNS Hosting (Availability Critical)
+
+### Why Self-Hosting DNS is Precarious
+
+**DNS downtime = website and email down.**
+
+**Challenges:**
+- Requires multiple geographically distributed servers (resilience)
+- DDoS attacks target DNS infrastructure
+- DNSSEC implementation complexity
+- Anycast routing requires BGP knowledge
+
+**DIY DNS setup:**
+- 3 VPS instances (different datacenters): $36/month
+- DDoS protection: $50/month minimum
+- Monitoring and alerting: $20/month
+- **Total: $106/month ($1,272/year)**
+
+**Cloudflare DNS:**
+- Free tier: Unlimited queries, DDoS protection, global anycast network
+- **Total: $0/year**
+
+**Performance comparison:**
+- Self-hosted: 80-200ms query time (single region)
+- Cloudflare: 10-30ms (300+ datacenters worldwide)
+
+**Verdict: Use Cloudflare, Route53, or another managed DNS.** Self-hosting DNS provides no practical benefit.
+
+## 6. Certificate Authorities (Trust Infrastructure)
+
+**You cannot practically run your own public Certificate Authority.**
+
+**Why:**
+- Getting root certificate trusted by browsers takes years
+- Requires WebTrust audit ($50,000+/year)
+- Liability for mis-issued certificates
+- Revocation infrastructure (CRL, OCSP)
+
+**Let's Encrypt is free and automated.**
+
+```bash
+# Install SSL certificate (free, automated)
+certbot --nginx -d yourdomain.com
+```
+
+**Verdict: Never self-host a public CA.** Use Let's Encrypt, ZeroSSL, or commercial CAs.
+
+**Exception:** Internal CA for corporate devices (not public web).
+
+## 7. SMS/Phone Services (Carrier Relationships Required)
+
+### Why Self-Hosting SMS Fails
+
+**What self-hosted SMS would require:**
+- Contracts with mobile carriers (Verizon, AT&T, T-Mobile)
+- Phone number registration
+- Compliance with TCPA (Telephone Consumer Protection Act)
+- A2P 10DLC registration (for business messaging)
+- Throughput limits and rate limiting
+- Spam filtering and compliance monitoring
+
+**Carrier approval process:**
+- Minimum volume commitments: 50,000 messages/month
+- Security vetting
+- Legal agreements
+- Setup fees: $5,000-20,000
+
+**Cost for 10,000 SMS/month:**
+- Carrier contract: $500/month minimum
+- Phone number rental: $50/month
+- Infrastructure: $100/month
+- Compliance monitoring: $200/month
+- **Total: $850/month ($10,200/year)**
+
+**Twilio pricing:**
+- $0.0079 per SMS × 10,000 = $79/month
+- **Total: $79/month ($948/year)**
+
+**Savings: $9,252/year by using Twilio.**
+
+**Verdict: SMS/voice should always use Twilio, Vonage, or similar.**
+
+## 8. Backups (Ironic But True)
+
+### The Backup Paradox
+
+**Self-hosting requires backups.**
+**But where do you backup self-hosted data?**
+
+**Option 1: Backup to same server**
+- Server dies → backups gone
+- Ransomware encrypts everything including backups
+- **Useless for disaster recovery**
+
+**Option 2: Backup to second VPS you control**
+- Better than Option 1
+- Still vulnerable if attacker gets SSH access to both
+- Requires maintaining second server
+
+**Option 3: Backup to S3-compatible storage (Wasabi, Backblaze B2)**
+- Encrypted backups off-site
+- Geographic redundancy
+- Immutable backups (can't be deleted by ransomware)
+- **This is effectively using SaaS for backups**
+
+**Recommendation:**
+Self-host applications, but use cloud storage for backups.
+- Backblaze B2: $5/TB/month
+- Wasabi: $5.99/TB/month
+- Amazon S3 Glacier: $1/TB/month (slower retrieval)
+
+**Verdict: Self-host apps, use SaaS for backup storage.**
+
+## Services Worth Self-Hosting (For Comparison)
+
+| Service | Self-Host? | Reasoning |
+|---------|------------|-----------|
+| Email server | ❌ No | Deliverability hell, 24/7 requirement, spam complexity |
+| Payment processing | ❌ No | PCI DSS compliance costs exceed savings |
+| DNS hosting | ❌ No | Free SaaS (Cloudflare) outperforms self-hosted |
+| SMS/Voice | ❌ No | Carrier relationships required |
+| Accounting | ❌ Usually no | Tax compliance risk |
+| Video conferencing | ⚠️ Depends | &lt;20 users: yes. &gt;50 users: no |
+| Backups | ❌ No | Use cloud storage for backup targets |
+| Password manager | ✅ Yes | Simple to self-host (Vaultwarden), high privacy value |
+| Git repository | ✅ Yes | Easy setup, huge cost savings (GitLab) |
+| Project management | ✅ Yes | Simple Docker deployment, unlimited users |
+| Analytics | ✅ Yes | Privacy benefit, no data sharing |
+| File storage | ✅ Yes | Nextcloud replaces Google Drive easily |
+| CRM | ✅ Yes | Cost savings scale with team size |
+| Automation | ✅ Yes | n8n replaces Zapier, unlimited tasks |
+
+## The Decision Framework
+
+**Ask yourself 3 questions:**
+
+### 1. Does this service require specialized compliance?
+- Payment processing → PCI DSS (use SaaS)
+- Healthcare data → HIPAA (evaluate carefully)
+- Tax/accounting → Regulatory accuracy (use SaaS)
+- Generic business data → No special compliance (can self-host)
+
+### 2. What is the downtime cost?
+- Email down = business paralysis → Use SaaS
+- Analytics down = minor inconvenience → Self-host okay
+- Video conferencing (weekly team call) = annoying → Self-host okay
+- Video conferencing (customer demos) = revenue loss → Use SaaS
+
+### 3. Do you have operational capacity?
+- "What's SSH?" → Stay with SaaS for everything
+- "I can deploy Docker containers" → Self-host 50% of tools
+- "I manage Kubernetes clusters" → Self-host 90% of tools
+
+## The SaaS-Exit Perspective (Being Honest)
+
+**We advocate for leaving SaaS when it makes sense, not as ideology.**
+
+Self-hosting email because "Google is evil" while losing 20% of your outbound emails to spam filters is cutting off your nose to spite your face.
+
+**The goal isn't SaaS-Exit purity. It's control where it matters:**
+
+**Self-host when:**
+- Cost savings are significant (&gt;60%)
+- Data sovereignty is valuable
+- Setup complexity is manageable
+- You have operational capacity
+- Downtime risk is acceptable
+
+**Stay SaaS when:**
+- Compliance overhead exceeds savings
+- Specialized expertise is required
+- Infrastructure complexity is extreme
+- Downtime is catastrophic
+- Free tier exists (Cloudflare DNS)
+
+**Most companies end up with hybrid:**
+- Self-host: CRM, project management, analytics, file storage
+- SaaS: Email, payments, accounting, SMS
+
+This isn't compromise. It's pragmatism.
+
+Browse our [tools directory](/tools) for detailed analyses of which services are self-hosting friendly and which should stay SaaS.
+
+The smartest technical decision is the one that considers non-technical costs.

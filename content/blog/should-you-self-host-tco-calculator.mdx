@@ -1,0 +1,355 @@
+---
+title: "Should You Self-Host? TCO Calculator Breakdown"
+description: "Calculate total cost of ownership for self-hosting vs SaaS. Real numbers comparing infrastructure, labor, and hidden costs over 5 years."
+date: "2026-01-18"
+category: "Decision Frameworks"
+slug: "should-you-self-host-tco-calculator"
+---
+
+# Should You Self-Host? TCO Calculator Breakdown
+
+"Self-hosting saves money" sounds obvious until you factor in DevOps labor at $85/hour, backup storage, SSL certificates, monitoring tools, and the 3 AM server outage.
+
+SaaS vendors love pointing to these hidden costs. "Sure, our CRM costs $50/user/month, but what about YOUR time managing a server?"
+
+This guide breaks down real total cost of ownership (TCO) for 5 common business tools, comparing SaaS subscription fees against self-hosted infrastructure over 5 years.
+
+The answer depends on team size, technical capacity, and growth trajectory—not one-size-fits-all platitudes.
+
+## TCO Framework: What to Actually Count
+
+### SaaS Total Cost (5 Years)
+
+**Explicit costs:**
+- Monthly subscription × 60 months
+- Per-user fees (often increasing annually)
+- Add-on features (SSO, advanced analytics, API access)
+- Overage fees (storage, bandwidth, API calls)
+
+**Hidden costs:**
+- Vendor price increases (15-25% annually for many SaaS)
+- Migration lock-in (switching costs after 3 years)
+- Data export fees
+- Compliance add-ons (SOC2, HIPAA)
+
+### Self-Hosted Total Cost (5 Years)
+
+**Infrastructure:**
+- VPS hosting × 60 months
+- Backup storage × 60 months
+- CDN/bandwidth (if applicable)
+- Domain + SSL certificates × 5 years
+
+**Labor:**
+- Initial setup (DevOps time)
+- Monthly maintenance (updates, monitoring)
+- Incident response (outages, security patches)
+- Upgrades and migrations
+
+**Software:**
+- Paid licenses (if not using FOSS)
+- Support contracts (optional)
+- Monitoring tools
+
+**Risk mitigation:**
+- Downtime impact (calculate hourly business value)
+- Security breach potential
+
+## Case Study 1: Project Management (20-Person Team)
+
+### SaaS Option: Asana Business
+
+**Subscription:**
+- $24.99/user/month × 20 users = $499.80/month
+- Year 1: $5,998
+- Year 2: $6,598 (10% price increase)
+- Year 3: $7,258
+- Year 4: $7,984
+- Year 5: $8,782
+- **5-year total: $36,620**
+
+**Add-on costs:**
+- Advanced reporting: +$5/user/month ($6,000 over 5 years)
+- **Realistic 5-year total: $42,620**
+
+### Self-Hosted Option: Taiga
+
+**Infrastructure:**
+- Hetzner CPX21 (3 vCPU, 4GB RAM): €9/month ($10/month)
+- Backup storage (50GB): $2.50/month
+- Domain + SSL: $15/year
+- **Total: $12.50/month × 60 = $750**
+- **+ Domain: $75**
+- **Infrastructure total: $825**
+
+**Labor:**
+- Initial setup: 4 hours × $85/hour = $340
+- Monthly maintenance: 30 min/month × 60 months = 30 hours × $85 = $2,550
+- Annual upgrades: 2 hours/year × 5 years = 10 hours × $85 = $850
+- Incident response: 5 incidents over 5 years × 2 hours = 10 hours × $85 = $850
+- **Labor total: $4,590**
+
+**Total 5-year TCO: $5,415**
+
+**Savings: $37,205 (87% reduction)**
+
+**Break-even analysis:**
+- Asana monthly: $500
+- Self-hosted monthly equivalent: $90
+- ROI positive after month 1
+
+## Case Study 2: CRM (10 Sales Reps)
+
+### SaaS Option: HubSpot Sales Hub Professional
+
+**Subscription:**
+- $100/user/month × 10 users = $1,000/month
+- Year 1-5 (assuming 12% annual increase): $75,240
+- Marketing Hub add-on (Year 2+): +$18,000
+- **5-year total: $93,240**
+
+### Self-Hosted Option: EspoCRM
+
+**Infrastructure:**
+- VPS (4GB RAM): $24/month × 60 = $1,440
+- Backup: $5/month × 60 = $300
+- Email sending service (SendGrid): $20/month × 60 = $1,200
+- **Infrastructure total: $2,940**
+
+**Labor:**
+- Setup: 8 hours × $85 = $680
+- Customization (fields, workflows): 12 hours × $85 = $1,020
+- Monthly maintenance: 1 hour/month × 60 = $5,100
+- Email deliverability tuning: 6 hours × $85 = $510
+- **Labor total: $7,310**
+
+**Total 5-year TCO: $10,250**
+
+**Savings: $82,990 (89% reduction)**
+
+## Case Study 3: Analytics (500K Pageviews/Month)
+
+### SaaS Option: Mixpanel Growth Plan
+
+**Subscription:**
+- $25/month (up to 100K events)
+- Overage: $0.0002/event
+- 500K pageviews × 3 events avg = 1.5M events/month
+- Cost: $280/month
+- **5-year total: $16,800**
+
+### Self-Hosted Option: Plausible Community Edition
+
+**Infrastructure:**
+- VPS (2GB RAM): $12/month × 60 = $720
+- Database backup: $3/month × 60 = $180
+- **Infrastructure total: $900**
+
+**Labor:**
+- Setup: 2 hours × $85 = $170
+- Maintenance: 15 min/month × 60 = 15 hours × $85 = $1,275
+- **Labor total: $1,445**
+
+**Total 5-year TCO: $2,345**
+
+**Savings: $14,455 (86% reduction)**
+
+## Case Study 4: Video Conferencing (50-Person Company)
+
+### SaaS Option: Zoom Pro
+
+**Subscription:**
+- $15.99/user/month × 50 users = $799.50/month
+- **5-year total: $47,970**
+
+### Self-Hosted Option: Jitsi Meet
+
+**Infrastructure:**
+- High-performance VPS (8 vCPU, 16GB RAM): $60/month × 60 = $3,600
+- TURN server (for NAT traversal): $20/month × 60 = $1,200
+- Bandwidth: $40/month × 60 = $2,400
+- **Infrastructure total: $7,200**
+
+**Labor:**
+- Setup (including TURN configuration): 12 hours × $85 = $1,020
+- Monthly monitoring: 45 min/month × 60 = 45 hours × $85 = $3,825
+- Quality troubleshooting: 20 hours/year × 5 = 100 hours × $85 = $8,500
+- **Labor total: $13,345**
+
+**Total 5-year TCO: $20,545**
+
+**Savings: $27,425 (57% reduction)**
+
+**Note:** Jitsi requires more labor than typical self-hosted tools due to WebRTC complexity and user experience expectations.
+
+[AFFILIATE_CALLOUT_HERE]
+
+Configuring TURN servers, optimizing WebRTC bandwidth, and ensuring production-grade uptime for video conferencing requires specialized knowledge. If you want self-hosted collaboration tools deployed with professional monitoring and guaranteed uptime, managed infrastructure eliminates the DevOps burden.
+
+## When SaaS TCO Beats Self-Hosting
+
+### Scenario 1: Small Team (&lt;5 People)
+
+**Example: Password manager**
+- 1Password: $7.99/user/month × 5 = $40/month ($2,400 over 5 years)
+- Self-hosted Vaultwarden: $12/month VPS + 10 hours setup/maintenance ($1,570 total)
+
+**Savings: $830 over 5 years**
+
+**Verdict:** Self-hosting wins financially, but $830 over 5 years is minimal. If no one on the team has DevOps skills, SaaS makes sense.
+
+### Scenario 2: Rapid Scaling (2x growth annually)
+
+**Example: Customer support ticketing**
+- Year 1: 10 agents
+- Year 5: 160 agents
+
+**SaaS (Zendesk):**
+- Scales automatically
+- Per-user cost decreases with volume discounts
+
+**Self-hosted:**
+- Infrastructure costs scale linearly
+- Labor increases for performance tuning
+- Migration complexity mid-growth
+
+**Verdict:** SaaS can be cheaper during hyper-growth due to economies of scale.
+
+### Scenario 3: Zero DevOps Capacity
+
+If your team has no one capable of:
+- SSH into a server
+- Read Docker logs
+- Configure NGINX
+- Debug database connection errors
+
+**SaaS tax is cheaper than hiring a $120K DevOps engineer.**
+
+## Hidden Self-Hosting Costs (Be Honest)
+
+### Opportunity Cost
+**Real scenario:**
+Your CTO spends 8 hours/month maintaining self-hosted infrastructure. At $150/hour effective rate, that's $1,200/month ($72,000 over 5 years).
+
+**Question:** Could that time generate more than $72,000 in product value?
+
+If yes, buy SaaS.
+If no (infrastructure IS your product), self-host.
+
+### Downtime Impact
+**Calculate hourly business value:**
+- E-commerce site: $5,000/hour revenue
+- SaaS app: $500/hour (signup rate × LTV)
+- Internal tool: $150/hour (employee productivity × hourly rate)
+
+**Downtime estimate:**
+- SaaS (with 99.9% SLA): 8.76 hours/year
+- Self-hosted (amateur setup): 20-40 hours/year
+- Self-hosted (professional setup): 4-8 hours/year
+
+**Downtime cost difference:**
+E-commerce with amateur setup: (35 hours - 8.76 hours) × $5,000 = $131,200 over 5 years.
+
+**This alone can eliminate self-hosting savings.**
+
+### Security Breach Cost
+**Average data breach cost (2026):** $4.88 million
+
+**SaaS advantage:**
+- Dedicated security team
+- SOC2/ISO27001 compliance
+- Cyber insurance
+- Vendor liability
+
+**Self-hosted risk:**
+- You're responsible for security
+- Requires security expertise
+- Proper configuration crucial
+
+**Mitigation:**
+- Automated security updates
+- Regular penetration testing
+- Monitoring and alerting
+- Incident response plan
+
+**If you can't do these, SaaS is safer.**
+
+## TCO Decision Matrix
+
+| Tool Type | Team Size | DevOps Skill | Verdict |
+|-----------|-----------|--------------|---------|
+| Project management | &lt;10 | Low | SaaS |
+| Project management | 10-50 | Medium | Self-host |
+| Project management | 50+ | High | Self-host |
+| CRM | &lt;5 | Any | SaaS |
+| CRM | 5-20 | Medium+ | Self-host |
+| CRM | 20+ | High | Self-host |
+| Analytics | Any | Medium+ | Self-host |
+| Video conferencing | &lt;20 | Low | SaaS |
+| Video conferencing | 20-100 | High | Self-host |
+| Video conferencing | 100+ | High | Hybrid |
+| Password manager | &lt;20 | Low-Medium | SaaS |
+| Password manager | 20+ | Medium+ | Self-host |
+| Code repository | Any | Medium+ | Self-host |
+| Email | Any | Low-Medium | SaaS |
+| Email | Any | High | Still SaaS* |
+
+*Email self-hosting adds minimal value and significant deliverability complexity.
+
+## The Real Formula
+
+```
+Self-hosting is cheaper when:
+(SaaS monthly cost × 60) > (Infrastructure × 60) + (Labor hours × hourly rate) + (Downtime cost) + (Security risk cost)
+
+Self-hosting makes sense when:
+1. Financial ROI is positive AND
+2. You have technical capacity AND
+3. Data sovereignty matters (privacy, compliance, IP protection)
+```
+
+## Real-World Hybrid Approach
+
+**Most companies end up here:**
+
+**Self-host:**
+- Code repositories (GitLab)
+- Project management (Taiga, Plane)
+- Password manager (Vaultwarden)
+- Analytics (Plausible)
+- File storage (Nextcloud)
+
+**Stay SaaS:**
+- Email (Gmail, Fastmail, ProtonMail)
+- Accounting (Xero, QuickBooks)
+- Payroll (Gusto)
+- Legal/compliance tools
+
+**Reasoning:**
+Self-host tools where vendor lock-in is expensive and setup is straightforward. Stay SaaS for specialized domains requiring deep compliance expertise.
+
+## Use Our Calculator
+
+Visit our [TCO calculator](/calculator) to input your specific numbers:
+- Team size
+- Current SaaS costs
+- Internal hourly rates
+- Expected growth rate
+
+Get personalized ROI analysis with 5-year projections.
+
+## The SaaS-Exit Perspective
+
+TCO calculations are useful, but they miss the fundamental question: **Who controls your business-critical data?**
+
+**Financial case:** Save 60-90% over 5 years (for most tools)
+
+**Strategic case:** Eliminate vendor dependencies that compound annually
+
+**Risk case:** Remove single points of failure from your infrastructure
+
+The best tool isn't always the cheapest. It's the one that aligns with your values, capacity, and trajectory.
+
+Browse our [tools directory](/tools) for deployment guides and realistic TCO breakdowns for 800+ self-hosted alternatives.
+
+Self-hosting isn't about saving money. It's about spending it on infrastructure you own instead of rent you'll pay forever.

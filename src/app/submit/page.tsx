@@ -1,20 +1,21 @@
-import { Metadata } from 'next';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { SubmitToolForm } from '@/components/submit/submit-tool-form';
-import { Lightbulb, CheckCircle, Clock, Mail } from 'lucide-react';
+import { Metadata } from "next";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { SubmitToolForm } from "@/components/submit/submit-tool-form";
+import { Lightbulb, CheckCircle, Clock, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: 'Submit a Tool | SaaS-Exit.io',
-  description: 'Submit an open-source, self-hosted tool to be featured on SaaS-Exit.io. Help others discover alternatives to expensive SaaS products.',
+  title: "Submit a Tool | SaaS-Exit.io",
+  description:
+    "Submit an open-source, self-hosted tool to be featured on SaaS-Exit.io. Help others discover alternatives to expensive SaaS products.",
 };
 
 export default function SubmitToolPage() {
   const requirements = [
-    'Must be open-source (GitHub repository required)',
-    'Must be self-hostable',
-    'Should have at least 100 GitHub stars',
-    'Should be actively maintained',
+    "Must be open-source (GitHub repository required)",
+    "Must be self-hostable",
+    "Should have at least 100 GitHub stars",
+    "Should be actively maintained",
   ];
 
   return (
@@ -29,8 +30,8 @@ export default function SubmitToolPage() {
               Submit a Tool
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Know an open-source alternative that should be on our list?
-              Submit it below and help others discover great self-hosted solutions.
+              Know an open-source alternative that should be on our list? Submit
+              it below and help others discover great self-hosted solutions.
             </p>
           </div>
 
@@ -45,7 +46,10 @@ export default function SubmitToolPage() {
                 </h3>
                 <ul className="space-y-3">
                   {requirements.map((req, index) => (
-                    <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <li
+                      key={index}
+                      className="flex items-start gap-2 text-sm text-muted-foreground"
+                    >
                       <CheckCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                       <span>{req}</span>
                     </li>
@@ -61,19 +65,27 @@ export default function SubmitToolPage() {
                 </h3>
                 <ol className="space-y-3 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">1</span>
+                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">
+                      1
+                    </span>
                     <span>Submit your tool using the form</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">2</span>
+                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">
+                      2
+                    </span>
                     <span>Our team reviews the submission</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">3</span>
+                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">
+                      3
+                    </span>
                     <span>If approved, tool is added to the directory</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">4</span>
+                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-medium flex items-center justify-center shrink-0">
+                      4
+                    </span>
                     <span>You receive an email confirmation</span>
                   </li>
                 </ol>
@@ -86,9 +98,12 @@ export default function SubmitToolPage() {
                   Questions?
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Contact us at{' '}
-                  <a href="mailto:submit@saas-exit.io" className="text-primary hover:underline">
-                    submit@saas-exit.io
+                  Contact us at{" "}
+                  <a
+                    href="mailto:support@exit-saas.io"
+                    className="text-primary hover:underline"
+                  >
+                    support@exit-saas.io
                   </a>
                 </p>
               </div>

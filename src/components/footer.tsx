@@ -59,6 +59,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/about"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -66,20 +74,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/submit"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Submit a Tool
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  API Access
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -137,6 +137,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/terms"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/affiliate-disclosure"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -145,10 +153,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/about"
+                  href="/contact"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  About Us
+                  Contact Us
                 </Link>
               </li>
             </ul>
@@ -168,10 +176,16 @@ export function Footer() {
               Privacy
             </Link>
             <Link
-              href="/affiliate-disclosure"
+              href="/terms"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
-              Affiliate Disclosure
+              Terms
+            </Link>
+            <Link
+              href="/contact"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
             </Link>
             <span className="text-sm text-muted-foreground flex items-center gap-1">
               Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" />{" "}

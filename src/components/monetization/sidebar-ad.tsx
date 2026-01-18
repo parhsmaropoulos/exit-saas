@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Megaphone, Sparkles, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Megaphone, Sparkles, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface SidebarAdProps {
   toolName?: string;
@@ -31,13 +31,16 @@ export function SidebarAd({ toolName }: SidebarAdProps) {
         <p className="text-sm text-muted-foreground mb-4">
           {toolName
             ? `Reach developers looking for ${toolName} alternatives`
-            : 'Reach developers looking for open-source solutions'}
+            : "Reach developers looking for open-source solutions"}
         </p>
         <Button
           variant="outline"
           size="sm"
           className="w-full"
-          onClick={() => window.location.href = 'mailto:ads@saas-exit.io?subject=Sponsorship Inquiry'}
+          onClick={() =>
+            (window.location.href =
+              "mailto:support@exit-saas.io?subject=Sponsorship Inquiry")
+          }
         >
           <Mail className="w-4 h-4 mr-2" />
           Contact Us
@@ -55,7 +58,13 @@ export function SidebarAd({ toolName }: SidebarAdProps) {
 }
 
 // AdSense-ready component (for future use)
-export function GoogleAdSense({ slot, format = 'auto' }: { slot: string; format?: string }) {
+export function GoogleAdSense({
+  slot,
+  format = "auto",
+}: {
+  slot: string;
+  format?: string;
+}) {
   // This will be populated with actual AdSense code once approved
   // For now, return the placeholder
   return (
@@ -64,9 +73,7 @@ export function GoogleAdSense({ slot, format = 'auto' }: { slot: string; format?
         <span className="text-xs text-muted-foreground">Advertisement</span>
       </div>
       <div className="p-4 min-h-[250px] flex items-center justify-center">
-        <p className="text-sm text-muted-foreground">
-          Ad loading...
-        </p>
+        <p className="text-sm text-muted-foreground">Ad loading...</p>
         {/*
           Uncomment when AdSense is approved:
           <ins
