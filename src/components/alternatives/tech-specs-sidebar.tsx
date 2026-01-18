@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { DifficultyGauge } from '@/components/tools/difficulty-gauge';
 import { Tool } from '@/types/database';
 import { formatDistanceToNow } from '@/lib/format';
+import { trackGitHubClick, trackDeploymentGuideClick } from '@/lib/analytics';
 
 interface TechSpecsSidebarProps {
   tool: Tool;
@@ -77,7 +78,10 @@ export function TechSpecsSidebar({ tool }: TechSpecsSidebarProps) {
         <div className="pt-4 border-t border-border space-y-3">
           <Button
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-            onClick={() => window.open(tool.github_url, '_blank')}
+            onClick={() => {
+              trackGitHubClick(tool.name);
+              window.open(tool.github_url, '_blank');
+            }}
           >
             <Github className="w-4 h-4 mr-2" />
             View on GitHub
@@ -86,7 +90,10 @@ export function TechSpecsSidebar({ tool }: TechSpecsSidebarProps) {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => window.open(`${tool.github_url}#installation`, '_blank')}
+            onClick={() => {
+              trackDeploymentGuideClick(tool.name);
+              window.open(`${tool.github_url}#installation`, '_blank');
+            }}
           >
             <BookOpen className="w-4 h-4 mr-2" />
             Deployment Guide

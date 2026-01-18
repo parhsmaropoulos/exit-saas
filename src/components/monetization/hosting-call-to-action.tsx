@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Rocket, Server, CheckCircle, ArrowRight, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackAffiliateClick } from "@/lib/analytics";
 
 interface HostingCallToActionProps {
   toolName: string;
@@ -84,7 +85,10 @@ export function HostingCallToAction({ toolName }: HostingCallToActionProps) {
           <Button
             size="lg"
             className="w-full bg-white hover:bg-gray-100 text-[#0066CC] font-bold text-lg h-14 shadow-lg shadow-black/20"
-            onClick={() => window.open(referralUrl, "_blank")}
+            onClick={() => {
+              trackAffiliateClick('DigitalOcean', toolName, 'hosting-cta');
+              window.open(referralUrl, "_blank");
+            }}
           >
             <Server className="w-5 h-5 mr-2" />
             Deploy {toolName} Now

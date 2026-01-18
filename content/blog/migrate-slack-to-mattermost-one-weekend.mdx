@@ -1,0 +1,456 @@
+---
+title: "How to Migrate from Slack to Mattermost in One Weekend"
+description: "Complete step-by-step guide to migrating your team from Slack to Mattermost. Export data, import channels, and save thousands annually without losing history."
+date: "2026-01-18"
+category: "Migration Guides"
+slug: "migrate-slack-to-mattermost-one-weekend"
+---
+
+# How to Migrate from Slack to Mattermost in One Weekend
+
+Slack just increased prices again. Your 50-person team now pays $22,500 annually for Business+ tier. Meanwhile, Mattermost runs on a $40/month VPS serving unlimited users.
+
+The migration seems daunting. You have 3 years of conversation history, 47 channels, custom integrations, and a team that resists change. But companies complete this migration every weekend with zero data loss.
+
+This guide walks you through the entire process, from Friday afternoon planning to Monday morning launch.
+
+## Why Teams Are Leaving Slack for Mattermost
+
+Before diving into logistics, understand what you're gaining:
+
+**Cost savings:**
+- Slack Business+: $15/user/month × 50 users = $9,000/year
+- Mattermost self-hosted: $480/year (VPS) + $120/year (backup storage) = $600/year
+- **Annual savings: $8,400** (93% reduction)
+
+**Data sovereignty:**
+- All messages stored on your infrastructure
+- No third-party AI training on your conversations
+- GDPR/HIPAA compliance simplified
+- Full audit trail control
+
+**Feature parity:**
+- Channels, threads, direct messages
+- File sharing and search
+- Custom integrations and webhooks
+- Mobile apps (iOS/Android)
+- SSO and LDAP support
+
+The only thing you lose is Slack's vendor lock-in.
+
+## Friday Afternoon: Pre-Migration Setup (3-4 hours)
+
+### Step 1: Export Slack Data (30 minutes)
+
+**For Slack Standard/Plus plans:**
+1. Go to https://my.slack.com/services/export
+2. Select date range (typically "All time")
+3. Click "Start Export"
+4. Download the ZIP file when ready (5-30 minutes depending on size)
+
+**For Slack Free tier:**
+Slack doesn't provide full export. Use third-party tools:
+- `slack-export-viewer` (open source)
+- Manual export of critical channels
+- Accept that recent 90-day history limitation exists
+
+**Export contains:**
+- Channel messages and threads
+- Direct messages
+- File attachments (up to storage limits)
+- User profiles
+- Custom emoji
+
+### Step 2: Deploy Mattermost (45 minutes)
+
+**Option A: Quick VPS Deployment**
+```bash
+# SSH into your Ubuntu 22.04 VPS
+ssh root@your-server-ip
+
+# Install Docker
+apt update && apt upgrade -y
+apt install -y docker.io docker-compose
+
+# Clone Mattermost Docker deployment
+cd /opt
+git clone https://github.com/mattermost/docker
+cd docker
+
+# Configure environment
+cp env.example .env
+nano .env
+```
+
+**Critical `.env` settings:**
+```bash
+DOMAIN=chat.yourcompany.com
+MATTERMOST_HTTPS_PORT=443
+MATTERMOST_ENABLE_SSL=true
+TZ=America/New_York
+```
+
+**Launch Mattermost:**
+```bash
+docker-compose up -d
+```
+
+**Option B: Managed Deployment**
+
+[AFFILIATE_CALLOUT_HERE]
+
+Setting up SSL certificates, configuring reverse proxies, and managing database backups adds complexity. If you want Mattermost deployed with automated SSL, monitoring, and daily backups already configured, managed platforms handle the infrastructure.
+
+### Step 3: DNS and SSL Configuration (20 minutes)
+
+**Set DNS A record:**
+```
+chat.yourcompany.com → your-server-ip
+```
+
+**Install SSL certificate (if not using managed hosting):**
+```bash
+apt install -y certbot python3-certbot-nginx
+certbot --nginx -d chat.yourcompany.com
+```
+
+Visit `https://chat.yourcompany.com` and complete initial setup:
+- Admin email: admin@yourcompany.com
+- Team name: Your Company
+- Create first team
+
+### Step 4: Install Slack Import Plugin (15 minutes)
+
+**Enable plugin uploads:**
+1. System Console → Plugins → Plugin Management
+2. Enable "Upload Plugin"
+3. Download Slack import tool: https://github.com/mattermost/mattermost-plugin-bulk-import
+4. Upload via System Console → Plugins → Management
+
+**Configure Mattermost for import:**
+```bash
+# Increase max file upload size
+docker exec -it mattermost-docker_app_1 mattermost config set FileSettings.MaxFileSize 104857600
+```
+
+## Saturday Morning: Data Migration (2-3 hours)
+
+### Step 5: Convert Slack Export to Mattermost Format (45 minutes)
+
+Slack and Mattermost use different data structures. Use the official converter:
+
+```bash
+# Install mmetl (Mattermost Migration Tool)
+wget https://github.com/mattermost/mmetl/releases/download/v1.0.0/mmetl
+chmod +x mmetl
+
+# Convert Slack export
+./mmetl transform slack --team yourteam --file slack-export.zip --output mattermost-import.jsonl
+```
+
+**What gets converted:**
+- Channels → Mattermost channels
+- Users → Automatically created/matched
+- Messages → Preserves timestamps and threading
+- Reactions → Emoji reactions maintained
+- Files → Uploaded to Mattermost storage
+
+**What requires manual handling:**
+- Custom Slack apps/bots (rebuild as webhooks)
+- Zapier integrations (use n8n or native webhooks)
+- Third-party apps (check Mattermost marketplace)
+
+### Step 6: Import Data into Mattermost (60 minutes)
+
+**Run bulk import:**
+```bash
+# Copy import file to Mattermost container
+docker cp mattermost-import.jsonl mattermost-docker_app_1:/tmp/
+
+# Execute import
+docker exec -it mattermost-docker_app_1 mattermost import bulk /tmp/mattermost-import.jsonl --apply --workers 4
+```
+
+**Monitor import progress:**
+```bash
+# Watch logs
+docker logs -f mattermost-docker_app_1
+```
+
+**Typical import times:**
+- Small workspace (< 10K messages): 5-10 minutes
+- Medium workspace (10K-100K messages): 30-60 minutes
+- Large workspace (100K+ messages): 2-4 hours
+
+**Common import errors:**
+- File size limits → Increase in System Console
+- Memory issues → Adjust Docker memory limits
+- User email conflicts → Pre-create user accounts
+
+### Step 7: Verify Data Integrity (30 minutes)
+
+**Check channel import:**
+```bash
+# Compare channel counts
+# Slack channels: Count from export
+# Mattermost: System Console → Reporting → Site Statistics
+```
+
+**Verify message history:**
+1. Open random channels in Mattermost
+2. Search for known messages
+3. Check file attachments load correctly
+4. Verify @mentions and threading work
+
+**Test user accounts:**
+1. All Slack users should appear in Mattermost
+2. Profile pictures imported (if available)
+3. User statuses preserved
+
+## Saturday Afternoon: Integration Migration (2-3 hours)
+
+### Step 8: Recreate Critical Integrations
+
+**GitHub notifications:**
+```bash
+# In Mattermost
+/settings → Integrations → Incoming Webhooks → Add
+Copy webhook URL
+
+# In GitHub repository settings
+Settings → Webhooks → Add webhook
+Paste Mattermost webhook URL
+```
+
+**CI/CD notifications:**
+Replace Slack webhook URLs in your CI config:
+
+```yaml
+# .github/workflows/deploy.yml
+- name: Notify Mattermost
+  uses: mattermost/action-mattermost-notify@master
+  with:
+    MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK }}
+    TEXT: "Deployment completed successfully"
+```
+
+**Custom bots:**
+Port Slack bot logic to Mattermost:
+
+```javascript
+// Example: Simple notification bot
+const axios = require('axios');
+
+async function sendMattermost(message) {
+  await axios.post('https://chat.yourcompany.com/hooks/xxx', {
+    text: message,
+    channel: 'deployments'
+  });
+}
+```
+
+### Step 9: Configure SSO (Optional, 45 minutes)
+
+**Connect to existing auth provider:**
+1. System Console → Authentication → SAML 2.0
+2. Configure with Google Workspace, Okta, or Azure AD
+3. Test with personal account before company-wide rollout
+
+**Benefits:**
+- Single sign-on for all users
+- Automatic user provisioning
+- Centralized access control
+
+## Sunday: Team Preparation (1-2 hours)
+
+### Step 10: Create Migration Guide for Team
+
+**Send email 2 days before migration:**
+```
+Subject: We're moving from Slack to Mattermost this Monday
+
+Hi team,
+
+We're migrating to Mattermost, our self-hosted communication platform. This saves us $8,400 annually while keeping all features you use daily.
+
+What changes:
+✓ New URL: https://chat.yourcompany.com
+✓ Desktop app: Download from [link]
+✓ Mobile apps: iOS/Android available
+✓ All history preserved
+
+What stays the same:
+✓ Same channels and conversations
+✓ Direct messages intact
+✓ File sharing works identically
+✓ @mentions and notifications
+
+Action needed:
+1. Download Mattermost desktop app [link]
+2. Log in with your work email
+3. Install mobile app (optional)
+
+Monday morning checklist:
+- Join team at 9 AM for quick onboarding
+- Test notifications
+- Verify you can access all channels
+
+Questions? Reply to this email.
+```
+
+### Step 11: Prepare Admin Team
+
+**Identify 3-5 "Mattermost champions":**
+- Early adopters who can help others
+- Distribute across departments
+- Give admin training on Friday
+
+**Create quick reference guide:**
+- Keyboard shortcuts comparison
+- How to set up notifications
+- Mobile app setup
+- Troubleshooting FAQs
+
+## Monday Morning: Cutover (2 hours)
+
+### Step 12: Final Sync and Launch (30 minutes)
+
+**Re-export Slack for weekend messages:**
+```bash
+# Export Saturday-Sunday activity
+# Run conversion again
+./mmetl transform slack --team yourteam --file slack-export-weekend.zip --output weekend-import.jsonl
+
+# Import delta
+docker exec -it mattermost-docker_app_1 mattermost import bulk /tmp/weekend-import.jsonl --apply
+```
+
+**Archive Slack workspace:**
+1. Slack Admin → Settings → Workspace Settings
+2. Disable posting to all channels
+3. Add workspace-wide message: "We've moved to Mattermost: [link]"
+4. Keep read-only for 30 days
+
+### Step 13: Live Onboarding Session (60 minutes)
+
+**9 AM company call:**
+1. Welcome to Mattermost (5 min)
+2. Quick tour of interface (10 min)
+3. How to join channels (5 min)
+4. Notification setup (10 min)
+5. Mobile app demo (10 min)
+6. Q&A (20 min)
+
+**First day support:**
+- Monitor "help" channel
+- Respond to DMs quickly
+- Document common questions
+
+### Step 14: Decommission Slack (30 days later)
+
+**After 30-day grace period:**
+1. Export final Slack data for archive
+2. Cancel Slack subscription
+3. Download all Slack data
+4. Store encrypted backup
+5. Confirm cancellation
+
+**Savings realized:**
+- Month 1: Pro-rated Slack savings + VPS cost
+- Months 2-12: Full $700/month savings
+- Year 2+: Compounding savings
+
+## Post-Migration Optimization
+
+### Performance Tuning
+
+**Database optimization:**
+```bash
+# Enable search indexing
+docker exec -it mattermost-docker_postgres_1 psql -U mmuser -d mattermost -c "CREATE INDEX idx_posts_message ON posts USING gin(to_tsvector('english', message));"
+```
+
+**File storage optimization:**
+```bash
+# Configure S3-compatible storage for files
+# In System Console → File Storage
+# Use Wasabi ($5.99/TB) or Backblaze B2 ($5/TB)
+```
+
+### User Adoption Tactics
+
+**Week 1: Daily tips**
+- Day 1: Keyboard shortcuts
+- Day 2: Advanced search
+- Day 3: Custom notifications
+- Day 4: Integrations
+- Day 5: Mobile app features
+
+**Week 2: Advanced features**
+- Custom emoji and reactions
+- Channel organization
+- Saved posts and flags
+- Do Not Disturb schedules
+
+## Common Migration Pitfalls (And How to Avoid Them)
+
+**Pitfall 1: Incomplete data export**
+- Solution: Export early, verify contents before migration weekend
+
+**Pitfall 2: Users forget new URL**
+- Solution: Browser bookmarks, redirect old Slack URL
+
+**Pitfall 3: Integration breakage**
+- Solution: Test all critical integrations in staging before cutover
+
+**Pitfall 4: Resistance to change**
+- Solution: Involve team in decision, highlight cost savings
+
+**Pitfall 5: Lost custom emoji**
+- Solution: Export custom emoji separately, bulk import to Mattermost
+
+## Migration Checklist
+
+**Friday:**
+- [ ] Export Slack data
+- [ ] Deploy Mattermost server
+- [ ] Configure DNS and SSL
+- [ ] Install import plugin
+
+**Saturday:**
+- [ ] Convert Slack export to Mattermost format
+- [ ] Import data to Mattermost
+- [ ] Verify data integrity
+- [ ] Migrate critical integrations
+
+**Sunday:**
+- [ ] Send team migration guide
+- [ ] Train admin champions
+- [ ] Create quick reference documentation
+- [ ] Test all workflows
+
+**Monday:**
+- [ ] Final data sync
+- [ ] Archive Slack workspace
+- [ ] Live onboarding session
+- [ ] Monitor and support users
+
+## The SaaS-Exit Perspective
+
+Migrating communication platforms isn't just cost savings. It's reclaiming ownership.
+
+When you use Slack, Salesforce (owner) controls:
+- Price increases (15-25% annually)
+- Feature access (Enterprise features behind paywall)
+- Data retention (90-day limit on Free plan)
+- AI training on your conversations
+
+When you self-host Mattermost:
+- Costs fixed at infrastructure level
+- All features available to everyone
+- Infinite message history
+- Complete data privacy
+
+One weekend of migration effort saves your company $42,000 over 5 years. That's a senior engineer's salary.
+
+Explore our [tools directory](/tools) for more self-hosted collaboration alternatives. The best time to migrate was when Slack doubled prices. The second best time is this weekend.

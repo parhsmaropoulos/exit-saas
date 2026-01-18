@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://saas-exit.io
+Host: https://exit-saas.io
 
 # Sitemaps
-Sitemap: https://saas-exit.io/sitemap.xml
+Sitemap: https://exit-saas.io/sitemap.xml
