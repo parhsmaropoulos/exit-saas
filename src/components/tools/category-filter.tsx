@@ -48,7 +48,7 @@ export function CategoryFilter({
   const allCategories: (Category | "All")[] = ["All", ...categories];
 
   return (
-    <div className="flex flex-wrap gap">
+    <div className="flex flex-wrap gap-2">
       {allCategories.map((category) => {
         const Icon = categoryIcons[category] || MoreHorizontal;
         const isSelected = selected === category;
