@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+# Configure secrets scanning to allow NEXT_PUBLIC_* variables
+# These are intentionally public in Next.js client-side code
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_DO_REFERRAL,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_ADMIN_PASSWORD,NEXT_PUBLIC_GA_ID,NEXT_PUBLIC_COOKIESCRIPT_ID,NEXT_PUBLIC_SITE_URL"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

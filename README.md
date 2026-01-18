@@ -25,8 +25,8 @@
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/saas-exit.git
-cd saas-exit
+git clone https://github.com/your-username/exit-saas.git
+cd exit-saas
 
 ```
 

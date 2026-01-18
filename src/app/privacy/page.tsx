@@ -34,7 +34,7 @@ export default function PrivacyPolicyPage() {
               SaaS-Exit.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;)
               is committed to protecting your privacy. This Privacy Policy
               explains how we collect, use, disclose, and safeguard your
-              information when you visit our website saas-exit.io (the
+              information when you visit our website exit-saas.io (the
               &quot;Site&quot;).
             </p>
             <p className="text-muted-foreground mt-4">

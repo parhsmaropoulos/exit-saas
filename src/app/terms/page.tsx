@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
             <p className="text-muted-foreground">
               Welcome to SaaS-Exit.io (&quot;Site,&quot; &quot;we,&quot;
               &quot;our,&quot; or &quot;us&quot;). By accessing or using our
-              website at saas-exit.io, you agree to be bound by these Terms of
+              website at exit-saas.io, you agree to be bound by these Terms of
               Service (&quot;Terms&quot;). If you do not agree to all of these
               Terms, do not use this Site.
             </p>
