@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Search, X } from 'lucide-react';
-import { ToolCard } from './tool-card';
-import { Tool, Category } from '@/types/database';
+import { useEffect, useState } from "react";
+import { Search, X } from "lucide-react";
+import { ToolCard } from "./tool-card";
+import { Tool, Category } from "@/types/database";
 
 interface ToolGridProps {
   tools: Tool[];
@@ -11,27 +11,40 @@ interface ToolGridProps {
   onSelectTool: (tool: Tool) => void;
 }
 
-export function ToolGrid({ tools, searchQuery: initialSearchQuery, onSelectTool }: ToolGridProps) {
-  const [selectedCategory, setSelectedCategory] = useState<Category | 'All'>('All');
+export function ToolGrid({
+  tools,
+  searchQuery: initialSearchQuery,
+  onSelectTool,
+}: ToolGridProps) {
+  const [selectedCategory, setSelectedCategory] = useState<Category | "All">(
+    "All"
+  );
   const [localSearch, setLocalSearch] = useState(initialSearchQuery);
+
+  useEffect(() => {
+    setLocalSearch(initialSearchQuery);
+  }, [initialSearchQuery]);
 
   // Filter tools based on search query and category
   const filteredTools = tools.filter((tool) => {
+    console.log(localSearch);
     // Always use localSearch - it's initialized from initialSearchQuery and clearing it should show all results
     const matchesSearch =
-      localSearch === '' ||
+      localSearch === "" ||
       tool.name.toLowerCase().includes(localSearch.toLowerCase()) ||
       tool.saas_equivalent.toLowerCase().includes(localSearch.toLowerCase()) ||
       tool.description.toLowerCase().includes(localSearch.toLowerCase());
 
     const matchesCategory =
-      selectedCategory === 'All' || tool.category === selectedCategory;
+      selectedCategory === "All" || tool.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
 
   // Get unique categories from tools
-  const categories = Array.from(new Set(tools.map((t) => t.category))) as Category[];
+  const categories = Array.from(
+    new Set(tools.map((t) => t.category))
+  ) as Category[];
   const displayCategories = categories.slice(0, 5);
   const remainingCount = categories.length - 5;
 
@@ -44,9 +57,9 @@ export function ToolGrid({ tools, searchQuery: initialSearchQuery, onSelectTool 
             Open Source Alternatives
           </h2>
           <p className="text-muted-foreground">
-            {filteredTools.length} quality tools across{' '}
+            {filteredTools.length} quality tools across{" "}
             <span className="text-foreground font-medium">
-              {displayCategories.join(', ')}
+              {displayCategories.join(", ")}
             </span>
             {remainingCount > 0 && (
               <span className="text-primary"> +{remainingCount} more</span>
@@ -69,7 +82,7 @@ export function ToolGrid({ tools, searchQuery: initialSearchQuery, onSelectTool 
               />
               {localSearch && (
                 <button
-                  onClick={() => setLocalSearch('')}
+                  onClick={() => setLocalSearch("")}
                   className="absolute right-4 p-1 hover:bg-secondary rounded-md transition-colors"
                 >
                   <X className="w-4 h-4 text-muted-foreground" />
