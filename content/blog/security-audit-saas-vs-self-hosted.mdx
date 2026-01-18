@@ -20,18 +20,19 @@ This audit examines real breach data, compliance requirements, and attack surfac
 
 ### Major SaaS Breaches (Customer Impact)
 
-| Company | Date | Records Exposed | Attack Vector | Customer Impact |
-|---------|------|-----------------|---------------|-----------------|
-| Okta | Oct 2023 | 14,000 | Support system compromise | All customer sessions vulnerable |
-| LastPass | Aug 2022 | Unknown | Employee home computer | Encrypted vaults stolen |
-| Mailchimp | Multiple (2022-2023) | 500,000+ | Employee account takeover | Email lists leaked |
-| CircleCI | Dec 2022 | All customers | Session token theft | Secrets/keys compromised |
-| Auth0 | Jul 2023 | Unknown | Source code exposure | Potential auth bypass |
-| HubSpot | Mar 2022 | 30 customers | Targeted attack | CRM data exfiltrated |
+| Company   | Date                 | Records Exposed | Attack Vector             | Customer Impact                  |
+| --------- | -------------------- | --------------- | ------------------------- | -------------------------------- |
+| Okta      | Oct 2023             | 14,000          | Support system compromise | All customer sessions vulnerable |
+| LastPass  | Aug 2022             | Unknown         | Employee home computer    | Encrypted vaults stolen          |
+| Mailchimp | Multiple (2022-2023) | 500,000+        | Employee account takeover | Email lists leaked               |
+| CircleCI  | Dec 2022             | All customers   | Session token theft       | Secrets/keys compromised         |
+| Auth0     | Jul 2023             | Unknown         | Source code exposure      | Potential auth bypass            |
+| HubSpot   | Mar 2022             | 30 customers    | Targeted attack           | CRM data exfiltrated             |
 
 **Total customers affected: 10+ million**
 
 **Common patterns:**
+
 - Employee account compromise (70%)
 - Third-party vendor breach (20%)
 - Misconfigured cloud storage (10%)
@@ -41,11 +42,13 @@ This audit examines real breach data, compliance requirements, and attack surfac
 **Much harder to quantify** because companies don't always disclose self-hosted infrastructure breaches.
 
 **Known cases:**
+
 - Misconfigured MongoDB instances: 26,000+ databases exposed (2017-2020)
 - Elasticsearch exposures: 4.5 billion records (2018-2021)
 - Unpatched WordPress sites: 90% of website hacks
 
 **Common patterns:**
+
 - Default credentials unchanged (40%)
 - Unpatched vulnerabilities (35%)
 - Misconfigured permissions (15%)
@@ -59,6 +62,7 @@ SaaS breaches get headlines. Self-hosted breaches often go unreported (especiall
 ### SaaS Attack Surface
 
 **Targets:**
+
 1. Vendor infrastructure (you can't control)
 2. Employee accounts (phishing, credential stuffing)
 3. Third-party integrations (OAuth app compromise)
@@ -66,6 +70,7 @@ SaaS breaches get headlines. Self-hosted breaches often go unreported (especiall
 5. Supply chain (vendor's vendors)
 
 **Attack vectors you CAN'T defend against:**
+
 - Vendor employee negligence
 - Vendor third-party breaches
 - Insider threats at vendor
@@ -77,6 +82,7 @@ Mailchimp breach affected Trezor customers despite Trezor doing nothing wrong. A
 ### Self-Hosted Attack Surface
 
 **Targets:**
+
 1. Server infrastructure (OS, Docker, services)
 2. Application vulnerabilities (if app has bugs)
 3. Network perimeter (firewall, DDoS)
@@ -84,6 +90,7 @@ Mailchimp breach affected Trezor customers despite Trezor doing nothing wrong. A
 5. Backup security (if backups are exposed)
 
 **Attack vectors you CAN defend against:**
+
 - Firewall rules (block all except necessary ports)
 - Automated security updates
 - Strong authentication (SSH keys, 2FA)
@@ -98,6 +105,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 ### SaaS Security Best Practices (What You Control)
 
 **Access management:**
+
 - [ ] Enable 2FA for all users (TOTP or hardware key)
 - [ ] Use SSO with SAML (Google Workspace, Okta)
 - [ ] Implement least-privilege access (role-based permissions)
@@ -105,6 +113,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Require strong passwords (password manager)
 
 **Data protection:**
+
 - [ ] Enable encryption at rest (if optional)
 - [ ] Use API keys with scoped permissions
 - [ ] Rotate API keys quarterly
@@ -112,12 +121,14 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Export data backups monthly (disaster recovery)
 
 **Monitoring:**
+
 - [ ] Enable audit logging
 - [ ] Review access logs monthly
 - [ ] Set up alerts for suspicious activity
 - [ ] Monitor for leaked credentials (HaveIBeenPwned)
 
 **Vendor assessment:**
+
 - [ ] Verify SOC2 Type II compliance
 - [ ] Review security whitepaper
 - [ ] Check if vendor has bug bounty program
@@ -129,6 +140,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 ### Self-Hosted Security Best Practices
 
 **Infrastructure:**
+
 - [ ] Use firewall (UFW, iptables) - block all except 22, 80, 443
 - [ ] Disable password authentication (SSH keys only)
 - [ ] Change default SSH port (security through obscurity bonus)
@@ -137,6 +149,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Implement fail2ban (brute force protection)
 
 **Application:**
+
 - [ ] Use Docker containers (isolation)
 - [ ] Run app as non-privileged user
 - [ ] Enable application firewall if available
@@ -146,6 +159,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Store secrets in environment variables (not code)
 
 **Access control:**
+
 - [ ] Use SSH keys (4096-bit RSA minimum)
 - [ ] Enable 2FA for admin accounts
 - [ ] Create separate admin vs user accounts
@@ -153,6 +167,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Use VPN for sensitive admin access
 
 **Monitoring:**
+
 - [ ] Set up log aggregation (Loki, Grafana)
 - [ ] Configure intrusion detection (OSSEC, Wazuh)
 - [ ] Enable uptime monitoring (Uptime Kuma)
@@ -160,6 +175,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Monitor disk space, memory, CPU
 
 **Backups:**
+
 - [ ] Automated daily backups
 - [ ] Encrypt backups at rest
 - [ ] Store backups off-server (S3-compatible storage)
@@ -167,6 +183,7 @@ You control 100% of the attack surface, but you're responsible for 100% of the d
 - [ ] Implement 3-2-1 backup strategy
 
 **Updates:**
+
 - [ ] Enable automatic OS security patches
 - [ ] Subscribe to application security advisories
 - [ ] Test updates in staging before production
@@ -185,6 +202,7 @@ Implementing intrusion detection, configuring fail2ban rules, and setting up pro
 ### GDPR Compliance
 
 **SaaS approach:**
+
 1. Sign Data Processing Agreement (DPA) with vendor
 2. Ensure vendor is GDPR-compliant
 3. Verify data location (EU or adequacy decision country)
@@ -193,6 +211,7 @@ Implementing intrusion detection, configuring fail2ban rules, and setting up pro
 6. **Risk:** Vendor non-compliance becomes your liability
 
 **Self-hosted approach:**
+
 1. You are the data controller AND processor
 2. Implement technical measures (encryption, access controls)
 3. Create privacy policy and consent mechanisms
@@ -205,6 +224,7 @@ Implementing intrusion detection, configuring fail2ban rules, and setting up pro
 ### HIPAA Compliance (Healthcare)
 
 **SaaS approach:**
+
 1. Vendor must sign Business Associate Agreement (BAA)
 2. Vendor must be HIPAA-compliant (not all SaaS offers this)
 3. Many vendors charge extra for HIPAA compliance
@@ -212,6 +232,7 @@ Implementing intrusion detection, configuring fail2ban rules, and setting up pro
 5. **Hidden cost:** +30-50% for compliance tier
 
 **Self-hosted approach:**
+
 1. Implement technical safeguards (encryption, audit logs)
 2. Create physical safeguards (access controls)
 3. Document administrative safeguards (policies, training)
@@ -228,12 +249,14 @@ Implementing intrusion detection, configuring fail2ban rules, and setting up pro
 Enterprise customers require SOC2 Type II before procurement.
 
 **SaaS approach:**
+
 1. Vendor provides SOC2 report
 2. You review and accept risks
 3. Include vendor in your own SOC2 audit (if applicable)
 4. **Cost:** $0 additional
 
 **Self-hosted approach:**
+
 1. Implement security controls (access management, change control)
 2. Hire SOC2 auditor ($15,000-40,000)
 3. Conduct audit annually
@@ -247,6 +270,7 @@ Enterprise customers require SOC2 Type II before procurement.
 ### GitLab.com (SaaS)
 
 **Security features:**
+
 - SOC2 Type II certified
 - Annual penetration testing
 - Bug bounty program ($10,000+ rewards)
@@ -256,12 +280,14 @@ Enterprise customers require SOC2 Type II before procurement.
 - Container scanning
 
 **Customer responsibility:**
+
 - Enable 2FA
 - Manage access permissions
 - Rotate access tokens
 - Review audit logs
 
 **Breaches:**
+
 - January 2023: Production database deletion (accident, not breach)
 - No major security breaches (as of 2026)
 
@@ -270,12 +296,14 @@ Enterprise customers require SOC2 Type II before procurement.
 ### Self-Hosted GitLab
 
 **Security features (same code):**
+
 - All GitLab.com security features available
 - You configure and manage them
 - Dependency scanning
 - SAST/DAST available
 
 **Your responsibility:**
+
 - Keep GitLab updated (monthly releases)
 - Secure underlying infrastructure
 - Configure backup encryption
@@ -283,6 +311,7 @@ Enterprise customers require SOC2 Type II before procurement.
 - Monitor for vulnerabilities
 
 **Breach risk factors:**
+
 - Unpatched GitLab instance (if you don't update)
 - Exposed admin panel to internet
 - Weak passwords
@@ -298,18 +327,21 @@ Same application, different operational security. GitLab.com is more secure for 
 **Global average:** $4.88 million per breach
 
 **By company size:**
+
 - &lt;500 employees: $2.98 million
 - 500-1,000 employees: $3.31 million
 - 1,000-5,000 employees: $4.87 million
 - 5,000+ employees: $5.46 million
 
 **Cost breakdown:**
+
 - Detection and escalation: 28%
 - Notification: 7%
 - Post-breach response: 25%
 - Lost business: 40%
 
 **Lost business includes:**
+
 - Customer churn
 - Reputation damage
 - Regulatory fines
@@ -317,6 +349,7 @@ Same application, different operational security. GitLab.com is more secure for 
 ### Breach Impact: SaaS vs Self-Hosted
 
 **SaaS breach:**
+
 - Vendor typically covers notification costs
 - Vendor may offer credit monitoring
 - You still lose customer trust
@@ -324,6 +357,7 @@ Same application, different operational security. GitLab.com is more secure for 
 - **Estimated impact:** $500K-2M (for mid-sized company)
 
 **Self-hosted breach:**
+
 - You cover all costs
 - Direct reputation damage
 - Regulatory fines (potentially higher due to negligence)
@@ -351,6 +385,7 @@ If data cannot legally leave your infrastructure (government, healthcare), self-
 
 **Scenario 1: No Security Expertise**
 If no one on your team understands:
+
 - How to configure a firewall
 - What fail2ban does
 - How to read server logs
@@ -366,22 +401,23 @@ If your workflow requires 20+ integrations, SaaS platforms have better security 
 
 ## Security Recommendations by Company Profile
 
-| Company Profile | Recommendation | Reasoning |
-|-----------------|----------------|-----------|
-| Startup (&lt;10 people), no DevOps | SaaS | Focus on product, not infrastructure |
-| Growing company (10-50), 1 DevOps | Hybrid | Self-host critical apps, SaaS for rest |
-| Mid-size (50-200), DevOps team | Self-host | ROI positive, control valuable |
-| Enterprise (200+), Security team | Self-host | Compliance, data sovereignty critical |
-| Healthcare/Finance (any size) | Depends | Self-host for PHI/PII, SaaS for others |
-| Remote-first (any size) | Hybrid | VPN + self-hosted for sensitive data |
+| Company Profile                    | Recommendation | Reasoning                              |
+| ---------------------------------- | -------------- | -------------------------------------- |
+| Startup (&lt;10 people), no DevOps | SaaS           | Focus on product, not infrastructure   |
+| Growing company (10-50), 1 DevOps  | Hybrid         | Self-host critical apps, SaaS for rest |
+| Mid-size (50-200), DevOps team     | Self-host      | ROI positive, control valuable         |
+| Enterprise (200+), Security team   | Self-host      | Compliance, data sovereignty critical  |
+| Healthcare/Finance (any size)      | Depends        | Self-host for PHI/PII, SaaS for others |
+| Remote-first (any size)            | Hybrid         | VPN + self-hosted for sensitive data   |
 
-## The SaaS-Exit Perspective
+## The Exit-Saas Perspective
 
 **SaaS vendors sell security, but deliver shared risk.**
 
 When Okta gets breached, you're collateral damage. When you self-host, you control the blast radius.
 
 **Security is about:**
+
 1. **Control:** Who has access to your data?
 2. **Transparency:** Can you audit what happens to it?
 3. **Accountability:** Who's responsible when things fail?

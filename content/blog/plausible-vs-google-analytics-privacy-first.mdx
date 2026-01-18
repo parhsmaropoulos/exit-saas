@@ -28,22 +28,23 @@ This philosophical divide creates radically different products.
 
 ### Basic Metrics
 
-| Metric | Google Analytics 4 | Plausible |
-|--------|-------------------|-----------|
-| Page views | ✓ | ✓ |
-| Unique visitors | ✓ | ✓ (anonymous) |
-| Bounce rate | ✓ | ✓ |
-| Visit duration | ✓ | ✓ |
-| Top pages | ✓ | ✓ |
-| Referrer sources | ✓ | ✓ |
-| Geographic data | ✓ (city-level) | ✓ (country-level) |
-| Device breakdown | ✓ | ✓ |
+| Metric           | Google Analytics 4 | Plausible         |
+| ---------------- | ------------------ | ----------------- |
+| Page views       | ✓                  | ✓                 |
+| Unique visitors  | ✓                  | ✓ (anonymous)     |
+| Bounce rate      | ✓                  | ✓                 |
+| Visit duration   | ✓                  | ✓                 |
+| Top pages        | ✓                  | ✓                 |
+| Referrer sources | ✓                  | ✓                 |
+| Geographic data  | ✓ (city-level)     | ✓ (country-level) |
+| Device breakdown | ✓                  | ✓                 |
 
 For 90% of websites, both tools provide identical insights for decision-making.
 
 ### Advanced Features
 
 **Google Analytics 4 exclusive:**
+
 - User-level tracking across sessions
 - Cross-device attribution
 - Predictive metrics (AI-powered)
@@ -52,6 +53,7 @@ For 90% of websites, both tools provide identical insights for decision-making.
 - Data retention up to 14 months
 
 **Plausible exclusive:**
+
 - No cookie consent required
 - 100% GDPR compliant by default
 - Open-source codebase
@@ -66,6 +68,7 @@ The question isn't features—it's whether you need surveillance-level tracking.
 ### Google Analytics Compliance Burden
 
 **GDPR requirements for GA4:**
+
 1. Cookie consent banner (mandatory)
 2. Data Processing Agreement with Google
 3. Privacy policy updates
@@ -75,6 +78,7 @@ The question isn't features—it's whether you need surveillance-level tracking.
 7. User deletion requests handling
 
 **CCPA requirements:**
+
 - "Do Not Sell My Info" link
 - Opt-out mechanism
 - Data access requests
@@ -98,6 +102,7 @@ None. No personal data = no compliance burden.
 
 **Why this works:**
 Plausible doesn't collect:
+
 - IP addresses (hashed for daily unique counts only)
 - Personal identifiers
 - Cross-site tracking data
@@ -111,6 +116,7 @@ If you don't collect personal data, privacy regulations don't apply.
 ### Script Size Comparison
 
 **Google Analytics 4:**
+
 - Initial script: 45.7 KB (gtag.js)
 - Additional library: 17.4 KB (analytics.js)
 - **Total: 63.1 KB**
@@ -118,6 +124,7 @@ If you don't collect personal data, privacy regulations don't apply.
 - **Render-blocking:** Yes (delays First Contentful Paint)
 
 **Plausible:**
+
 - Script size: 0.9 KB (plausible.js)
 - **Load time impact: 15-25ms** (3G connection)
 - **Render-blocking:** No (async by default)
@@ -133,6 +140,7 @@ Google's Core Web Vitals penalize slow-loading scripts. Plausible improves your 
 ### Adblocker Blocking Rates (2026 data)
 
 **Google Analytics blocked by:**
+
 - uBlock Origin: 100%
 - AdBlock Plus: 100%
 - Privacy Badger: 100%
@@ -143,6 +151,7 @@ Google's Core Web Vitals penalize slow-loading scripts. Plausible improves your 
 **Estimated traffic invisible to GA4: 42%**
 
 **Plausible blocked by:**
+
 - Most adblockers: 0% (not on blocklists)
 - Privacy-conscious browsers: 0%
 - Estimated blocking rate: &lt;5%
@@ -158,10 +167,12 @@ If GA4 shows 10,000 monthly visitors, your actual traffic might be 17,200. You'r
 ### Google Analytics
 
 **Pricing:**
+
 - Free tier: Unlimited traffic
 - GA4 360 (enterprise): $150,000/year minimum
 
 **Hidden costs:**
+
 - Cookie consent tool: $50-200/month (OneTrust, CookieBot)
 - Legal compliance review: $2,000-5,000 (one-time)
 - Privacy policy updates: $500-1,500
@@ -172,12 +183,14 @@ If GA4 shows 10,000 monthly visitors, your actual traffic might be 17,200. You'r
 ### Plausible Cloud
 
 **Pricing:**
+
 - Up to 10K pageviews/month: $9/month ($108/year)
 - Up to 100K pageviews/month: $19/month ($228/year)
 - Up to 1M pageviews/month: $69/month ($828/year)
 - Up to 10M pageviews/month: $149/month ($1,788/year)
 
 **Hidden costs:**
+
 - None (no cookie consent needed)
 - Legal review: $0
 - Privacy policy: Standard template works
@@ -187,6 +200,7 @@ If GA4 shows 10,000 monthly visitors, your actual traffic might be 17,200. You'r
 ### Plausible Self-Hosted
 
 **Infrastructure:**
+
 - VPS (2GB RAM): $12/month ($144/year)
 - Backup storage: $60/year
 - Domain/SSL: $15/year
@@ -202,17 +216,20 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 ### Google Analytics Data Ownership
 
 **What Google does with your data:**
+
 - Aggregates across properties to improve Google Ads
 - Uses for machine learning model training
 - Shares with Google's advertising network
 - Retains even after you delete your account
 
 **Data portability:**
+
 - Export via API (limited to 14 months)
 - No raw data access
 - Proprietary format
 
 **Control:**
+
 - Google can change features anytime
 - Data retention limits (14 months max)
 - No guarantee of continued free access
@@ -220,17 +237,20 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 ### Plausible Data Ownership
 
 **Self-hosted:**
+
 - All data stays on your server
 - Complete database access
 - Export in any format
 - No third-party access
 
 **Cloud-hosted:**
+
 - Data stored in EU (GDPR-compliant infrastructure)
 - Export all data in CSV/JSON
 - Delete account = immediate data deletion
 
 **Control:**
+
 - Open-source (audit all code)
 - Feature set stable
 - Self-hosting always available
@@ -240,6 +260,7 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 ### When Google Analytics Makes Sense
 
 **E-commerce sites needing:**
+
 - Enhanced e-commerce tracking
 - Funnel analysis with 10+ steps
 - Cross-device attribution
@@ -247,6 +268,7 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 - Detailed customer journey mapping
 
 **Enterprise needs:**
+
 - Integration with Google Marketing Platform
 - Advanced segmentation (hundreds of segments)
 - Data warehouse exports
@@ -255,6 +277,7 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 ### When Plausible Makes Sense
 
 **Content sites needing:**
+
 - Basic traffic metrics
 - Top pages and referrers
 - Goal/conversion tracking (simple)
@@ -262,12 +285,14 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 - Fast page loads
 
 **SaaS companies needing:**
+
 - User-respecting analytics
 - GDPR compliance without hassle
 - Transparent data practices
 - Public stat sharing (marketing)
 
 **Anyone who values:**
+
 - Data sovereignty
 - Privacy by default
 - Simple, actionable metrics
@@ -275,10 +300,18 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 ## Migration Process: GA4 to Plausible
 
 **Step 1: Run parallel for 30 days**
+
 ```html
 <!-- Keep both scripts temporarily -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXX"></script>
-<script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script>
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXX"
+></script>
+<script
+  defer
+  data-domain="yourdomain.com"
+  src="https://plausible.io/js/script.js"
+></script>
 ```
 
 **Step 2: Compare data**
@@ -292,24 +325,26 @@ Setting up Docker containers, configuring databases, and managing SSL certificat
 Plausible numbers are consistently higher because fewer users block it.
 
 **Step 3: Verify goal tracking**
+
 ```javascript
 // GA4 event
-gtag('event', 'signup', {
-  'event_category': 'conversion'
+gtag("event", "signup", {
+  event_category: "conversion",
 });
 
 // Plausible event
-plausible('Signup')
+plausible("Signup");
 ```
 
 **Step 4: Remove GA4**
 After 30 days, remove GA4 script and cookie consent banner.
 
-## The SaaS-Exit Perspective
+## The Exit-Saas Perspective
 
 Google Analytics isn't free. You pay with your users' privacy and your site's performance.
 
 Every visitor tracked by GA4 generates data that:
+
 - Feeds Google's advertising algorithms
 - Builds behavioral profiles used across the web
 - Gets retained indefinitely in Google's systems

@@ -21,12 +21,14 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### SaaS Total Cost (5 Years)
 
 **Explicit costs:**
+
 - Monthly subscription × 60 months
 - Per-user fees (often increasing annually)
 - Add-on features (SSO, advanced analytics, API access)
 - Overage fees (storage, bandwidth, API calls)
 
 **Hidden costs:**
+
 - Vendor price increases (15-25% annually for many SaaS)
 - Migration lock-in (switching costs after 3 years)
 - Data export fees
@@ -35,23 +37,27 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### Self-Hosted Total Cost (5 Years)
 
 **Infrastructure:**
+
 - VPS hosting × 60 months
 - Backup storage × 60 months
 - CDN/bandwidth (if applicable)
 - Domain + SSL certificates × 5 years
 
 **Labor:**
+
 - Initial setup (DevOps time)
 - Monthly maintenance (updates, monitoring)
 - Incident response (outages, security patches)
 - Upgrades and migrations
 
 **Software:**
+
 - Paid licenses (if not using FOSS)
 - Support contracts (optional)
 - Monitoring tools
 
 **Risk mitigation:**
+
 - Downtime impact (calculate hourly business value)
 - Security breach potential
 
@@ -60,6 +66,7 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### SaaS Option: Asana Business
 
 **Subscription:**
+
 - $24.99/user/month × 20 users = $499.80/month
 - Year 1: $5,998
 - Year 2: $6,598 (10% price increase)
@@ -69,12 +76,14 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 - **5-year total: $36,620**
 
 **Add-on costs:**
+
 - Advanced reporting: +$5/user/month ($6,000 over 5 years)
 - **Realistic 5-year total: $42,620**
 
 ### Self-Hosted Option: Taiga
 
 **Infrastructure:**
+
 - Hetzner CPX21 (3 vCPU, 4GB RAM): €9/month ($10/month)
 - Backup storage (50GB): $2.50/month
 - Domain + SSL: $15/year
@@ -83,6 +92,7 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 - **Infrastructure total: $825**
 
 **Labor:**
+
 - Initial setup: 4 hours × $85/hour = $340
 - Monthly maintenance: 30 min/month × 60 months = 30 hours × $85 = $2,550
 - Annual upgrades: 2 hours/year × 5 years = 10 hours × $85 = $850
@@ -94,6 +104,7 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 **Savings: $37,205 (87% reduction)**
 
 **Break-even analysis:**
+
 - Asana monthly: $500
 - Self-hosted monthly equivalent: $90
 - ROI positive after month 1
@@ -103,6 +114,7 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### SaaS Option: HubSpot Sales Hub Professional
 
 **Subscription:**
+
 - $100/user/month × 10 users = $1,000/month
 - Year 1-5 (assuming 12% annual increase): $75,240
 - Marketing Hub add-on (Year 2+): +$18,000
@@ -111,12 +123,14 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### Self-Hosted Option: EspoCRM
 
 **Infrastructure:**
+
 - VPS (4GB RAM): $24/month × 60 = $1,440
 - Backup: $5/month × 60 = $300
 - Email sending service (SendGrid): $20/month × 60 = $1,200
 - **Infrastructure total: $2,940**
 
 **Labor:**
+
 - Setup: 8 hours × $85 = $680
 - Customization (fields, workflows): 12 hours × $85 = $1,020
 - Monthly maintenance: 1 hour/month × 60 = $5,100
@@ -132,6 +146,7 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### SaaS Option: Mixpanel Growth Plan
 
 **Subscription:**
+
 - $25/month (up to 100K events)
 - Overage: $0.0002/event
 - 500K pageviews × 3 events avg = 1.5M events/month
@@ -141,11 +156,13 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### Self-Hosted Option: Plausible Community Edition
 
 **Infrastructure:**
+
 - VPS (2GB RAM): $12/month × 60 = $720
 - Database backup: $3/month × 60 = $180
 - **Infrastructure total: $900**
 
 **Labor:**
+
 - Setup: 2 hours × $85 = $170
 - Maintenance: 15 min/month × 60 = 15 hours × $85 = $1,275
 - **Labor total: $1,445**
@@ -159,18 +176,21 @@ The answer depends on team size, technical capacity, and growth trajectory—not
 ### SaaS Option: Zoom Pro
 
 **Subscription:**
+
 - $15.99/user/month × 50 users = $799.50/month
 - **5-year total: $47,970**
 
 ### Self-Hosted Option: Jitsi Meet
 
 **Infrastructure:**
+
 - High-performance VPS (8 vCPU, 16GB RAM): $60/month × 60 = $3,600
 - TURN server (for NAT traversal): $20/month × 60 = $1,200
 - Bandwidth: $40/month × 60 = $2,400
 - **Infrastructure total: $7,200**
 
 **Labor:**
+
 - Setup (including TURN configuration): 12 hours × $85 = $1,020
 - Monthly monitoring: 45 min/month × 60 = 45 hours × $85 = $3,825
 - Quality troubleshooting: 20 hours/year × 5 = 100 hours × $85 = $8,500
@@ -191,6 +211,7 @@ Configuring TURN servers, optimizing WebRTC bandwidth, and ensuring production-g
 ### Scenario 1: Small Team (&lt;5 People)
 
 **Example: Password manager**
+
 - 1Password: $7.99/user/month × 5 = $40/month ($2,400 over 5 years)
 - Self-hosted Vaultwarden: $12/month VPS + 10 hours setup/maintenance ($1,570 total)
 
@@ -201,14 +222,17 @@ Configuring TURN servers, optimizing WebRTC bandwidth, and ensuring production-g
 ### Scenario 2: Rapid Scaling (2x growth annually)
 
 **Example: Customer support ticketing**
+
 - Year 1: 10 agents
 - Year 5: 160 agents
 
 **SaaS (Zendesk):**
+
 - Scales automatically
 - Per-user cost decreases with volume discounts
 
 **Self-hosted:**
+
 - Infrastructure costs scale linearly
 - Labor increases for performance tuning
 - Migration complexity mid-growth
@@ -218,6 +242,7 @@ Configuring TURN servers, optimizing WebRTC bandwidth, and ensuring production-g
 ### Scenario 3: Zero DevOps Capacity
 
 If your team has no one capable of:
+
 - SSH into a server
 - Read Docker logs
 - Configure NGINX
@@ -228,6 +253,7 @@ If your team has no one capable of:
 ## Hidden Self-Hosting Costs (Be Honest)
 
 ### Opportunity Cost
+
 **Real scenario:**
 Your CTO spends 8 hours/month maintaining self-hosted infrastructure. At $150/hour effective rate, that's $1,200/month ($72,000 over 5 years).
 
@@ -237,12 +263,15 @@ If yes, buy SaaS.
 If no (infrastructure IS your product), self-host.
 
 ### Downtime Impact
+
 **Calculate hourly business value:**
+
 - E-commerce site: $5,000/hour revenue
 - SaaS app: $500/hour (signup rate × LTV)
 - Internal tool: $150/hour (employee productivity × hourly rate)
 
 **Downtime estimate:**
+
 - SaaS (with 99.9% SLA): 8.76 hours/year
 - Self-hosted (amateur setup): 20-40 hours/year
 - Self-hosted (professional setup): 4-8 hours/year
@@ -253,20 +282,24 @@ E-commerce with amateur setup: (35 hours - 8.76 hours) × $5,000 = $131,200 over
 **This alone can eliminate self-hosting savings.**
 
 ### Security Breach Cost
+
 **Average data breach cost (2026):** $4.88 million
 
 **SaaS advantage:**
+
 - Dedicated security team
 - SOC2/ISO27001 compliance
 - Cyber insurance
 - Vendor liability
 
 **Self-hosted risk:**
+
 - You're responsible for security
 - Requires security expertise
 - Proper configuration crucial
 
 **Mitigation:**
+
 - Automated security updates
 - Regular penetration testing
 - Monitoring and alerting
@@ -276,25 +309,25 @@ E-commerce with amateur setup: (35 hours - 8.76 hours) × $5,000 = $131,200 over
 
 ## TCO Decision Matrix
 
-| Tool Type | Team Size | DevOps Skill | Verdict |
-|-----------|-----------|--------------|---------|
-| Project management | &lt;10 | Low | SaaS |
-| Project management | 10-50 | Medium | Self-host |
-| Project management | 50+ | High | Self-host |
-| CRM | &lt;5 | Any | SaaS |
-| CRM | 5-20 | Medium+ | Self-host |
-| CRM | 20+ | High | Self-host |
-| Analytics | Any | Medium+ | Self-host |
-| Video conferencing | &lt;20 | Low | SaaS |
-| Video conferencing | 20-100 | High | Self-host |
-| Video conferencing | 100+ | High | Hybrid |
-| Password manager | &lt;20 | Low-Medium | SaaS |
-| Password manager | 20+ | Medium+ | Self-host |
-| Code repository | Any | Medium+ | Self-host |
-| Email | Any | Low-Medium | SaaS |
-| Email | Any | High | Still SaaS* |
+| Tool Type          | Team Size | DevOps Skill | Verdict      |
+| ------------------ | --------- | ------------ | ------------ |
+| Project management | &lt;10    | Low          | SaaS         |
+| Project management | 10-50     | Medium       | Self-host    |
+| Project management | 50+       | High         | Self-host    |
+| CRM                | &lt;5     | Any          | SaaS         |
+| CRM                | 5-20      | Medium+      | Self-host    |
+| CRM                | 20+       | High         | Self-host    |
+| Analytics          | Any       | Medium+      | Self-host    |
+| Video conferencing | &lt;20    | Low          | SaaS         |
+| Video conferencing | 20-100    | High         | Self-host    |
+| Video conferencing | 100+      | High         | Hybrid       |
+| Password manager   | &lt;20    | Low-Medium   | SaaS         |
+| Password manager   | 20+       | Medium+      | Self-host    |
+| Code repository    | Any       | Medium+      | Self-host    |
+| Email              | Any       | Low-Medium   | SaaS         |
+| Email              | Any       | High         | Still SaaS\* |
 
-*Email self-hosting adds minimal value and significant deliverability complexity.
+\*Email self-hosting adds minimal value and significant deliverability complexity.
 
 ## The Real Formula
 
@@ -313,6 +346,7 @@ Self-hosting makes sense when:
 **Most companies end up here:**
 
 **Self-host:**
+
 - Code repositories (GitLab)
 - Project management (Taiga, Plane)
 - Password manager (Vaultwarden)
@@ -320,6 +354,7 @@ Self-hosting makes sense when:
 - File storage (Nextcloud)
 
 **Stay SaaS:**
+
 - Email (Gmail, Fastmail, ProtonMail)
 - Accounting (Xero, QuickBooks)
 - Payroll (Gusto)
@@ -331,6 +366,7 @@ Self-host tools where vendor lock-in is expensive and setup is straightforward. 
 ## Use Our Calculator
 
 Visit our [TCO calculator](/calculator) to input your specific numbers:
+
 - Team size
 - Current SaaS costs
 - Internal hourly rates
@@ -338,7 +374,7 @@ Visit our [TCO calculator](/calculator) to input your specific numbers:
 
 Get personalized ROI analysis with 5-year projections.
 
-## The SaaS-Exit Perspective
+## The Exit-Saas Perspective
 
 TCO calculations are useful, but they miss the fundamental question: **Who controls your business-critical data?**
 

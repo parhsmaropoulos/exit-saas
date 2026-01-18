@@ -65,11 +65,11 @@ export async function generateMetadata({
 
   if (!tool) {
     return {
-      title: "Tool Not Found | SaaS-Exit.io",
+      title: "Tool Not Found | Exit-Saas.io",
     };
   }
 
-  const title = `${tool.name}: Best ${tool.saas_equivalent} Alternative (Open Source) | SaaS-Exit.io`;
+  const title = `${tool.name}: Best ${tool.saas_equivalent} Alternative (Open Source) | Exit-Saas.io`;
   const description = `Looking for a ${tool.saas_equivalent} alternative? ${tool.name} is an open-source, self-hosted solution. Calculate your savings and learn how to deploy ${tool.name} today.`;
 
   return {

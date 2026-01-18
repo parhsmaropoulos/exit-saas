@@ -17,24 +17,28 @@ This guide deploys a production-ready GitLab instance with integrated CI/CD in u
 ## What You Get with Self-Hosted GitLab
 
 **Git repository management:**
+
 - Unlimited private repos
 - Code review (merge requests)
 - Protected branches
 - Git LFS support
 
 **Built-in CI/CD:**
+
 - Unlimited pipeline minutes
 - Docker support
 - Kubernetes integration
 - Auto DevOps
 
 **Project management:**
+
 - Issue tracking
 - Milestones and boards
 - Wiki and documentation
 - Time tracking
 
 **Security features:**
+
 - Container scanning
 - Dependency scanning
 - SAST (Static Application Security Testing)
@@ -45,17 +49,20 @@ The only features locked behind GitLab EE (paid) are advanced security dashboard
 ## Prerequisites and Planning
 
 **Infrastructure needs:**
+
 - VPS with 4GB RAM minimum (8GB recommended)
 - 20GB storage minimum (grows with repo size)
 - Ubuntu 22.04 LTS
 - Domain name (e.g., git.yourcompany.com)
 
 **Cost breakdown:**
+
 - Hetzner CPX31 (4 vCPU, 8GB RAM): €11.50/month ($12.50)
 - S3-compatible backup (100GB): $5/month
 - **Total: $17.50/month**
 
 **Savings vs GitHub + CircleCI:**
+
 - GitHub Teams (10 users): $210/month
 - CircleCI: $30/month
 - **Total SaaS: $240/month**
@@ -65,6 +72,7 @@ The only features locked behind GitLab EE (paid) are advanced security dashboard
 ## Step 1: Deploy GitLab (30 minutes)
 
 **Install GitLab using official packages:**
+
 ```bash
 # SSH into your server
 ssh root@your-server-ip
@@ -81,12 +89,14 @@ EXTERNAL_URL="https://git.yourcompany.com" apt-get install gitlab-ce
 ```
 
 **What this does:**
+
 - Installs GitLab, PostgreSQL, Redis, NGINX
 - Configures SSL automatically (Let's Encrypt)
 - Sets up systemd services
 - Creates initial configuration
 
 **Access GitLab:**
+
 1. Visit https://git.yourcompany.com
 2. Root password stored in: `/etc/gitlab/initial_root_password`
 3. Login as `root` with that password
@@ -99,11 +109,13 @@ Manually configuring GitLab's database pooling, Redis caching, and SSL certifica
 ## Step 2: Configure GitLab (20 minutes)
 
 **Edit configuration:**
+
 ```bash
 nano /etc/gitlab/gitlab.rb
 ```
 
 **Essential settings:**
+
 ```ruby
 # External URL (already set during install)
 external_url 'https://git.yourcompany.com'
@@ -128,6 +140,7 @@ gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
 ```
 
 **Apply changes:**
+
 ```bash
 gitlab-ctl reconfigure
 ```
@@ -137,6 +150,7 @@ gitlab-ctl reconfigure
 GitLab Runner executes your CI/CD jobs. Install on the same server or separate machines.
 
 **Install GitLab Runner:**
+
 ```bash
 # Add GitLab Runner repository
 curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | bash
@@ -146,11 +160,13 @@ apt-get install gitlab-runner
 ```
 
 **Register runner with GitLab:**
+
 ```bash
 gitlab-runner register
 ```
 
 **Configuration prompts:**
+
 ```
 GitLab instance URL: https://git.yourcompany.com
 Registration token: [Get from GitLab Admin → Runners]
@@ -161,6 +177,7 @@ Default Docker image: alpine:latest
 ```
 
 **Configure Docker executor:**
+
 ```bash
 nano /etc/gitlab-runner/config.toml
 ```
@@ -176,6 +193,7 @@ nano /etc/gitlab-runner/config.toml
 ```
 
 **Start runner:**
+
 ```bash
 gitlab-runner start
 ```
@@ -183,6 +201,7 @@ gitlab-runner start
 ## Step 4: Create Your First CI/CD Pipeline (20 minutes)
 
 **Create `.gitlab-ci.yml` in your repo:**
+
 ```yaml
 stages:
   - build
@@ -225,11 +244,13 @@ deploy:
 ```
 
 **What this pipeline does:**
+
 1. **Build stage:** Creates Docker image
 2. **Test stage:** Runs unit tests
 3. **Deploy stage:** Deploys to production (manual trigger)
 
 **Push to GitLab:**
+
 ```bash
 git add .gitlab-ci.yml
 git commit -m "Add CI/CD pipeline"
@@ -242,6 +263,7 @@ Visit `https://git.yourcompany.com/your-project/-/pipelines`
 ## Step 5: Configure Automated Backups (15 minutes)
 
 **Create backup script:**
+
 ```bash
 nano /usr/local/bin/gitlab-backup.sh
 ```
@@ -263,11 +285,13 @@ cd /var/opt/gitlab/backups && ls -t | tail -n +4 | xargs rm -f
 ```
 
 **Make executable:**
+
 ```bash
 chmod +x /usr/local/bin/gitlab-backup.sh
 ```
 
 **Schedule daily backups:**
+
 ```bash
 crontab -e
 ```
@@ -280,11 +304,13 @@ crontab -e
 ## Step 6: Security Hardening (15 minutes)
 
 **Enable 2FA for admin:**
+
 1. User Settings → Account → Two-Factor Authentication
 2. Scan QR code with authenticator app
 3. Require 2FA for all users: Admin → Settings → Sign-in restrictions
 
 **Configure SSH key authentication:**
+
 ```bash
 # Disable password authentication
 nano /etc/ssh/sshd_config
@@ -293,6 +319,7 @@ systemctl restart sshd
 ```
 
 **Set up firewall:**
+
 ```bash
 ufw allow 22/tcp    # SSH
 ufw allow 80/tcp    # HTTP (redirects to HTTPS)
@@ -301,6 +328,7 @@ ufw enable
 ```
 
 **Enable security features:**
+
 1. Admin → Settings → CI/CD → Container Registry (enable)
 2. Admin → Settings → Security → Dependency Scanning (enable)
 3. Admin → Settings → Security → SAST (enable)
@@ -361,28 +389,33 @@ build:
 ## Monitoring and Maintenance
 
 **Check GitLab health:**
+
 ```bash
 gitlab-rake gitlab:check
 ```
 
 **Monitor resource usage:**
+
 ```bash
 gitlab-ctl status
 top -u git
 ```
 
 **View logs:**
+
 ```bash
 gitlab-ctl tail
 ```
 
 **Update GitLab:**
+
 ```bash
 apt-get update
 apt-get install gitlab-ce
 ```
 
 **Restore from backup:**
+
 ```bash
 gitlab-backup restore BACKUP=1611682249_2021_01_26_13.8.4
 ```
@@ -390,12 +423,14 @@ gitlab-backup restore BACKUP=1611682249_2021_01_26_13.8.4
 ## Migration from GitHub/GitLab.com
 
 **Export GitHub repos:**
+
 ```bash
 # Use gh CLI
 gh repo list --limit 100 | awk '{print $1}' | xargs -I {} gh repo clone {}
 ```
 
 **Import to GitLab:**
+
 1. New Project → Import → GitHub
 2. Authenticate with GitHub
 3. Select repos to import
@@ -403,6 +438,7 @@ gh repo list --limit 100 | awk '{print $1}' | xargs -I {} gh repo clone {}
 
 **Migrate CI/CD:**
 Convert GitHub Actions to GitLab CI:
+
 ```yaml
 # GitHub Actions
 on: [push]
@@ -421,11 +457,12 @@ test:
     - npm test
 ```
 
-## The SaaS-Exit Perspective
+## The Exit-Saas Perspective
 
 GitHub and CircleCI aren't just expensive—they're black boxes. You can't audit their security, customize their infrastructure, or guarantee uptime.
 
 Self-hosted GitLab gives you complete control over:
+
 - Where code is stored
 - Who has access
 - Pipeline execution environment

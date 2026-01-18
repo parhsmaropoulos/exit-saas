@@ -18,18 +18,18 @@ This guide builds a complete startup infrastructure for a 5-10 person team: code
 
 ### "Standard" Startup Tools
 
-| Category | Tool | Cost/Month | Annual |
-|----------|------|------------|--------|
-| Code hosting | GitHub Teams | $80 (5 users) | $960 |
-| CI/CD | CircleCI | $70 | $840 |
-| Hosting | Vercel Pro | $200 | $2,400 |
-| Database | PlanetScale | $40 | $480 |
-| Communication | Slack Standard | $40 (5 users) | $480 |
-| Project management | Linear | $80 (5 users) | $960 |
-| Analytics | Mixpanel Growth | $200 | $2,400 |
-| Monitoring | Datadog | $150 | $1,800 |
-| Error tracking | Sentry Team | $70 | $840 |
-| **Total** | | **$930/month** | **$11,160/year** |
+| Category           | Tool            | Cost/Month     | Annual           |
+| ------------------ | --------------- | -------------- | ---------------- |
+| Code hosting       | GitHub Teams    | $80 (5 users)  | $960             |
+| CI/CD              | CircleCI        | $70            | $840             |
+| Hosting            | Vercel Pro      | $200           | $2,400           |
+| Database           | PlanetScale     | $40            | $480             |
+| Communication      | Slack Standard  | $40 (5 users)  | $480             |
+| Project management | Linear          | $80 (5 users)  | $960             |
+| Analytics          | Mixpanel Growth | $200           | $2,400           |
+| Monitoring         | Datadog         | $150           | $1,800           |
+| Error tracking     | Sentry Team     | $70            | $840             |
+| **Total**          |                 | **$930/month** | **$11,160/year** |
 
 **For a team that hasn't made $1 in revenue yet.**
 
@@ -38,12 +38,14 @@ This guide builds a complete startup infrastructure for a 5-10 person team: code
 ### Infrastructure Overview
 
 **Base requirement:** 2 VPS servers
+
 1. Main application server (4 vCPU, 8GB RAM): $38/month
 2. Infrastructure tools server (2 vCPU, 4GB RAM): $12/month
 
 **Total infrastructure:** $50/month
 
 **Optional additions:**
+
 - Backup storage (500GB): $5/month
 - Domain name: $12/year ($1/month)
 - Email sending (SendGrid): $0-20/month
@@ -61,6 +63,7 @@ This guide builds a complete startup infrastructure for a 5-10 person team: code
 ### What Runs Here
 
 **1. Application (Next.js/React)**
+
 ```yaml
 # docker-compose.yml
 services:
@@ -75,26 +78,29 @@ services:
 ```
 
 **2. PostgreSQL Database**
+
 ```yaml
-  db:
-    image: postgres:16
-    restart: always
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+db:
+  image: postgres:16
+  restart: always
+  volumes:
+    - db-data:/var/lib/postgresql/data
+  environment:
+    - POSTGRES_PASSWORD=${DB_PASSWORD}
 ```
 
 **3. Redis (Caching)**
+
 ```yaml
-  redis:
-    image: redis:alpine
-    restart: always
-    volumes:
-      - redis-data:/data
+redis:
+  image: redis:alpine
+  restart: always
+  volumes:
+    - redis-data:/data
 ```
 
 **4. NGINX (Reverse Proxy + SSL)**
+
 ```bash
 # Install
 apt install nginx certbot python3-certbot-nginx
@@ -116,6 +122,7 @@ certbot --nginx -d yourdomain.com
 ### What Runs Here
 
 **1. GitLab CE (Code Hosting + CI/CD)**
+
 ```yaml
 # docker-compose.yml for GitLab
 services:
@@ -127,9 +134,9 @@ services:
         external_url 'https://git.yourdomain.com'
         gitlab_rails['gitlab_shell_ssh_port'] = 2224
     ports:
-      - '80:80'
-      - '443:443'
-      - '2224:22'
+      - "80:80"
+      - "443:443"
+      - "2224:22"
     volumes:
       - gitlab-config:/etc/gitlab
       - gitlab-logs:/var/log/gitlab
@@ -137,70 +144,80 @@ services:
 ```
 
 **Replaces:**
+
 - GitHub Teams ($960/year)
 - CircleCI ($840/year)
 - **Savings:** $1,800/year
 
 **2. Mattermost (Team Communication)**
+
 ```yaml
-  mattermost:
-    image: mattermost/mattermost-team-edition
-    restart: always
-    ports:
-      - "8065:8065"
-    environment:
-      - MM_SQLSETTINGS_DRIVERNAME=postgres
-      - MM_SQLSETTINGS_DATASOURCE=postgres://mattermost:password@db:5432/mattermost
+mattermost:
+  image: mattermost/mattermost-team-edition
+  restart: always
+  ports:
+    - "8065:8065"
+  environment:
+    - MM_SQLSETTINGS_DRIVERNAME=postgres
+    - MM_SQLSETTINGS_DATASOURCE=postgres://mattermost:password@db:5432/mattermost
 ```
 
 **Replaces:**
+
 - Slack Standard ($480/year)
 - **Savings:** $480/year
 
 **3. Plausible Analytics**
+
 ```yaml
-  plausible:
-    image: plausible/analytics:latest
-    restart: always
-    ports:
-      - "8000:8000"
-    environment:
-      - BASE_URL=https://analytics.yourdomain.com
+plausible:
+  image: plausible/analytics:latest
+  restart: always
+  ports:
+    - "8000:8000"
+  environment:
+    - BASE_URL=https://analytics.yourdomain.com
 ```
 
 **Replaces:**
+
 - Google Analytics (privacy issues) + Mixpanel ($2,400/year)
 - **Savings:** $2,400/year
 
 **4. Taiga (Project Management)**
+
 ```yaml
-  taiga:
-    image: taigaio/taiga:latest
-    restart: always
-    ports:
-      - "9000:80"
+taiga:
+  image: taigaio/taiga:latest
+  restart: always
+  ports:
+    - "9000:80"
 ```
 
 **Replaces:**
+
 - Linear ($960/year) or Asana ($600/year)
 - **Savings:** $960/year
 
 **5. Uptime Kuma (Monitoring)**
+
 ```yaml
-  uptime-kuma:
-    image: louislam/uptime-kuma:latest
-    restart: always
-    ports:
-      - "3001:3001"
-    volumes:
-      - uptime-data:/app/data
+uptime-kuma:
+  image: louislam/uptime-kuma:latest
+  restart: always
+  ports:
+    - "3001:3001"
+  volumes:
+    - uptime-data:/app/data
 ```
 
 **Replaces:**
+
 - Datadog ($1,800/year)
 - **Savings:** $1,800/year
 
 **6. Sentry (Self-Hosted Error Tracking)**
+
 ```yaml
 # Use official sentry-docker
 git clone https://github.com/getsentry/self-hosted.git
@@ -209,6 +226,7 @@ cd self-hosted
 ```
 
 **Replaces:**
+
 - Sentry Team ($840/year)
 - **Savings:** $840/year
 
@@ -220,6 +238,7 @@ cd self-hosted
 ### Step 1: Provision Servers (15 minutes)
 
 **Hetzner account setup:**
+
 1. Sign up at hetzner.com
 2. Create project
 3. Add SSH key
@@ -228,6 +247,7 @@ cd self-hosted
    - CX22 (Germany)
 
 **DNS configuration:**
+
 ```
 A     yourdomain.com          → Server 1 IP
 A     git.yourdomain.com      → Server 2 IP
@@ -264,6 +284,7 @@ certbot --nginx -d yourdomain.com
 ```
 
 **Configure NGINX reverse proxy:**
+
 ```nginx
 # /etc/nginx/sites-available/app
 server {
@@ -312,6 +333,7 @@ docker-compose up -d
 ```
 
 **Configure NGINX subdomains:**
+
 ```bash
 # Install NGINX
 apt install nginx certbot python3-certbot-nginx
@@ -332,24 +354,28 @@ certbot --nginx -d analytics.yourdomain.com
 ### Step 4: Configure Services (45 minutes)
 
 **GitLab initial setup:**
+
 1. Visit https://git.yourdomain.com
 2. Set root password
 3. Create first project
 4. Configure GitLab CI runner
 
 **Mattermost setup:**
+
 1. Visit https://chat.yourdomain.com
 2. Create admin account
 3. Create team
 4. Invite team members
 
 **Taiga setup:**
+
 1. Visit https://pm.yourdomain.com
 2. Create admin account
 3. Create first project
 4. Configure sprints and backlog
 
 **Plausible setup:**
+
 1. Visit https://analytics.yourdomain.com
 2. Create account
 3. Add site
@@ -390,15 +416,15 @@ deploy:
 
 ### Monthly Costs
 
-| Item | Provider | Cost |
-|------|----------|------|
-| Application server (8GB) | Hetzner CPX41 | $38 |
-| Dev tools server (4GB) | Hetzner CX22 | $12 |
-| Backup storage (500GB) | Backblaze B2 | $3 |
-| Domain name | Namecheap | $1 (annual ÷ 12) |
-| Email sending (optional) | SendGrid Free | $0 |
-| SSL certificates | Let's Encrypt | $0 |
-| **Total** | | **$54/month** |
+| Item                     | Provider      | Cost             |
+| ------------------------ | ------------- | ---------------- |
+| Application server (8GB) | Hetzner CPX41 | $38              |
+| Dev tools server (4GB)   | Hetzner CX22  | $12              |
+| Backup storage (500GB)   | Backblaze B2  | $3               |
+| Domain name              | Namecheap     | $1 (annual ÷ 12) |
+| Email sending (optional) | SendGrid Free | $0               |
+| SSL certificates         | Let's Encrypt | $0               |
+| **Total**                |               | **$54/month**    |
 
 ### Annual Cost: $648
 
@@ -409,18 +435,18 @@ deploy:
 
 ### Feature Comparison
 
-| Feature | SaaS Stack | Self-Hosted Stack |
-|---------|-----------|-------------------|
-| Code hosting | GitHub (limited) | GitLab (unlimited) |
-| CI/CD minutes | CircleCI (2,500/month) | GitLab CI (unlimited) |
-| Team chat | Slack (90-day history) | Mattermost (unlimited) |
-| Project management | Linear (5 users) | Taiga (unlimited users) |
-| Analytics | Mixpanel (100K events) | Plausible (unlimited) |
-| Error tracking | Sentry (50K events) | Sentry (unlimited) |
-| Monitoring | Datadog (5 hosts) | Uptime Kuma (unlimited) |
-| **User limits** | Per-user pricing | Unlimited |
-| **Storage limits** | Vendor-defined | Your disk space |
-| **Data ownership** | Vendor controls | You control |
+| Feature            | SaaS Stack             | Self-Hosted Stack       |
+| ------------------ | ---------------------- | ----------------------- |
+| Code hosting       | GitHub (limited)       | GitLab (unlimited)      |
+| CI/CD minutes      | CircleCI (2,500/month) | GitLab CI (unlimited)   |
+| Team chat          | Slack (90-day history) | Mattermost (unlimited)  |
+| Project management | Linear (5 users)       | Taiga (unlimited users) |
+| Analytics          | Mixpanel (100K events) | Plausible (unlimited)   |
+| Error tracking     | Sentry (50K events)    | Sentry (unlimited)      |
+| Monitoring         | Datadog (5 hosts)      | Uptime Kuma (unlimited) |
+| **User limits**    | Per-user pricing       | Unlimited               |
+| **Storage limits** | Vendor-defined         | Your disk space         |
+| **Data ownership** | Vendor controls        | You control             |
 
 ## Advanced Additions (Optional)
 
@@ -450,6 +476,7 @@ b2 list-file-names backup-bucket --maxFileCount 1000 | \
 ```
 
 **Cron:** Daily at 2 AM
+
 ```cron
 0 2 * * * /usr/local/bin/backup-db.sh
 ```
@@ -457,6 +484,7 @@ b2 list-file-names backup-bucket --maxFileCount 1000 | \
 ### Staging Environment (same servers)
 
 **Use Docker Compose profiles:**
+
 ```yaml
 # docker-compose.yml
 services:
@@ -472,6 +500,7 @@ services:
 ```
 
 **Deploy staging:**
+
 ```bash
 docker-compose --profile staging up -d
 ```
@@ -481,12 +510,14 @@ docker-compose --profile staging up -d
 ### CDN for Static Assets ($0)
 
 **Cloudflare Free Tier:**
+
 - Unlimited bandwidth
 - Global CDN
 - DDoS protection
 - SSL/TLS
 
 **Setup:**
+
 1. Add domain to Cloudflare
 2. Change nameservers
 3. Enable "Proxy" (orange cloud) on DNS records
@@ -504,6 +535,7 @@ docker-compose --profile staging up -d
 
 **Add:** Application server #2 (load balancing)
 **Infrastructure:** 3 servers
+
 - App server 1: $38/month
 - App server 2: $38/month
 - Dev tools: $12/month
@@ -516,6 +548,7 @@ docker-compose --profile staging up -d
 
 **Add:** Dedicated database server
 **Infrastructure:** 4 servers
+
 - 2× App servers: $76/month
 - Database server (16GB RAM): $60/month
 - Dev tools: $12/month
@@ -526,6 +559,7 @@ docker-compose --profile staging up -d
 ### Phase 4: 100K+ Users
 
 **Consider:**
+
 - Managed database (RDS, PlanetScale)
 - CDN for dynamic content
 - Dedicated monitoring
@@ -536,6 +570,7 @@ docker-compose --profile staging up -d
 ### Initial Setup
 
 **Time investment:**
+
 - Server provisioning: 1 hour
 - Application deployment: 2 hours
 - Dev tools setup: 3 hours
@@ -547,6 +582,7 @@ docker-compose --profile staging up -d
 ### Monthly Maintenance
 
 **Tasks:**
+
 - Security updates: 1 hour/month
 - Backup verification: 30 minutes/month
 - Service monitoring: 30 minutes/month
@@ -561,14 +597,17 @@ docker-compose --profile staging up -d
 **Keep SaaS for:**
 
 1. **Email (Gmail, Fastmail)**
+
    - Self-hosting email is deliverability hell
    - Cost: $6-12/user/month
 
 2. **Accounting (QuickBooks, Xero)**
+
    - Tax compliance requires vendor expertise
    - Cost: $15-50/month
 
 3. **Payments (Stripe)**
+
    - PCI compliance complexity
    - Cost: 2.9% + $0.30 per transaction
 
@@ -585,6 +624,7 @@ docker-compose --profile staging up -d
 **Revenue:** Pre-launch (0 MRR)
 
 **Infrastructure:**
+
 - Next.js application
 - PostgreSQL database
 - Redis for caching
@@ -595,6 +635,7 @@ docker-compose --profile staging up -d
 **Monthly cost:** $54
 
 **vs. Equivalent SaaS:**
+
 - Vercel Pro: $200
 - GitHub: $48
 - CircleCI: $70
@@ -605,18 +646,21 @@ docker-compose --profile staging up -d
 **Savings:** $488/month ($5,856/year)
 
 **Founder perspective:**
+
 > "We're pre-revenue. Every dollar saved extends our runway. Self-hosting gave us 6 extra months to find product-market fit."
 
-## The SaaS-Exit Startup Perspective
+## The Exit-Saas Startup Perspective
 
 **YC's advice:** "Don't optimize prematurely. Just use Heroku/Vercel."
 
 **This makes sense IF:**
+
 - You have $500K+ in funding
 - Your time is worth $200+/hour
 - You're prioritizing speed over efficiency
 
 **But if you're bootstrapping:**
+
 - Every $500/month saved = 6% more runway
 - Learning DevOps makes you a better engineer
 - You own your infrastructure from day one
@@ -627,6 +671,7 @@ Most successful startups eventually migrate off expensive SaaS to self-hosted in
 **Basecamp, GitHub, Stack Overflow** all self-host core infrastructure.
 
 **Starting self-hosted means:**
+
 - No migration pain later
 - Better understanding of your stack
 - $10K/year reinvested in product or talent

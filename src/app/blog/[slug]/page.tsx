@@ -27,12 +27,12 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found | SaaS-Exit.io",
+      title: "Post Not Found | Exit-Saas.io",
     };
   }
 
   return {
-    title: `${post.title} | SaaS-Exit.io`,
+    title: `${post.title} | Exit-Saas.io`,
     description: post.description,
     keywords: [
       "open source",
@@ -76,13 +76,22 @@ const mdxComponents = {
     />
   ),
   p: (props: React.HTMLProps<HTMLParagraphElement>) => (
-    <p className="text-lg text-muted-foreground mb-4 leading-relaxed" {...props} />
+    <p
+      className="text-lg text-muted-foreground mb-4 leading-relaxed"
+      {...props}
+    />
   ),
   ul: (props: React.HTMLProps<HTMLUListElement>) => (
-    <ul className="list-disc list-inside mb-4 space-y-2 text-muted-foreground" {...props} />
+    <ul
+      className="list-disc list-inside mb-4 space-y-2 text-muted-foreground"
+      {...props}
+    />
   ),
   ol: ({ type, ...props }: React.HTMLProps<HTMLOListElement>) => (
-    <ol className="list-decimal list-inside mb-4 space-y-2 text-muted-foreground" {...props} />
+    <ol
+      className="list-decimal list-inside mb-4 space-y-2 text-muted-foreground"
+      {...props}
+    />
   ),
   li: (props: React.HTMLProps<HTMLLIElement>) => (
     <li className="text-lg text-muted-foreground" {...props} />
@@ -112,17 +121,26 @@ const mdxComponents = {
   ),
   table: (props: React.HTMLProps<HTMLTableElement>) => (
     <div className="overflow-x-auto mb-6">
-      <table className="min-w-full border border-border rounded-lg" {...props} />
+      <table
+        className="min-w-full border border-border rounded-lg"
+        {...props}
+      />
     </div>
   ),
   thead: (props: React.HTMLProps<HTMLTableSectionElement>) => (
     <thead className="bg-muted" {...props} />
   ),
   th: (props: React.HTMLProps<HTMLTableCellElement>) => (
-    <th className="px-4 py-3 text-left text-sm font-semibold text-foreground border-b border-border" {...props} />
+    <th
+      className="px-4 py-3 text-left text-sm font-semibold text-foreground border-b border-border"
+      {...props}
+    />
   ),
   td: (props: React.HTMLProps<HTMLTableCellElement>) => (
-    <td className="px-4 py-3 text-sm text-muted-foreground border-b border-border" {...props} />
+    <td
+      className="px-4 py-3 text-sm text-muted-foreground border-b border-border"
+      {...props}
+    />
   ),
   blockquote: (props: React.HTMLProps<HTMLQuoteElement>) => (
     <blockquote
@@ -166,7 +184,10 @@ export default async function BlogPostPage({ params }: PageProps) {
             <p className="text-xl text-muted-foreground mb-4">
               {post.description}
             </p>
-            <time className="text-sm text-muted-foreground" dateTime={post.date}>
+            <time
+              className="text-sm text-muted-foreground"
+              dateTime={post.date}
+            >
               {formattedDate}
             </time>
           </header>
@@ -194,11 +215,11 @@ export default async function BlogPostPage({ params }: PageProps) {
               datePublished: post.date,
               author: {
                 "@type": "Organization",
-                name: "SaaS-Exit",
+                name: "Exit-Saas",
               },
               publisher: {
                 "@type": "Organization",
-                name: "SaaS-Exit",
+                name: "Exit-Saas",
                 logo: {
                   "@type": "ImageObject",
                   url: "https://exit-saas.io/logo.png",

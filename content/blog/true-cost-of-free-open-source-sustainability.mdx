@@ -26,6 +26,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **This isn't hyperbole. Real examples:**
 
 **Heartbleed (2014):**
+
 - Bug in OpenSSL (used by 60% of web servers)
 - OpenSSL maintained by 1 full-time developer + volunteers
 - Annual budget: $2,000 (from donations)
@@ -34,12 +35,14 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Post-incident:** OpenSSL received $3.9M in corporate funding. **After the crisis, not before.**
 
 **Log4Shell (December 2021):**
+
 - Critical vulnerability in Log4j (Apache logging library)
 - Used by millions of applications globally
 - Maintained by unpaid volunteers
 - Response required: Emergency patches during holidays
 
 **colors.js and faker.js (January 2022):**
+
 - Developer intentionally broke popular npm packages
 - Reason: Burned out from maintaining free software used by Fortune 500 companies
 - Quote: "Respectfully, I am no longer going to support Fortune 500s with my free work."
@@ -47,17 +50,20 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### The Numbers: Who Pays for Open Source?
 
 **Linux Kernel Foundation (2020 report):**
+
 - 70% of kernel contributors are paid by corporations
 - Top contributors: Intel, Red Hat, Huawei, Google
 - But: 30% still volunteer (unpaid)
 
 **Core Infrastructure Initiative study (2019):**
+
 - Analyzed thousands of critical open-source projects
 - Finding: 60% have no commercial funding
 - Median number of active maintainers: 2
 - Median time since last commit: 12 months
 
 **The paradox:**
+
 - Global economy depends on open source
 - Yet most maintainers are unpaid or underpaid
 
@@ -66,6 +72,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 1: Open Core (Freemium)
 
 **How it works:**
+
 - Core product is open source (free)
 - Advanced features require paid license
 - Revenue funds development of both tiers
@@ -73,17 +80,20 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Examples:**
 
 **GitLab:**
+
 - GitLab Community Edition (CE): Free, open source
 - GitLab Enterprise Edition (EE): Paid, proprietary features
 - EE features: Advanced security, compliance tools, premium support
 - **Pricing:** $29-99/user/month (EE)
 
 **Mattermost:**
+
 - Mattermost Team Edition: Free, open source
 - Mattermost Enterprise: Paid features (AD/LDAP, compliance exports)
 - **Pricing:** $10/user/month (Enterprise)
 
 **Nextcloud:**
+
 - Nextcloud Community: Free
 - Nextcloud Enterprise: Support + enterprise features
 - **Pricing:** €1,900/year (50 users)
@@ -95,6 +105,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 2: Hosted SaaS (Convenience Model)
 
 **How it works:**
+
 - Software is 100% open source
 - Company offers hosted version for convenience
 - Self-hosting remains free
@@ -103,18 +114,21 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Examples:**
 
 **Plausible Analytics:**
+
 - Plausible Community Edition: Free, self-host
 - Plausible Cloud: Paid hosting
 - **Pricing:** $9-149/month (based on traffic)
 - Both versions use same codebase (no feature differences)
 
 **Ghost (blogging platform):**
+
 - Ghost open source: Free
 - Ghost Pro: Hosted version
 - **Pricing:** $25-199/month
 - Same features in both versions
 
 **Discourse (forum software):**
+
 - Discourse open source: Free
 - Discourse hosting: Paid managed service
 - **Pricing:** $100-300/month
@@ -126,15 +140,18 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 3: Dual Licensing
 
 **How it works:**
+
 - Software available under two licenses:
   1. Open source (GPL, AGPL) - free but copyleft
   2. Commercial license - paid but without copyleft restrictions
 
 **Example: MariaDB, MySQL:**
+
 - GPL license: Free, but derivative works must be GPL
 - Commercial license: Paid, can embed in proprietary software without GPL requirements
 
 **Who pays:**
+
 - SaaS companies building on the software
 - Enterprises wanting to avoid GPL obligations
 
@@ -143,6 +160,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 4: Support and Consulting
 
 **How it works:**
+
 - Software is 100% free and open source
 - Company sells support contracts, training, consulting
 - Professional services fund development
@@ -150,11 +168,13 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Examples:**
 
 **Red Hat Enterprise Linux (RHEL):**
+
 - Based on open-source CentOS/Fedora
 - Revenue: Support subscriptions ($349-2,999/year per server)
 - **2021 revenue:** $3.4 billion
 
 **Odoo (ERP system):**
+
 - Odoo Community: Free
 - Odoo Enterprise: Paid (includes support)
 - Also sells implementation consulting
@@ -166,6 +186,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 5: Donations and Sponsorships
 
 **How it works:**
+
 - Software is free
 - Maintainers ask for donations (GitHub Sponsors, Patreon, Open Collective)
 - No guaranteed revenue
@@ -173,11 +194,13 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Examples:**
 
 **Mastodon (Twitter alternative):**
+
 - 100% open source and free
 - Funded via Patreon: $30,000/month (2023)
 - Lead developer works full-time on donations
 
 **curl (command-line tool):**
+
 - Maintained by Daniel Stenberg since 1998
 - Used by billions of devices
 - Funding: GitHub Sponsors (~$2,000/month)
@@ -190,6 +213,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 6: Corporate Sponsorship
 
 **How it works:**
+
 - Corporation employs maintainers to work on open source
 - Corp benefits from ecosystem around the software
 - No direct revenue from project itself
@@ -197,11 +221,13 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Examples:**
 
 **React, TypeScript, VS Code (Microsoft):**
+
 - 100% open source and free
 - Microsoft pays core team
 - Benefit to Microsoft: Developer ecosystem loyalty, Azure adoption
 
 **Kubernetes (Google):**
+
 - Developed and released by Google
 - Google Cloud benefits from Kubernetes adoption
 - Now governed by Cloud Native Computing Foundation (vendor-neutral)
@@ -213,11 +239,13 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Model 7: Volunteer Labor (Hobby Projects)
 
 **How it works:**
+
 - Maintainers work on project in spare time
 - No monetization strategy
 - Labor of love
 
 **Examples:**
+
 - Thousands of small utilities, libraries, scripts
 - Often critical dependencies (see Heartbleed, Log4Shell)
 
@@ -230,46 +258,56 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Red Flags (Avoid These Projects)
 
 **1. Single maintainer + no funding**
+
 - **Risk:** Maintainer burnout or life changes → project abandoned
 - **Example:** left-pad incident (2016) - developer removed 11-line package, broke thousands of projects
 
 **2. No commits in 12+ months**
+
 - **Risk:** Project likely abandoned
 - **Check:** GitHub repository commit history
 
 **3. Unanswered issues and PRs**
+
 - **Risk:** Maintainers overwhelmed or disengaged
 - **Check:** Issues tab, response times
 
 **4. Corporate ownership with declining interest**
+
 - **Risk:** Company may sunset project
 - **Example:** Google graveyard (Reader, Inbox, etc.)
 
 **5. Complex dependencies with no funding**
+
 - **Risk:** Critical component maintained by volunteers
 - **Check:** Dependency tree, funding sources
 
 ### Green Flags (Healthy Projects)
 
 **1. Clear funding model**
+
 - Open core with paying customers
 - SaaS revenue
 - Corporate sponsorship from multiple companies
 
 **2. Active development**
+
 - Regular commits (weekly or monthly)
 - Recent releases (quarterly or more frequent)
 - Security patches applied quickly
 
 **3. Multiple core maintainers**
+
 - Bus factor > 1 (project survives if one person leaves)
 - Diverse contributor base
 
 **4. Transparent governance**
+
 - Clear decision-making process
 - Foundation or neutral governing body (Apache, CNCF, Linux Foundation)
 
 **5. Commercial ecosystem**
+
 - Companies offering support/hosting
 - Proof: Market validates project's value
 
@@ -280,6 +318,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Model:** Open core + SaaS hosting
 
 **Journey:**
+
 - 2013: Launched as open source forum software
 - Funded by: Investors + SaaS revenue
 - Self-hosting: Free (Docker deployment)
@@ -287,6 +326,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 - 2023 revenue: Estimated $10-15M/year
 
 **Why it works:**
+
 - Product is genuinely useful (replaces phpBB, vBulletins)
 - Self-hosting option builds community and trust
 - SaaS tier provides reliable revenue
@@ -299,6 +339,7 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 **Model:** Open source + commercial ecosystem
 
 **The complexity:**
+
 - WordPress core: 100% free, maintained by Automattic + community
 - Automattic (company): Revenue from WordPress.com (hosted version)
 - Ecosystem: Thousands of paid themes, plugins, hosting companies
@@ -311,12 +352,14 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Failure: CentOS
 
 **What happened:**
+
 - CentOS: Free rebuild of Red Hat Enterprise Linux (RHEL)
 - 2014: Red Hat acquired CentOS
 - 2020: Red Hat announced CentOS would become "CentOS Stream" (upstream of RHEL, not downstream)
 - **Impact:** Millions of users lost stable, free RHEL clone
 
 **Why it failed users:**
+
 - Corporate owner changed project direction
 - Community felt betrayed
 - Alternative (Rocky Linux) emerged from community
@@ -328,32 +371,38 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### As a User
 
 **1. Pay for what you use (even if free)**
+
 - Use hosted SaaS version if available (funds development)
 - Buy support contracts if offered
 - Sponsor on GitHub Sponsors, Open Collective
 
 **2. Contribute non-financially**
+
 - Report bugs with detailed reproduction steps
 - Submit documentation improvements
 - Answer questions in forums/Discord
 
 **3. Avoid "tragedy of the commons"**
+
 - Don't treat free software as a right
 - Recognize it's a gift that requires reciprocity
 
 ### As a Company
 
 **1. Budget for open source**
+
 - Allocate 1-5% of software budget to OSS sponsorship
 - Sponsor projects you depend on
 - **Example:** Facebook sponsors React, Webpack, Babel
 
 **2. Contribute developer time**
+
 - Allow employees to contribute to OSS during work hours
 - Hire maintainers of critical dependencies
 - **Example:** Microsoft employs TypeScript core team
 
 **3. Pay for Enterprise tiers**
+
 - Don't use Community Edition when you can afford Enterprise
 - Enterprise revenue funds free tier development
 
@@ -362,21 +411,25 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Emerging Models
 
 **1. Open Source Foundations**
+
 - Projects join foundations (Apache, CNCF, Linux Foundation)
 - Foundation provides: Legal protection, funding, governance
 - Examples: Kubernetes, Prometheus, Node.js
 
 **2. Tidelift (Managed Open Source)**
+
 - Company pays Tidelift subscription
 - Tidelift distributes funds to maintainers of dependencies
 - Also provides security audits, compliance support
 
 **3. GitHub Sponsors**
+
 - Direct funding from users to maintainers
 - Lower barrier than traditional donation platforms
 - Integrated into developer workflow
 
 **4. Open Source SaaS Hybrid**
+
 - 100% open source
 - Company offers managed hosting
 - Self-hosting remains free (no feature split)
@@ -385,33 +438,39 @@ A diagram showing modern digital infrastructure balanced precariously on a tiny 
 ### Predictions (2026-2030)
 
 **More corporate funding:**
+
 - Companies realize OSS is critical infrastructure
 - More will employ maintainers directly
 - Alternative: Risk catastrophic failures (Log4Shell-scale)
 
 **Consolidation:**
+
 - Successful OSS projects get acquired
 - Some will be killed (Google pattern)
 - Others will thrive with resources (GitHub/Microsoft pattern)
 
 **Professionalization:**
+
 - Volunteer-only projects decline
 - Paid maintainers become norm for critical software
 - Higher quality, better security
 
-## The SaaS-Exit Perspective
+## The Exit-Saas Perspective
 
 **"Free" open source isn't free. Someone pays:**
+
 1. Volunteer maintainers (with their time)
 2. Companies (via salaries, sponsorships)
 3. SaaS customers (who fund development)
 
 **When you self-host open source, you benefit from:**
+
 - Decades of collective engineering effort
 - Security reviews by thousands of eyes
 - Features built by community needs (not profit motives)
 
 **Ethical self-hosting:**
+
 - Recognize the gift you're receiving
 - Support projects financially when possible
 - Contribute back (code, docs, sponsorship)

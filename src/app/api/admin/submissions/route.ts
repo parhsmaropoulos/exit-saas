@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase';
+import { NextRequest, NextResponse } from "next/server";
+import { createServerSupabaseClient } from "@/lib/supabase";
 
 // GET - Fetch all submissions
 export async function GET() {
@@ -7,23 +7,23 @@ export async function GET() {
     const supabase = createServerSupabaseClient();
 
     const { data, error } = await supabase
-      .from('tool_submissions')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .from("tool_submissions")
+      .select("*")
+      .order("created_at", { ascending: false });
 
     if (error) {
-      console.error('Supabase error:', error);
+      console.error("Supabase error:", error);
       return NextResponse.json(
-        { error: 'Failed to fetch submissions' },
+        { error: "Failed to fetch submissions" },
         { status: 500 }
       );
     }
 
     return NextResponse.json({ submissions: data || [] });
   } catch (error) {
-    console.error('Fetch error:', error);
+    console.error("Fetch error:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
@@ -31,7 +31,7 @@ export async function GET() {
 
 // PATCH - Update submission status (approve/reject)
 export async function PATCH(request: NextRequest) {
-  return NextResponse.json({ submissions:  [] });
+  return NextResponse.json({ submissions: [] });
   // try {
   //   const body = await request.json();
   //   const { id, action, notes } = body;
@@ -87,7 +87,7 @@ export async function PATCH(request: NextRequest) {
   //       const githubResponse = await fetch(`https://api.github.com/repos/${repoPath}`, {
   //         headers: {
   //           'Accept': 'application/vnd.github.v3+json',
-  //           'User-Agent': 'SaaS-Exit-Admin',
+  //           'User-Agent': 'Exit-Saas-Admin',
   //         },
   //       });
 

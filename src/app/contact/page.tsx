@@ -184,7 +184,7 @@ export default function ContactPage() {
 
             {/* <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">
-                Can I advertise on SaaS-Exit.io?
+                Can I advertise on Exit-Saas.io?
               </h3>
               <p className="text-muted-foreground">
                 Yes! We offer advertising and sponsored listing opportunities. Contact us at{' '}

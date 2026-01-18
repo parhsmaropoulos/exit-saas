@@ -19,6 +19,7 @@ Companies migrating from Google Workspace to Nextcloud report 85% cost savings w
 ### File Storage & Sync
 
 **Google Drive:**
+
 - 30GB per user (Business Starter)
 - 2TB per user (Business Standard, $12/user/month)
 - File versioning (30 days)
@@ -26,6 +27,7 @@ Companies migrating from Google Workspace to Nextcloud report 85% cost savings w
 - Shared drives
 
 **Nextcloud Files:**
+
 - Unlimited storage (limited only by VPS disk space)
 - Infinite versioning (configurable retention)
 - Desktop sync (Windows, macOS, Linux)
@@ -35,6 +37,7 @@ Companies migrating from Google Workspace to Nextcloud report 85% cost savings w
 - External storage mounting (S3, FTP, SMB)
 
 **What you gain:**
+
 - Storage costs: $0.01/GB (block storage) vs Google's tiered pricing
 - File locking for concurrent editing prevention
 - Audit logs showing every file access
@@ -43,12 +46,14 @@ Companies migrating from Google Workspace to Nextcloud report 85% cost savings w
 ### Collaborative Document Editing
 
 **Google Docs/Sheets/Slides:**
+
 - Real-time collaboration
 - Browser-based editing
 - Limited offline mode
 - Proprietary format
 
 **Nextcloud Office (powered by Collabora or OnlyOffice):**
+
 - Real-time collaboration (same as Google)
 - Full LibreOffice compatibility
 - Microsoft Office format support (.docx, .xlsx, .pptx)
@@ -61,6 +66,7 @@ Documents open 40% faster in Nextcloud Office than Google Docs (internal testing
 ### Calendar & Contacts
 
 **Google Calendar/Contacts:**
+
 - Web interface
 - CalDAV/CardDAV sync
 - Mobile apps
@@ -68,6 +74,7 @@ Documents open 40% faster in Nextcloud Office than Google Docs (internal testing
 - Resource booking
 
 **Nextcloud Calendar/Contacts:**
+
 - Identical web interface
 - CalDAV/CardDAV (standard protocols)
 - Mobile apps via DAVx⁵ (Android) or native iOS support
@@ -82,12 +89,14 @@ Export from Google → Import to Nextcloud in 3 clicks. Zero data loss.
 ### Email (Optional)
 
 **Gmail:**
+
 - Included with Workspace
 - 30GB storage (Business Starter)
 - Spam filtering
 - Search
 
 **Nextcloud Mail:**
+
 - IMAP client (connect any email provider)
 - OR self-host full mail server (advanced)
 - Unified inbox
@@ -100,12 +109,14 @@ Keep using Gmail for email (or Fastmail, ProtonMail) and only migrate file/calen
 ### Video Conferencing
 
 **Google Meet:**
+
 - 100 participants (Business Starter)
 - 24-hour meetings
 - Screen sharing
 - Recording (Business Standard+)
 
 **Nextcloud Talk:**
+
 - Unlimited participants (server-limited)
 - Unlimited meeting duration
 - Screen sharing, recording
@@ -120,13 +131,16 @@ Nextcloud Talk requires TURN server for optimal call quality. Works reliably for
 ## Cost Breakdown: 20-Person Company
 
 ### Google Workspace (Business Standard)
+
 - $12/user/month × 20 users = $240/month
 - **Annual cost: $2,880**
 - Storage: 2TB per user (40TB total)
 - Features: Drive, Docs, Calendar, Meet, Gmail
 
 ### Nextcloud Self-Hosted
+
 **Infrastructure:**
+
 - Hetzner CPX41 (8 vCPU, 16GB RAM): $38/month
 - 1TB block storage: $10/month
 - Backups (500GB): $5/month
@@ -134,6 +148,7 @@ Nextcloud Talk requires TURN server for optimal call quality. Works reliably for
 - **Annual cost: $651**
 
 **Features included:**
+
 - Files (unlimited, limited by storage)
 - Collabora Office
 - Calendar, Contacts
@@ -150,6 +165,7 @@ Nextcloud Talk requires TURN server for optimal call quality. Works reliably for
 ## Installation Guide: Production-Ready Nextcloud (60 minutes)
 
 ### Prerequisites
+
 - Ubuntu 22.04 VPS (4GB RAM minimum, 8GB recommended)
 - Domain name (e.g., cloud.yourcompany.com)
 - SSH access
@@ -309,6 +325,7 @@ systemctl reload nginx
 ```
 
 **Connect Collabora to Nextcloud:**
+
 1. Nextcloud admin settings → Office
 2. Add Collabora server: https://office.yourcompany.com
 3. Test document editing
@@ -322,6 +339,7 @@ Configuring PostgreSQL performance tuning, Redis caching, and Collabora integrat
 ### Friday Evening: Export Google Data (30 minutes)
 
 **Google Takeout:**
+
 1. Visit https://takeout.google.com
 2. Deselect all
 3. Select: Drive, Calendar, Contacts
@@ -331,17 +349,20 @@ Configuring PostgreSQL performance tuning, Redis caching, and Collabora integrat
 ### Saturday Morning: Import to Nextcloud (2 hours)
 
 **Files:**
+
 1. Extract Drive export
 2. Upload to Nextcloud via web interface or sync client
 3. Verify folder structure intact
 
 **Calendar:**
+
 1. Nextcloud Calendar → Settings → Import
 2. Upload .ics files
 3. Assign to appropriate calendar
 4. Verify all events imported
 
 **Contacts:**
+
 1. Nextcloud Contacts → Settings → Import
 2. Upload .vcf file
 3. Merge duplicates (built-in tool)
@@ -352,17 +373,20 @@ Nextcloud automatically converts Google Docs to .odt format on upload.
 ### Saturday Afternoon: Configure Desktop Sync (1 hour)
 
 **Install Nextcloud client:**
+
 - Windows: Download from nextcloud.com/install
 - macOS: Download or `brew install nextcloud`
 - Linux: `apt install nextcloud-desktop`
 
 **Setup:**
+
 1. Enter server URL: https://cloud.yourcompany.com
 2. Login with credentials
 3. Choose sync folders
 4. Enable virtual files (download on demand)
 
 **Mobile setup:**
+
 - iOS: Install Nextcloud from App Store
 - Android: Install from Google Play
 - Configure calendar/contact sync via device settings
@@ -370,12 +394,14 @@ Nextcloud automatically converts Google Docs to .odt format on upload.
 ### Sunday: Team Onboarding (2 hours)
 
 **Create user accounts:**
+
 ```bash
 # Via web interface: Users → Add user
 # Or bulk import from CSV
 ```
 
 **Send welcome email:**
+
 ```
 Subject: We're moving to Nextcloud
 
@@ -397,7 +423,9 @@ Questions? See our migration guide: [internal doc link]
 ## Advanced Features (Beyond Google Workspace)
 
 ### Nextcloud Photos
+
 Self-hosted Google Photos replacement:
+
 - Automatic photo uploads from mobile
 - Face recognition (local AI)
 - Album sharing
@@ -405,7 +433,9 @@ Self-hosted Google Photos replacement:
 - No AI training on your family photos
 
 ### Nextcloud Deck
+
 Project management (Trello alternative):
+
 - Kanban boards
 - Card assignments
 - Due dates
@@ -413,14 +443,18 @@ Project management (Trello alternative):
 - Integrated with Files
 
 ### Nextcloud Forms
+
 Google Forms alternative:
+
 - Survey creation
 - Anonymous or authenticated responses
 - Export to CSV
 - Embed in websites
 
 ### External Storage
+
 Mount remote storage:
+
 - Amazon S3
 - Dropbox
 - FTP/SFTP
@@ -430,6 +464,7 @@ Mount remote storage:
 ## Performance Optimization
 
 ### Caching Configuration
+
 ```bash
 # Enable Redis caching in config.php
 docker exec -it nextcloud-app-1 bash
@@ -445,6 +480,7 @@ nano /var/www/html/config/config.php
 ```
 
 ### Background Jobs
+
 ```bash
 # Switch to cron for better performance
 docker exec -u www-data -it nextcloud-app-1 crontab -e
@@ -452,6 +488,7 @@ docker exec -u www-data -it nextcloud-app-1 crontab -e
 ```
 
 ### Database Optimization
+
 ```bash
 # Add database indexes
 docker exec -it nextcloud-app-1 occ db:add-missing-indices
@@ -464,14 +501,17 @@ File operations 3x faster, sync delay reduced from 30s to 5s.
 ## Security Hardening
 
 ### Two-Factor Authentication
+
 1. Admin settings → Security
 2. Enable TOTP (Time-based One-Time Password)
 3. Require for all users
 
 ### Brute Force Protection
+
 Built-in throttling after failed login attempts.
 
 ### File Access Control
+
 ```bash
 # Install File Access Control app
 docker exec -it nextcloud-app-1 occ app:install files_accesscontrol
@@ -483,7 +523,9 @@ docker exec -it nextcloud-app-1 occ app:install files_accesscontrol
 ```
 
 ### Audit Logging
+
 Enable detailed logs of all file access:
+
 1. Apps → Auditing/Logging
 2. Install "Auditing" app
 3. View logs: Settings → Logging
@@ -505,23 +547,26 @@ Solution: Nextcloud Talk for internal calls (&lt;10 people). Use Jitsi or Zoom f
 **Challenge: "Mobile Calendar sync is flaky"**
 Solution: iOS Calendar natively supports CalDAV. Android users install DAVx⁵ (free, open-source).
 
-## The SaaS-Exit Perspective
+## The Exit-Saas Perspective
 
 Google doesn't provide Workspace out of charity. Your files train Google's AI. Your emails inform Google's advertising profiles. Your calendar data maps your behavior.
 
 When you use Google Workspace, you're the product—not the customer.
 
 Nextcloud inverts this relationship:
+
 - Your data never leaves your infrastructure
 - No AI training, no profiling, no third-party access
 - GDPR compliance simplified (you're the data controller)
 - No vendor price increases
 
 **Real cost of Google Workspace:**
+
 - Explicit: $12/user/month
 - Implicit: Privacy surrender, vendor lock-in, AI training rights
 
 **Real cost of Nextcloud:**
+
 - Explicit: $40-80/month (infrastructure)
 - Implicit: None. You own everything.
 

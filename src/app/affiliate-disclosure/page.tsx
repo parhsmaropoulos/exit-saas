@@ -5,9 +5,9 @@ import { Footer } from "@/components/footer";
 import { Info, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Affiliate Disclosure | SaaS-Exit.io",
+  title: "Affiliate Disclosure | Exit-Saas.io",
   description:
-    "Affiliate Disclosure for SaaS-Exit.io - Transparency about our affiliate partnerships and how we earn commissions.",
+    "Affiliate Disclosure for Exit-Saas.io - Transparency about our affiliate partnerships and how we earn commissions.",
 };
 
 export default function AffiliateDisclosurePage() {
@@ -34,7 +34,7 @@ export default function AffiliateDisclosurePage() {
                 In Plain English
               </h2>
               <p className="text-muted-foreground">
-                Some links on SaaS-Exit.io are affiliate links. This means if
+                Some links on Exit-Saas.io are affiliate links. This means if
                 you click on a link and sign up for a service (like hosting), we
                 may earn a small commission at
                 <strong className="text-foreground">
@@ -55,7 +55,7 @@ export default function AffiliateDisclosurePage() {
               Full Disclosure Statement
             </h2>
             <p className="text-muted-foreground">
-              SaaS-Exit.io is a participant in various affiliate advertising
+              Exit-Saas.io is a participant in various affiliate advertising
               programs designed to provide a means for sites to earn advertising
               fees by advertising and linking to third-party websites and
               services.
@@ -188,7 +188,7 @@ export default function AffiliateDisclosurePage() {
               Why We Use Affiliate Links
             </h2>
             <p className="text-muted-foreground">
-              Running SaaS-Exit.io requires time and resources. Affiliate
+              Running Exit-Saas.io requires time and resources. Affiliate
               commissions help us:
             </p>
             <ul className="list-disc pl-6 mt-4 text-muted-foreground space-y-2">
