@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Github,
@@ -35,11 +35,125 @@ interface TCOCalculatorProps {
 }
 
 const VPS_MONTHLY_COST = 10; // Base VPS cost per month
-const DEFAULT_SAAS_PRICE = 15; // Default price if not specified
+const DEFAULT_SAAS_PRICE = 5; // Default price if not in the map
+
+// SaaS pricing map (per user/month)
+const SAAS_PRICING: Record<string, number> = {
+  'Jira': 9.05,
+  'Cloudflare': 20.00,
+  'Gmail': 6.00,
+  'Google Workspace': 6.00,
+  'Todoist': 4.00,
+  'WordPress': 4.00,
+  'Zoom': 13.33,
+  'Dropbox': 9.99,
+  'GitHub': 4.00,
+  'Plex': 4.99,
+  'Plex Pass': 4.99,
+  'Zendesk': 55.00,
+  'Pocket': 4.99,
+  'SurveyMonkey': 34.00,
+  'Airtable': 20.00,
+  'Lokalise': 144.00,
+  'Twilio': 10.00,
+  'Heroku': 5.00,
+  'Grammarly': 12.00,
+  'Expensify': 5.00,
+  'Notion': 10.00,
+  'Shopify': 29.00,
+  'Netvibes': 2.00,
+  'Microsoft 365': 6.00,
+  'PowerPoint': 6.00,
+  'ChatGPT': 20.00,
+  'ChatGPT Plus': 20.00,
+  'OpenAI': 20.00,
+  'Tableau': 15.00,
+  'Google Calendar': 6.00,
+  'Chess.com': 4.17,
+  'Synology': 1.00,
+  'Pastebin': 2.99,
+  'Stack Overflow': 6.00,
+  'Stack Overflow for Teams': 6.00,
+  'Segment': 120.00,
+  'Last.fm': 3.00,
+  'Slack': 7.25,
+  'QuickBooks': 19.00,
+  'Calendly': 10.00,
+  'OctoPrint': 5.00,
+  'OctoPrint Cloud': 5.00,
+  'Disqus': 11.00,
+  'LastPass': 3.00,
+  'Bitly': 8.00,
+  'Reddit': 5.99,
+  'Paprika': 4.99,
+  'Feedly': 6.00,
+  'Retool': 10.00,
+  'Loomio': 10.00,
+  'Google Analytics': 0.00,
+  'Mixpanel': 20.00,
+  'Datadog': 15.00,
+  'New Relic': 15.00,
+  'Trello': 5.00,
+  'Asana': 10.99,
+  'Monday.com': 9.00,
+  'Linear': 8.00,
+  'Intercom': 74.00,
+  'HubSpot': 45.00,
+  'Salesforce': 25.00,
+  'Stripe': 0.00,
+  'CircleCI': 15.00,
+  'GitHub Actions': 4.00,
+  'Vercel': 20.00,
+  'Netlify': 19.00,
+  'Firebase': 25.00,
+  'Supabase': 25.00,
+  'Auth0': 23.00,
+  'Okta': 2.00,
+  '1Password': 7.99,
+  'Bitwarden': 3.00,
+  'NordVPN': 3.99,
+  'Tailscale': 5.00,
+  'ngrok': 8.00,
+  'Google Drive': 9.99,
+  'OneDrive': 5.00,
+  'iCloud': 2.99,
+  'Google Photos': 2.99,
+  'Evernote': 10.83,
+  'Confluence': 5.75,
+  'GitLab': 19.00,
+};
+
+// Helper to find price from saas_equivalent
+function getSaasPrice(saasEquivalent: string): number {
+  // Direct match
+  if (SAAS_PRICING[saasEquivalent] !== undefined) {
+    return SAAS_PRICING[saasEquivalent];
+  }
+
+  // Partial match (case insensitive)
+  const lowerEquivalent = saasEquivalent.toLowerCase();
+  for (const [key, price] of Object.entries(SAAS_PRICING)) {
+    if (lowerEquivalent.includes(key.toLowerCase()) || key.toLowerCase().includes(lowerEquivalent)) {
+      return price;
+    }
+  }
+
+  return DEFAULT_SAAS_PRICE;
+}
 
 export function TCOCalculator({ tool, isOpen, onClose }: TCOCalculatorProps) {
   const [userCount, setUserCount] = useState(10);
-  const [saasMonthlyPrice, setSaasMonthlyPrice] = useState(DEFAULT_SAAS_PRICE);
+
+  // Get the price based on the tool's saas_equivalent
+  const defaultPrice = tool ? getSaasPrice(tool.saas_equivalent) : DEFAULT_SAAS_PRICE;
+  const [saasMonthlyPrice, setSaasMonthlyPrice] = useState(defaultPrice);
+
+  // Update price when tool changes
+  useEffect(() => {
+    if (tool) {
+      setSaasMonthlyPrice(getSaasPrice(tool.saas_equivalent));
+    }
+  }, [tool?.saas_equivalent]);
 
   const calculations = useMemo(() => {
     const saasAnnualCost = saasMonthlyPrice * userCount * 12;
@@ -93,10 +207,10 @@ export function TCOCalculator({ tool, isOpen, onClose }: TCOCalculatorProps) {
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
               <span className="font-medium">{formattedStars} stars</span>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
+            {/* <div className="flex items-center gap-2 text-muted-foreground">
               <GitCommit className="w-4 h-4" />
               <span>Updated {formatDistanceToNow(tool.last_commit)}</span>
-            </div>
+            </div> */}
             {tool.docker_ready && (
               <div className="flex items-center gap-2 text-primary">
                 <Box className="w-4 h-4" />

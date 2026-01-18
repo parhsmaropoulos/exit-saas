@@ -23,7 +23,7 @@ export function DifficultyGauge({ level, className }: DifficultyGaugeProps) {
     if (level <= 6) return 'Medium';
     return 'Hard';
   };
-
+  return null;
   return (
     <div className={cn('space-y-1', className)}>
       <div className="flex items-center justify-between text-xs">

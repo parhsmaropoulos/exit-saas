@@ -36,10 +36,10 @@ export function TechSpecsSidebar({ tool }: TechSpecsSidebarProps) {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground flex items-center gap-2">
+            {/* <span className="text-sm text-muted-foreground flex items-center gap-2">
               <GitCommit className="w-4 h-4" />
               Last Updated
-            </span>
+            </span> */}
             <span className="font-medium text-foreground">
               {formatDistanceToNow(tool.last_commit)}
             </span>

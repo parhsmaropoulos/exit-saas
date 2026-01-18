@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://saas-exit.io
+
+# Sitemaps
+Sitemap: https://saas-exit.io/sitemap.xml

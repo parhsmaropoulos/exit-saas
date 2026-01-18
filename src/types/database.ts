@@ -24,6 +24,19 @@ export interface Tool {
   created_at: string;
 }
 
+
+export interface ToolSubmission {
+  id: string;
+  tool_name: string;
+  description: string;
+  github_url: string;
+  category: Category;
+  saas_equivalent: string; // e.g., "Slack", "Jira", "Stripe"
+  github_stars: number;
+  submitter_email: string; // ISO date string
+  reviewer_notes: string; // 1-10 scale
+  created_at: string;
+}
 export interface Database {
   public: {
     Tables: {
@@ -31,6 +44,11 @@ export interface Database {
         Row: Tool;
         Insert: Omit<Tool, 'id' | 'created_at'>;
         Update: Partial<Omit<Tool, 'id' | 'created_at'>>;
+      };
+      tool_submissions: {
+        Row: ToolSubmission;
+        Insert: Omit<ToolSubmission, 'id' | 'created_at' | 'reviewer_notes'>;
+        Update: Partial<Omit<ToolSubmission, 'id' | 'created_at'>>;
       };
     };
   };

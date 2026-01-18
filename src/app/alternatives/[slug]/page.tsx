@@ -6,8 +6,9 @@ import { Breadcrumb } from '@/components/alternatives/breadcrumb';
 import { SwitchCalculator } from '@/components/alternatives/switch-calculator';
 import { ComparisonTable } from '@/components/alternatives/comparison-table';
 import { TechSpecsSidebar } from '@/components/alternatives/tech-specs-sidebar';
-import { HostingCTA } from '@/components/alternatives/hosting-cta';
 import { AffiliateBanner } from '@/components/alternatives/affiliate-banner';
+import { HostingCallToAction } from '@/components/monetization/hosting-call-to-action';
+import { SidebarAd } from '@/components/monetization/sidebar-ad';
 import { createServerSupabaseClient } from '@/lib/supabase';
 import { generateSlug } from '@/lib/slug';
 import { getSaasPrice } from '@/lib/saas-pricing';
@@ -149,9 +150,9 @@ export default async function AlternativePage({ params }: PageProps) {
               <SwitchCalculator tool={tool} />
             </section>
 
-            {/* Hosting CTA */}
+            {/* Hosting CTA - High Conversion */}
             <section>
-              <HostingCTA tool={tool} annualSavings={defaultAnnualSavings} />
+              <HostingCallToAction toolName={tool.name} />
             </section>
 
             {/* Comparison Table */}
@@ -210,8 +211,9 @@ export default async function AlternativePage({ params }: PageProps) {
           </div>
 
           {/* Sidebar (1 column) */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-6">
             <TechSpecsSidebar tool={tool} />
+            <SidebarAd toolName={tool.name} />
           </div>
         </div>
 

@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Star, GitCommit, Github, Box, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -25,13 +24,9 @@ export function ToolCard({ tool, index, onSelect }: ToolCardProps) {
   const slug = generateSlug(tool.name);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05, duration: 0.3 }}
-    >
+    <div>
       <Card
-        className="group cursor-pointer card-hover bg-card border-border h-full"
+        className="group cursor-pointer card-hover bg-card border-border h-full transition-all duration-200 hover:border-primary/50"
         onClick={() => onSelect(tool)}
       >
         <CardHeader className="pb-3">
@@ -65,10 +60,10 @@ export function ToolCard({ tool, index, onSelect }: ToolCardProps) {
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
               <span className="font-medium">{formattedStars}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-muted-foreground">
+            {/* <div className="flex items-center gap-1.5 text-muted-foreground">
               <GitCommit className="w-4 h-4" />
               <span>{formatDistanceToNow(tool.last_commit)}</span>
-            </div>
+            </div> */}
             {tool.docker_ready && (
               <div className="flex items-center gap-1.5 text-primary">
                 <Box className="w-4 h-4" />
@@ -110,6 +105,6 @@ export function ToolCard({ tool, index, onSelect }: ToolCardProps) {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }
