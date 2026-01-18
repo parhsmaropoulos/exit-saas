@@ -1,0 +1,421 @@
+---
+title: "How to Deploy Your Own Analytics Suite in Under 10 Minutes"
+description: "Step-by-step guide to self-hosting privacy-focused analytics with Plausible or Umami. Track metrics without Google's surveillance tax."
+date: "2026-01-18"
+category: "Technical Guide"
+slug: "deploy-own-analytics-suite-under-10-minutes"
+---
+
+# How to Deploy Your Own Analytics Suite in Under 10 Minutes
+
+Google Analytics is free. It's also a surveillance engine that:
+
+- Sells your visitor data to advertisers
+- Triggers GDPR cookie consent nightmares
+- Slows page load by 423ms on average
+- Gets blocked by 42% of users running adblockers
+
+You're paying with your users' privacy. And getting incomplete data in return.
+
+## Why Self-Hosted Analytics Win
+
+Privacy-focused analytics tools like Plausible and Umami collect only what matters:
+
+- Page views and referrers
+- Geographic distribution (country-level, not IP tracking)
+- Device types and browsers
+- Goal conversions
+
+**What they DON'T track:**
+
+- Personal identifiable information
+- Cross-site visitor behavior
+- Individually fingerprinted users
+- Third-party cookie data
+
+GDPR compliance without consent banners. No data shared with ad networks. Complete ownership.
+
+## The 10-Minute Deployment
+
+We'll deploy Plausible Analytics using Docker Compose. Total setup time: 8-12 minutes.
+
+### Prerequisites
+
+You need:
+
+- A VPS with 2GB RAM (DigitalOcean, Hetzner, or Vultr)
+- Ubuntu 22.04 LTS
+- A domain name with DNS access
+- 10 minutes
+
+### Step 1: Server Setup (2 minutes)
+
+SSH into your VPS:
+
+```bash
+ssh root@your-server-ip
+```
+
+Update packages and install Docker:
+
+```bash
+apt update && apt upgrade -y
+apt install -y docker.io docker-compose git
+systemctl enable --now docker
+```
+
+### Step 2: Clone Plausible Hosting (1 minute)
+
+Plausible provides official Docker Compose files:
+
+```bash
+cd /opt
+git clone https://github.com/plausible/hosting
+cd hosting
+```
+
+### Step 3: Configure Environment (3 minutes)
+
+Generate secret keys:
+
+```bash
+openssl rand -base64 64 | tr -d '\n' ; echo
+```
+
+Copy the output. Edit `plausible-conf.env`:
+
+```bash
+nano plausible-conf.env
+```
+
+Set these critical variables:
+
+```env
+BASE_URL=https://analytics.yourdomain.com
+SECRET_KEY_BASE=your-generated-secret-here
+ADMIN_USER_EMAIL=you@yourdomain.com
+ADMIN_USER_NAME=YourName
+ADMIN_USER_PWD=strong-password-here
+```
+
+Save and exit (`Ctrl+X`, `Y`, `Enter`).
+
+💡 Pro Tip: Don't want to manage the server yourself? You can deploy [Tool Name] with one click on Elestio or DigitalOcean. You get the power of open-source with the convenience of SaaS. [Button: Deploy Now with $5 Credit]
+
+Configuring reverse proxies, SSL certificates, and database backups can derail quick deployments. If you want production-ready Plausible with automated backups and CDN integration already configured, managed platforms handle the infrastructure complexity.
+
+### Step 4: Launch Services (2 minutes)
+
+Start the full stack:
+
+```bash
+docker-compose up -d
+```
+
+Docker will download images and start:
+
+- Plausible application server
+- PostgreSQL database
+- ClickHouse analytics database
+- GeoIP lookup service
+
+Verify everything is running:
+
+```bash
+docker-compose ps
+```
+
+You should see 4 services with "Up" status.
+
+### Step 5: Configure DNS and SSL (2 minutes)
+
+Point your domain to the server:
+
+**DNS A Record:**
+
+```
+analytics.yourdomain.com → your-server-ip
+```
+
+Install Nginx and Certbot for SSL:
+
+```bash
+apt install -y nginx certbot python3-certbot-nginx
+```
+
+Create Nginx config:
+
+```bash
+nano /etc/nginx/sites-available/plausible
+```
+
+Add this configuration:
+
+```nginx
+server {
+    listen 80;
+    server_name analytics.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+Enable the site:
+
+```bash
+ln -s /etc/nginx/sites-available/plausible /etc/nginx/sites-enabled/
+nginx -t && systemctl reload nginx
+```
+
+Get free SSL certificate:
+
+```bash
+certbot --nginx -d analytics.yourdomain.com
+```
+
+Certbot automatically configures HTTPS redirection.
+
+### Step 6: Access Dashboard (1 minute)
+
+Visit `https://analytics.yourdomain.com`
+
+Log in with credentials from Step 3. Click "Add Website" and enter your site domain.
+
+Plausible generates a tracking script:
+
+```html
+<script
+  defer
+  data-domain="yourdomain.com"
+  src="https://analytics.yourdomain.com/js/script.js"
+></script>
+```
+
+Add this to your website's `<head>` section. You're done.
+
+## Tracking Your First Metrics
+
+Within 60 seconds, you'll see:
+
+**Real-time dashboard showing:**
+
+- Current active visitors
+- Page views in last 30 minutes
+- Top pages
+- Referrer sources
+- Geographic distribution
+
+**Historical data:**
+
+- Daily, weekly, monthly trends
+- Bounce rates
+- Visit duration
+- Goal conversions
+
+All without cookies. All without Google.
+
+## Alternative: Umami (Even Lighter)
+
+If 2GB RAM is too much, Umami runs on 1GB:
+
+```bash
+cd /opt
+git clone https://github.com/umami-software/umami.git
+cd umami
+```
+
+Edit `docker-compose.yml` to set a database password.
+
+Launch:
+
+```bash
+docker-compose up -d
+```
+
+Default login: `admin` / `umami`
+
+Umami offers:
+
+- SQL-based analytics (no ClickHouse overhead)
+- Event tracking with custom properties
+- Shareable public dashboards
+- Team collaboration features
+
+Both tools track the same privacy-respecting metrics. Plausible has better UX. Umami is more developer-friendly.
+
+## Cost Comparison
+
+**Google Analytics:**
+
+- Monetary cost: $0
+- Privacy cost: Complete visitor surveillance
+- Performance cost: 423ms page load delay
+- Compliance cost: Complex GDPR consent flows
+
+**Plausible Cloud:**
+
+- $9/month for 10,000 page views
+- $19/month for 100,000 page views
+- Privacy-respecting, but still SaaS
+
+**Self-Hosted Plausible:**
+
+- VPS: $12/month (2GB RAM Hetzner)
+- Scales to 1M+ page views on same server
+- **5-year cost: $720 vs $1,140 (Plausible Cloud) vs $0 (Google)**
+
+Beyond year 2, self-hosting saves money while maintaining privacy.
+
+## Advanced Configuration
+
+### Custom Event Tracking
+
+Track button clicks, form submissions, or custom goals:
+
+```html
+<button onclick="plausible('Download', {props: {file: 'whitepaper.pdf'}})">
+  Download Whitepaper
+</button>
+```
+
+Events appear in your dashboard under "Goal Conversions."
+
+### API Access
+
+Plausible exposes a REST API for programmatic access:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+  https://analytics.yourdomain.com/api/v1/stats/aggregate?site_id=yourdomain.com
+```
+
+Build custom reports, send data to data warehouses, or create Slack notifications.
+
+### Data Retention Customization
+
+Edit `plausible-conf.env`:
+
+```env
+# Keep data for 5 years instead of default 2
+DATA_RETENTION_DAYS=1825
+```
+
+Restart services:
+
+```bash
+docker-compose down && docker-compose up -d
+```
+
+## Backup Strategy
+
+Critical data lives in two places:
+
+**PostgreSQL (user accounts, site configs):**
+
+```bash
+docker exec plausible_db pg_dump -U plausible > backup-$(date +%Y%m%d).sql
+```
+
+**ClickHouse (analytics events):**
+
+```bash
+docker exec plausible_events_db clickhouse-client --query="BACKUP DATABASE plausible_events_db TO '/backups/'"
+```
+
+Automate with cron (runs daily at 2 AM):
+
+```bash
+0 2 * * * cd /opt/hosting && ./backup.sh
+```
+
+Store backups in S3-compatible storage (Wasabi, Backblaze B2) for $5/TB/month.
+
+## Monitoring and Maintenance
+
+Check resource usage:
+
+```bash
+docker stats
+```
+
+Typical resource consumption (100K page views/day):
+
+- CPU: 15-25%
+- RAM: 1.2GB
+- Disk I/O: Minimal (ClickHouse is efficient)
+
+Update Plausible quarterly:
+
+```bash
+cd /opt/hosting
+git pull
+docker-compose down
+docker-compose pull
+docker-compose up -d
+```
+
+## Migrating from Google Analytics
+
+Plausible doesn't import GA historical data (privacy design choice). But you can run parallel for 30 days:
+
+1. Keep GA script on site
+2. Add Plausible script
+3. Compare metrics for validation
+4. Remove GA script when confident
+
+Most teams find Plausible's simpler metrics more actionable than GA's 300+ dimensions.
+
+## Privacy Compliance Without Lawyers
+
+Self-hosted analytics makes GDPR/CCPA compliance trivial:
+
+**No cookie consent required:** Plausible doesn't use cookies. No banner needed.
+
+**No data processing agreements:** You're the data processor. No third-party DPAs.
+
+**Right to be forgotten:** You control the database. Deletion requests are `DELETE FROM` queries.
+
+**Data residency:** Host in EU, US, or wherever your compliance requires.
+
+Legal reviewed our [tools directory](/tools) compliance guides. Self-hosting eliminates 90% of privacy lawyer billable hours.
+
+## When to Use SaaS Analytics
+
+Self-hosting isn't always optimal:
+
+**Use Plausible Cloud if:**
+
+- You have no server management capability
+- Traffic is under 100K views/month (SaaS is cheaper)
+- You need enterprise SSO integrations
+
+**Use Google Analytics if:**
+
+- You run ads and need Google Ads integration
+- You require cross-domain tracking
+- You don't care about privacy (not recommended)
+
+Most companies fall into the self-hosting sweet spot: moderate traffic, privacy-conscious users, basic DevOps skills.
+
+## The SaaS-Exit Perspective
+
+Analytics shouldn't require surveillance. Metrics shouldn't compromise privacy. Insights shouldn't enrich ad networks.
+
+Self-hosted analytics gives you:
+
+- **Data sovereignty:** Your visitors' behavior stays on your servers
+- **Cost control:** No per-page-view pricing surprises
+- **Privacy credibility:** No "we share data with Google" asterisks
+- **Performance:** No third-party script delays
+
+10 minutes to deploy. Lifetime of ownership.
+
+Visit our [tools directory](/tools) for Docker Compose files, backup scripts, and Nginx configs for Plausible, Umami, and Matomo.
+
+Your data. Your infrastructure. Your metrics.
+
+The best time to escape Google's analytics monopoly was 10 years ago. The second best time is the next 10 minutes.
