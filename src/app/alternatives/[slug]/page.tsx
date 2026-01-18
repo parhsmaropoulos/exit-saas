@@ -1,19 +1,19 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { Breadcrumb } from '@/components/alternatives/breadcrumb';
-import { SwitchCalculator } from '@/components/alternatives/switch-calculator';
-import { ComparisonTable } from '@/components/alternatives/comparison-table';
-import { TechSpecsSidebar } from '@/components/alternatives/tech-specs-sidebar';
-import { AffiliateBanner } from '@/components/alternatives/affiliate-banner';
-import { HostingCallToAction } from '@/components/monetization/hosting-call-to-action';
-import { SidebarAd } from '@/components/monetization/sidebar-ad';
-import { createServerSupabaseClient } from '@/lib/supabase';
-import { generateSlug } from '@/lib/slug';
-import { getSaasPrice } from '@/lib/saas-pricing';
-import { mockTools } from '@/lib/mock-data';
-import { Tool } from '@/types/database';
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { Breadcrumb } from "@/components/alternatives/breadcrumb";
+import { SwitchCalculator } from "@/components/alternatives/switch-calculator";
+import { ComparisonTable } from "@/components/alternatives/comparison-table";
+import { TechSpecsSidebar } from "@/components/alternatives/tech-specs-sidebar";
+import { AffiliateBanner } from "@/components/alternatives/affiliate-banner";
+import { HostingCallToAction } from "@/components/monetization/hosting-call-to-action";
+import { SidebarAd } from "@/components/monetization/sidebar-ad";
+import { createServerSupabaseClient } from "@/lib/supabase";
+import { generateSlug } from "@/lib/slug";
+import { getSaasPrice } from "@/lib/saas-pricing";
+import { mockTools } from "@/lib/mock-data";
+import { Tool } from "@/types/database";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -22,15 +22,11 @@ interface PageProps {
 // Fetch tool by slug
 async function getToolBySlug(slug: string): Promise<Tool | null> {
   const supabase = createServerSupabaseClient();
-  const { data: tools, error } = await supabase
-    .from('tools')
-    .select('*');
+  const { data: tools, error } = await supabase.from("tools").select("*");
 
   if (error || !tools || tools.length === 0) {
     // Fallback to mock data
-    const mockTool = mockTools.find(
-      (t) => generateSlug(t.name) === slug
-    );
+    const mockTool = mockTools.find((t) => generateSlug(t.name) === slug);
     return mockTool || null;
   }
 
@@ -42,9 +38,7 @@ async function getToolBySlug(slug: string): Promise<Tool | null> {
 // Fetch all tools for static generation
 async function getAllTools(): Promise<Tool[]> {
   const supabase = createServerSupabaseClient();
-  const { data, error } = await supabase
-    .from('tools')
-    .select('*');
+  const { data, error } = await supabase.from("tools").select("*");
 
   if (error || !data || data.length === 0) {
     return mockTools;
@@ -63,13 +57,15 @@ export async function generateStaticParams() {
 }
 
 // Generate dynamic metadata for SEO
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const tool = await getToolBySlug(slug);
 
   if (!tool) {
     return {
-      title: 'Tool Not Found | SaaS-Exit.io',
+      title: "Tool Not Found | SaaS-Exit.io",
     };
   }
 
@@ -82,23 +78,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     keywords: [
       `${tool.saas_equivalent} alternative`,
       `${tool.name}`,
-      'open source',
-      'self-hosted',
+      "open source",
+      "self-hosted",
       tool.category,
-      'free',
-      'privacy',
+      "free",
+      "privacy",
     ],
     openGraph: {
       title,
       description,
-      type: 'article',
+      type: "article",
       url: `/alternatives/${slug}`,
     },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
+    // twitter: {
+    //   card: 'summary_large_image',
+    //   title,
+    //   description,
+    // },
     alternates: {
       canonical: `/alternatives/${slug}`,
     },
@@ -115,7 +111,7 @@ export default async function AlternativePage({ params }: PageProps) {
 
   const saasPrice = getSaasPrice(tool.saas_equivalent);
   // Calculate default savings for hosting CTA (25 users)
-  const defaultAnnualSavings = (saasPrice * 25 * 12) - (5 * 12);
+  const defaultAnnualSavings = saasPrice * 25 * 12 - 5 * 12;
 
   return (
     <div className="min-h-screen bg-background">
@@ -129,12 +125,11 @@ export default async function AlternativePage({ params }: PageProps) {
         {/* Hero Section */}
         <div className="mb-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            Looking for a{' '}
-            <span className="text-primary">{tool.saas_equivalent}</span>{' '}
+            Looking for a{" "}
+            <span className="text-primary">{tool.saas_equivalent}</span>{" "}
             Alternative?
             <br />
-            Meet{' '}
-            <span className="gradient-text">{tool.name}</span>
+            Meet <span className="gradient-text">{tool.name}</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl">
             {tool.description}
@@ -174,8 +169,8 @@ export default async function AlternativePage({ params }: PageProps) {
                     Complete Data Ownership
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    Your data stays on your servers. No third-party access,
-                    no data mining, and full compliance with privacy regulations
+                    Your data stays on your servers. No third-party access, no
+                    data mining, and full compliance with privacy regulations
                     like GDPR and HIPAA.
                   </p>
                 </div>
@@ -184,8 +179,8 @@ export default async function AlternativePage({ params }: PageProps) {
                     No Per-User Pricing
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    Pay only for hosting (~$5-20/month), regardless of team size.
-                    Add unlimited users without increasing your costs.
+                    Pay only for hosting (~$5-20/month), regardless of team
+                    size. Add unlimited users without increasing your costs.
                   </p>
                 </div>
                 <div className="bg-card rounded-lg p-6 border border-border">
@@ -193,8 +188,8 @@ export default async function AlternativePage({ params }: PageProps) {
                     Full Customization
                   </h3>
                   <p className="text-muted-foreground text-sm">
-                    Access the source code and customize {tool.name} to fit
-                    your exact workflow. No feature limitations or paywalls.
+                    Access the source code and customize {tool.name} to fit your
+                    exact workflow. No feature limitations or paywalls.
                   </p>
                 </div>
                 <div className="bg-card rounded-lg p-6 border border-border">
@@ -203,7 +198,8 @@ export default async function AlternativePage({ params }: PageProps) {
                   </h3>
                   <p className="text-muted-foreground text-sm">
                     Export your data anytime. Move between hosting providers
-                    freely. Your business isn&apos;t dependent on a single vendor.
+                    freely. Your business isn&apos;t dependent on a single
+                    vendor.
                   </p>
                 </div>
               </div>
@@ -222,20 +218,20 @@ export default async function AlternativePage({ params }: PageProps) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'SoftwareApplication',
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
               name: tool.name,
               description: tool.description,
               applicationCategory: tool.category,
-              operatingSystem: 'Linux, Docker',
+              operatingSystem: "Linux, Docker",
               offers: {
-                '@type': 'Offer',
-                price: '0',
-                priceCurrency: 'USD',
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
               },
               aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: '4.5',
+                "@type": "AggregateRating",
+                ratingValue: "4.5",
                 ratingCount: Math.floor(tool.stars / 100),
               },
             }),

@@ -1,25 +1,25 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Github, Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import Link from 'next/link';
+import { motion } from "framer-motion";
+import { Github, Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import Link from "next/link";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
+} from "@/components/ui/sheet";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { href: '/#tools', label: 'Browse Tools' },
-    { href: '/#calculator', label: 'Calculator' },
-    { href: '/about', label: 'About' },
+    { href: "/#tools", label: "Browse Tools" },
+    { href: "/#calculator", label: "Calculator" },
+    { href: "/about", label: "About" },
   ];
 
   return (
@@ -33,7 +33,9 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-lg font-bold text-primary-foreground">S</span>
+              <span className="text-lg font-bold text-primary-foreground">
+                S
+              </span>
             </div>
             <span className="text-xl font-bold text-foreground">
               SaaS-Exit<span className="text-primary">.io</span>
@@ -58,13 +60,21 @@ export function Header() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => window.open('https://github.com/your-repo/saas-exit', '_blank')}
+              onClick={() =>
+                window.open(
+                  "https://github.com/parhsmaropoulos/exit-saas",
+                  "_blank"
+                )
+              }
             >
               <Github className="w-4 h-4 mr-2" />
               Star on GitHub
             </Button>
             <Link href="/submit">
-              <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              <Button
+                size="sm"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
                 Submit a Tool
               </Button>
             </Link>
@@ -79,7 +89,9 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-card border-border">
               <SheetHeader>
-                <SheetTitle className="text-left text-foreground">Menu</SheetTitle>
+                <SheetTitle className="text-left text-foreground">
+                  Menu
+                </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-4 mt-8">
                 {navLinks.map((link) => (
@@ -95,7 +107,12 @@ export function Header() {
                 <hr className="border-border my-4" />
                 <Button
                   variant="outline"
-                  onClick={() => window.open('https://github.com/your-repo/saas-exit', '_blank')}
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/parhsmaropoulos/exit-saas",
+                      "_blank"
+                    )
+                  }
                 >
                   <Github className="w-4 h-4 mr-2" />
                   Star on GitHub
