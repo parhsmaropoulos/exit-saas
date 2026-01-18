@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import { getAllBlogPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Blog | SaaS-Exit.io - Open Source & Self-Hosting Guides",
+  title: "Blog | Exit-Saas.io - Open Source & Self-Hosting Guides",
   description:
     "Expert guides on self-hosting, open-source alternatives, and escaping vendor lock-in. Learn how to save money and take control of your infrastructure.",
   keywords: [
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "data sovereignty",
   ],
   openGraph: {
-    title: "SaaS-Exit Blog - Self-Hosting & Open Source Guides",
+    title: "Exit-Saas Blog - Self-Hosting & Open Source Guides",
     description:
       "Expert guides on self-hosting, open-source alternatives, and escaping vendor lock-in.",
     type: "website",
@@ -38,7 +38,7 @@ export default function BlogPage() {
         {/* Hero Section */}
         <div className="max-w-3xl mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            SaaS-Exit Blog
+            Exit-Saas Blog
           </h1>
           <p className="text-xl text-muted-foreground">
             Expert guides on self-hosting, open-source alternatives, and

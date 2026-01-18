@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase';
+import { NextRequest, NextResponse } from "next/server";
+import { createServerSupabaseClient } from "@/lib/supabase";
 
 interface SubmissionData {
   toolName: string;
@@ -15,7 +15,14 @@ export async function POST(request: NextRequest) {
     const body: SubmissionData = await request.json();
 
     // Validate required fields
-    const requiredFields = ['toolName', 'githubUrl', 'description', 'saasEquivalent', 'category', 'submitterEmail'];
+    const requiredFields = [
+      "toolName",
+      "githubUrl",
+      "description",
+      "saasEquivalent",
+      "category",
+      "submitterEmail",
+    ];
     for (const field of requiredFields) {
       if (!body[field as keyof SubmissionData]) {
         return NextResponse.json(
@@ -29,7 +36,7 @@ export async function POST(request: NextRequest) {
     const githubRegex = /^https?:\/\/(www\.)?github\.com\/[\w-]+\/[\w.-]+\/?$/;
     if (!githubRegex.test(body.githubUrl)) {
       return NextResponse.json(
-        { error: 'Invalid GitHub URL format' },
+        { error: "Invalid GitHub URL format" },
         { status: 400 }
       );
     }
@@ -38,43 +45,48 @@ export async function POST(request: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(body.submitterEmail)) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        { error: "Invalid email format" },
         { status: 400 }
       );
     }
 
     // Fetch GitHub repo info to validate it exists and get stars
-    const repoPath = body.githubUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '').replace(/\/$/, '');
+    const repoPath = body.githubUrl
+      .replace(/^https?:\/\/(www\.)?github\.com\//, "")
+      .replace(/\/$/, "");
     let githubData = null;
 
     try {
-      const githubResponse = await fetch(`https://api.github.com/repos/${repoPath}`, {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'SaaS-Exit-Submission',
-        },
-      });
+      const githubResponse = await fetch(
+        `https://api.github.com/repos/${repoPath}`,
+        {
+          headers: {
+            Accept: "application/vnd.github.v3+json",
+            "User-Agent": "Exit-Saas-Submission",
+          },
+        }
+      );
 
       if (githubResponse.ok) {
         githubData = await githubResponse.json();
       }
     } catch {
       // GitHub API call failed, continue without GitHub data
-      console.warn('Failed to fetch GitHub data for:', repoPath);
+      console.warn("Failed to fetch GitHub data for:", repoPath);
     }
 
     const supabase = createServerSupabaseClient();
 
     // Check if tool already exists or was already submitted
     const { data: existingTool } = await supabase
-      .from('tool_submissions')
-      .select('id')
-      .eq('github_url', body.githubUrl)
+      .from("tool_submissions")
+      .select("id")
+      .eq("github_url", body.githubUrl)
       .single();
 
     if (existingTool) {
       return NextResponse.json(
-        { error: 'This tool has already been submitted' },
+        { error: "This tool has already been submitted" },
         { status: 409 }
       );
     }
@@ -105,18 +117,18 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        message: 'Tool submitted successfully',
+        message: "Tool submitted successfully",
         submission: {
           // id: data.id,
           // toolName: data.tool_name,
-        }
+        },
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Submission error:', error);
+    console.error("Submission error:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

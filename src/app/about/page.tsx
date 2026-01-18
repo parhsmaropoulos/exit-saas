@@ -5,9 +5,9 @@ import { Footer } from "@/components/footer";
 import { Shield, Globe, Code, Heart, Users, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us | SaaS-Exit.io",
+  title: "About Us | Exit-Saas.io",
   description:
-    "Learn about SaaS-Exit.io - Our mission to help developers and businesses achieve Digital Sovereignty through open-source software.",
+    "Learn about Exit-Saas.io - Our mission to help developers and businesses achieve Digital Sovereignty through open-source software.",
 };
 
 export default function AboutPage() {
@@ -23,7 +23,7 @@ export default function AboutPage() {
             <span className="gradient-text">Digital Sovereignty</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            SaaS-Exit.io was built to help developers and businesses take back
+            Exit-Saas.io was built to help developers and businesses take back
             control of their software stack by discovering and adopting
             open-source alternatives.
           </p>
@@ -56,7 +56,7 @@ export default function AboutPage() {
         {/* Why We Built This */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-foreground mb-6">
-            Why We Built SaaS-Exit.io
+            Why We Built Exit-Saas.io
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-card border border-border rounded-lg p-6">
@@ -167,7 +167,7 @@ export default function AboutPage() {
         {/* How We Help */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-foreground mb-6">
-            How SaaS-Exit.io Helps
+            How Exit-Saas.io Helps
           </h2>
           <div className="space-y-4">
             <div className="flex items-start gap-4 p-4 bg-card border border-border rounded-lg">
@@ -255,7 +255,7 @@ export default function AboutPage() {
               </div>
             </div>
             <p className="text-muted-foreground">
-              SaaS-Exit.io is built by developers, for developers. We&apos;re
+              Exit-Saas.io is built by developers, for developers. We&apos;re
               passionate about open-source software and believe in the power of
               community-driven development. If you&apos;d like to contribute,
               suggest tools, or report issues, we&apos;d love to hear from you.

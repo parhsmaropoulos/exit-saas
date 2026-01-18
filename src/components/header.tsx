@@ -40,7 +40,7 @@ export function Header() {
               </span>
             </div>
             <span className="text-xl font-bold text-foreground">
-              SaaS-Exit<span className="text-primary">.io</span>
+              Exit-Saas<span className="text-primary">.io</span>
             </span>
           </Link>
 

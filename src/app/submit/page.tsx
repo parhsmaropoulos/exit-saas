@@ -5,9 +5,9 @@ import { SubmitToolForm } from "@/components/submit/submit-tool-form";
 import { Lightbulb, CheckCircle, Clock, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Submit a Tool | SaaS-Exit.io",
+  title: "Submit a Tool | Exit-Saas.io",
   description:
-    "Submit an open-source, self-hosted tool to be featured on SaaS-Exit.io. Help others discover alternatives to expensive SaaS products.",
+    "Submit an open-source, self-hosted tool to be featured on Exit-Saas.io. Help others discover alternatives to expensive SaaS products.",
 };
 
 export default function SubmitToolPage() {

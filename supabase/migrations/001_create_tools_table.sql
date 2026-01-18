@@ -1,4 +1,4 @@
--- Create the tools table for SaaS-Exit.io
+-- Create the tools table for Exit-Saas.io
 CREATE TABLE IF NOT EXISTS tools (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255) NOT NULL,

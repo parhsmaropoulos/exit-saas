@@ -17,7 +17,7 @@ export function Footer() {
                 </span>
               </div>
               <span className="text-xl font-bold text-foreground">
-                SaaS-Exit<span className="text-primary">.io</span>
+                Exit-Saas<span className="text-primary">.io</span>
               </span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-md">
@@ -165,7 +165,7 @@ export function Footer() {
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} SaaS-Exit.io. Open source and free
+            &copy; {new Date().getFullYear()} Exit-Saas.io. Open source and free
             forever.
           </p>
           <div className="flex items-center gap-4">

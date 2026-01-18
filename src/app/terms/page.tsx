@@ -4,9 +4,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | SaaS-Exit.io",
+  title: "Terms of Service | Exit-Saas.io",
   description:
-    "Terms of Service for SaaS-Exit.io - Read our terms and conditions for using our open-source software directory.",
+    "Terms of Service for Exit-Saas.io - Read our terms and conditions for using our open-source software directory.",
 };
 
 export default function TermsOfServicePage() {
@@ -31,9 +31,9 @@ export default function TermsOfServicePage() {
               1. Acceptance of Terms
             </h2>
             <p className="text-muted-foreground">
-              Welcome to SaaS-Exit.io (&quot;Site,&quot; &quot;we,&quot;
+              Welcome to Exit-Saas.io (&quot;Site,&quot; &quot;we,&quot;
               &quot;our,&quot; or &quot;us&quot;). By accessing or using our
-              website at saas-exit.io, you agree to be bound by these Terms of
+              website at exit-saas.io, you agree to be bound by these Terms of
               Service (&quot;Terms&quot;). If you do not agree to all of these
               Terms, do not use this Site.
             </p>
@@ -51,7 +51,7 @@ export default function TermsOfServicePage() {
               2. Description of Service
             </h2>
             <p className="text-muted-foreground">
-              SaaS-Exit.io is a directory and informational resource that helps
+              Exit-Saas.io is a directory and informational resource that helps
               users discover open-source, self-hosted alternatives to popular
               SaaS (Software as a Service) products. Our Site provides:
             </p>
@@ -124,7 +124,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p className="text-muted-foreground">
               The Site and its original content, features, and functionality are
-              owned by SaaS-Exit.io and are protected by international
+              owned by Exit-Saas.io and are protected by international
               copyright, trademark, patent, trade secret, and other intellectual
               property laws.
             </p>
@@ -139,7 +139,7 @@ export default function TermsOfServicePage() {
               Third-party trademarks, service marks, and logos referenced on the
               Site are the property of their respective owners. The display of
               these trademarks does not imply endorsement or affiliation with
-              SaaS-Exit.io.
+              Exit-Saas.io.
             </p>
           </section>
 
@@ -183,7 +183,7 @@ export default function TermsOfServicePage() {
               6. Affiliate Relationships and Disclosure
             </h2>
             <p className="text-muted-foreground">
-              SaaS-Exit.io participates in affiliate marketing programs. When
+              Exit-Saas.io participates in affiliate marketing programs. When
               you click on certain links on our Site and make a purchase, we may
               receive a commission at no additional cost to you. These affiliate
               relationships help us maintain and improve our free directory
@@ -259,7 +259,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p className="text-muted-foreground">
               TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT
-              SHALL SAAS-EXIT.IO, ITS AFFILIATES, DIRECTORS, EMPLOYEES, OR
+              SHALL Exit-Saas.IO, ITS AFFILIATES, DIRECTORS, EMPLOYEES, OR
               AGENTS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL,
               CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION:
             </p>
@@ -294,7 +294,7 @@ export default function TermsOfServicePage() {
               9. Indemnification
             </h2>
             <p className="text-muted-foreground">
-              You agree to indemnify, defend, and hold harmless SaaS-Exit.io,
+              You agree to indemnify, defend, and hold harmless Exit-Saas.io,
               its affiliates, officers, directors, employees, and agents from
               and against any and all claims, damages, obligations, losses,
               liabilities, costs, and expenses (including attorney&apos;s fees)
@@ -325,7 +325,7 @@ export default function TermsOfServicePage() {
             </h2>
             <p className="text-muted-foreground">
               These Terms shall be governed by and construed in accordance with
-              the laws of the jurisdiction in which SaaS-Exit.io operates,
+              the laws of the jurisdiction in which Exit-Saas.io operates,
               without regard to its conflict of law provisions.
             </p>
             <p className="text-muted-foreground mt-4">
@@ -377,7 +377,7 @@ export default function TermsOfServicePage() {
             <p className="text-muted-foreground">
               These Terms, together with our Privacy Policy and Affiliate
               Disclosure, constitute the entire agreement between you and
-              SaaS-Exit.io regarding your use of the Site and supersede all
+              Exit-Saas.io regarding your use of the Site and supersede all
               prior and contemporaneous written or oral agreements.
             </p>
           </section>

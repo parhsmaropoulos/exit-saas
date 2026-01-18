@@ -4,9 +4,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | SaaS-Exit.io",
+  title: "Privacy Policy | Exit-Saas.io",
   description:
-    "Privacy Policy for SaaS-Exit.io - Learn how we collect, use, and protect your data.",
+    "Privacy Policy for Exit-Saas.io - Learn how we collect, use, and protect your data.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -31,10 +31,10 @@ export default function PrivacyPolicyPage() {
               Introduction
             </h2>
             <p className="text-muted-foreground">
-              SaaS-Exit.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;)
+              Exit-Saas.io (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;)
               is committed to protecting your privacy. This Privacy Policy
               explains how we collect, use, disclose, and safeguard your
-              information when you visit our website saas-exit.io (the
+              information when you visit our website exit-saas.io (the
               &quot;Site&quot;).
             </p>
             <p className="text-muted-foreground mt-4">

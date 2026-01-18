@@ -19,6 +19,7 @@ This isn't nostalgia for 2010s-era server racks. It's a calculated response to S
 ### Public Migrations (Announced 2022-2026)
 
 **37signals (Basecamp, HEY):**
+
 - Previous AWS spend: $3.2M/year
 - New infrastructure: $840K (hardware) + $286K/year (operations)
 - 5-year savings: $7M
@@ -26,6 +27,7 @@ This isn't nostalgia for 2010s-era server racks. It's a calculated response to S
 - **Announcement:** October 2022, [blog post](https://world.hey.com/dhh/why-we-re-leaving-the-cloud-654b47e0)
 
 **Discord:**
+
 - Migrated message database from MongoDB Atlas to self-hosted ScyllaDB
 - Previous cost: $150K/month ($1.8M/year)
 - New cost: $50K/month ($600K/year)
@@ -33,11 +35,13 @@ This isn't nostalgia for 2010s-era server racks. It's a calculated response to S
 - Performance gain: 90% reduction in latency
 
 **Dropbox:**
+
 - Migrated from AWS S3 to custom infrastructure (2016, but trend continued)
 - Saved $75M over 2 years
 - Reduced per-user storage cost from $5 to $2
 
 **Coinbase:**
+
 - Self-hosts core exchange infrastructure
 - Uses AWS only for ancillary services
 - Estimated savings: $100M+ over 5 years
@@ -48,6 +52,7 @@ This isn't nostalgia for 2010s-era server racks. It's a calculated response to S
 **Gartner survey (2025):** 47% of enterprises are "repatriating" cloud workloads back to on-premise or self-hosted infrastructure.
 
 **Reasons cited:**
+
 1. Cost overruns (68%)
 2. Data sovereignty requirements (42%)
 3. Performance issues (31%)
@@ -60,6 +65,7 @@ This isn't nostalgia for 2010s-era server racks. It's a calculated response to S
 ### The Promise (2010-2015)
 
 **SaaS vendor pitch:**
+
 - "Pay only for what you use"
 - "No upfront infrastructure costs"
 - "Scales automatically with your business"
@@ -74,11 +80,13 @@ This isn't nostalgia for 2010s-era server racks. It's a calculated response to S
 **1. Usage-based pricing became a tax on growth**
 
 Example: Vercel pricing for Next.js hosting
+
 - Free tier: 100GB bandwidth
 - Pro: $20/month + $40 per 100GB overage
 - Company with 2TB bandwidth/month: $20 + ($40 × 19.9) = $816/month
 
 **Self-hosted equivalent:**
+
 - Hetzner dedicated server: $45/month
 - 20TB included bandwidth
 - **Savings: $771/month ($9,252/year)**
@@ -86,12 +94,14 @@ Example: Vercel pricing for Next.js hosting
 **2. Per-user pricing doesn't match value delivered**
 
 HubSpot Sales Hub: $100/user/month
+
 - 10-person sales team: $12,000/year
 - 50-person sales team: $60,000/year
 
 Value delivered doesn't scale linearly with users, but pricing does.
 
 **Self-hosted EspoCRM:**
+
 - Cost: $850/year (regardless of users)
 - 10 users: Saves $11,150/year
 - 50 users: Saves $59,150/year
@@ -99,6 +109,7 @@ Value delivered doesn't scale linearly with users, but pricing does.
 **3. "Free tier" lures, then pricing jumps**
 
 Slack pricing evolution:
+
 - 2014: Free tier with full search history
 - 2018: Free tier limited to 10,000 messages (90 days for most teams)
 - 2022: Standard plan $6.67/user/month
@@ -108,6 +119,7 @@ Slack pricing evolution:
 **4. Enterprise features held hostage**
 
 Common SaaS pattern:
+
 - Starter: $10/user (missing SAML SSO, audit logs)
 - Professional: $25/user (adds SSO, still no audit logs)
 - Enterprise: "Contact sales" ($100+/user)
@@ -118,34 +130,34 @@ Common SaaS pattern:
 
 ### SaaS Stack (Annual Costs)
 
-| Service | Tool | Cost/Year |
-|---------|------|-----------|
-| Communication | Slack Business+ | $20,250 |
-| Code hosting | GitHub Teams | $25,200 |
-| CI/CD | CircleCI | $12,000 |
-| Monitoring | Datadog | $36,000 |
-| CRM | HubSpot | $54,000 |
-| Project management | Asana Business | $29,970 |
-| Cloud hosting | AWS (database, compute) | $180,000 |
-| Error tracking | Sentry Business | $8,400 |
-| Analytics | Mixpanel Growth | $18,000 |
-| **Total** | | **$383,820/year** |
+| Service            | Tool                    | Cost/Year         |
+| ------------------ | ----------------------- | ----------------- |
+| Communication      | Slack Business+         | $20,250           |
+| Code hosting       | GitHub Teams            | $25,200           |
+| CI/CD              | CircleCI                | $12,000           |
+| Monitoring         | Datadog                 | $36,000           |
+| CRM                | HubSpot                 | $54,000           |
+| Project management | Asana Business          | $29,970           |
+| Cloud hosting      | AWS (database, compute) | $180,000          |
+| Error tracking     | Sentry Business         | $8,400            |
+| Analytics          | Mixpanel Growth         | $18,000           |
+| **Total**          |                         | **$383,820/year** |
 
 ### Self-Hosted Equivalent
 
-| Service | Tool | Cost/Year |
-|---------|------|-----------|
-| Communication | Mattermost self-hosted | $1,440 (infrastructure) |
-| Code hosting | GitLab CE | $1,800 |
-| CI/CD | GitLab CI (included) | $0 |
-| Monitoring | Prometheus + Grafana | $720 |
-| CRM | EspoCRM | $1,200 |
-| Project management | Taiga | $720 |
-| Hosting | Dedicated servers (Hetzner) | $28,800 |
-| Error tracking | Sentry self-hosted | $720 |
-| Analytics | Plausible self-hosted | $600 |
-| DevOps labor | 1 FTE @ $120K/year | $120,000 |
-| **Total** | | **$156,000/year** |
+| Service            | Tool                        | Cost/Year               |
+| ------------------ | --------------------------- | ----------------------- |
+| Communication      | Mattermost self-hosted      | $1,440 (infrastructure) |
+| Code hosting       | GitLab CE                   | $1,800                  |
+| CI/CD              | GitLab CI (included)        | $0                      |
+| Monitoring         | Prometheus + Grafana        | $720                    |
+| CRM                | EspoCRM                     | $1,200                  |
+| Project management | Taiga                       | $720                    |
+| Hosting            | Dedicated servers (Hetzner) | $28,800                 |
+| Error tracking     | Sentry self-hosted          | $720                    |
+| Analytics          | Plausible self-hosted       | $600                    |
+| DevOps labor       | 1 FTE @ $120K/year          | $120,000                |
+| **Total**          |                             | **$156,000/year**       |
 
 **Savings: $227,820/year (59% reduction)**
 
@@ -156,6 +168,7 @@ Common SaaS pattern:
 ### Pre-Docker Era (2005-2015)
 
 **Self-hosting required:**
+
 - Deep Linux knowledge
 - Manual dependency management
 - Custom deployment scripts
@@ -169,6 +182,7 @@ Common SaaS pattern:
 ### Post-Docker Era (2015-Present)
 
 **Self-hosting now:**
+
 ```bash
 git clone https://github.com/mattermost/docker
 cd docker
@@ -177,6 +191,7 @@ docker-compose up -d
 ```
 
 **What Docker enabled:**
+
 - Reproducible deployments
 - Dependency isolation
 - One-command scaling
@@ -191,21 +206,25 @@ docker-compose up -d
 ### Data Privacy Incidents That Changed Perception
 
 **Zoom (April 2020):**
+
 - Caught routing traffic through China despite claiming end-to-end encryption
 - "Zoombombing" incidents exposed weak security defaults
 - **Outcome:** Enterprises realized they had zero control over vendor practices
 
 **SolarWinds (December 2020):**
+
 - Supply chain attack compromised 18,000 customers
 - Attackers had access for 9 months
 - **Lesson:** SaaS vendor breach = you're breached
 
 **Okta (March 2022):**
+
 - Lapsus$ hacking group accessed internal systems
 - 366 customer companies potentially compromised
 - **Realization:** Identity provider breach = skeleton key to your entire company
 
 **LastPass (August 2022):**
+
 - Encrypted vaults stolen
 - Attackers had 9 months of access to development systems
 - **Trust destroyed:** Password manager, the ultimate trust service, fundamentally compromised
@@ -215,11 +234,13 @@ docker-compose up -d
 **Before GDPR:** "Our vendors handle compliance"
 
 **After GDPR:**
+
 - €50M fine to Google (2019) for consent violations
 - €746M fine to Amazon (2021) for data processing violations
 - **Realization:** Using non-compliant vendor = you're liable
 
 **Self-hosting solution:**
+
 - Data never leaves EU infrastructure
 - No third-party processor = simpler compliance
 - Complete audit control
@@ -229,6 +250,7 @@ docker-compose up -d
 ### Phase 1: SaaS Adoption (2010-2018)
 
 **Characteristics:**
+
 - Small team (5-20 employees)
 - Focus on product-market fit
 - No DevOps expertise
@@ -237,6 +259,7 @@ docker-compose up -d
 ### Phase 2: SaaS Scaling Pain (2018-2022)
 
 **Characteristics:**
+
 - Growing team (20-100 employees)
 - SaaS costs scaling faster than revenue
 - Complexity from 20+ SaaS tools
@@ -245,12 +268,14 @@ docker-compose up -d
 ### Phase 3: Selective Self-Hosting (2022-Present)
 
 **Characteristics:**
+
 - Mature team (50-200+ employees)
 - Dedicated DevOps/Platform team
 - Strategic tool evaluation
 - **Hybrid approach:** Self-host commodity tools, keep SaaS for specialized services
 
 **Migration pattern:**
+
 1. First to self-host: GitLab (easy, high ROI)
 2. Second: Monitoring (Prometheus/Grafana)
 3. Third: Internal communication (Mattermost)
@@ -264,17 +289,20 @@ docker-compose up -d
 **Cheap VC money dried up.**
 
 Startups can no longer afford to:
+
 - Burn $500K/year on AWS
 - Pay $100/user/month for every SaaS tool
 - Ignore unit economics
 
 **CFO conversation shift:**
+
 - 2020: "Just use SaaS, we'll optimize later"
 - 2024: "Why are we paying $400K/year for tools we could run for $50K?"
 
 ### 2. SaaS Vendor Consolidation
 
 **Private equity playbook:**
+
 1. Buy popular SaaS company
 2. Fire half the engineering team
 3. Increase prices 30-50%
@@ -282,6 +310,7 @@ Startups can no longer afford to:
 5. Extract maximum revenue
 
 **Recent examples:**
+
 - Salesforce acquiring Slack (price increases followed)
 - Thoma Bravo buying Mailchimp, Plannuh, Stamps.com (price increases)
 - Vista Equity buying Marketo, Pluralsight (quality decline reported)
@@ -291,9 +320,11 @@ Startups can no longer afford to:
 ### 3. AI Commoditization
 
 **SaaS value prop used to be:**
+
 - "We have data scientists building ML models you can't replicate"
 
 **Now:**
+
 - Open-source LLMs (Llama, Mistral) match proprietary models
 - Self-hosting AI is feasible
 - "Smart features" no longer justify 10x pricing premium
@@ -303,12 +334,14 @@ Startups can no longer afford to:
 ### Short-term (2026-2028)
 
 **SaaS vendors will:**
+
 - Introduce "self-hosted" tiers (ironic reversal)
 - Lower prices for loyal customers (retention focus)
 - Add "data residency" options (EU, US regions)
 - Acquire open-source competitors
 
 **Companies will:**
+
 - Migrate 30-50% of SaaS tools to self-hosted
 - Keep SaaS for compliance-heavy services (payments, email)
 - Invest in DevOps/platform engineering teams
@@ -316,30 +349,35 @@ Startups can no longer afford to:
 ### Long-term (2028-2032)
 
 **Hybrid infrastructure becomes standard:**
+
 - Self-hosted: Databases, internal tools, analytics
 - SaaS: Specialized compliance (payments, email), AI services
 - Edge: Static sites, CDN (Cloudflare, Vercel)
 
 **New business models emerge:**
+
 - Open-source companies offer "managed self-hosting"
 - Example: You run GitLab on your infrastructure, GitLab provides support/updates
 - **Best of both worlds:** Data sovereignty + vendor expertise
 
 **Developer tooling improves:**
+
 - Kubernetes becomes as easy as Docker Compose
 - "Deploy button" for self-hosted apps becomes standard
 - Infrastructure-as-code templates proliferate
 
-## The SaaS-Exit Philosophy
+## The Exit-Saas Philosophy
 
 **This isn't anti-SaaS extremism.**
 
 SaaS solved real problems:
+
 - Eliminated upfront infrastructure investment
 - Democratized access to enterprise software
 - Enabled rapid experimentation
 
 **But the pendulum swung too far:**
+
 - "Cloud-first" became "cloud-only" without evaluation
 - Convenience premium became exploitation
 - Data ownership was surrendered without consideration
@@ -347,12 +385,14 @@ SaaS solved real problems:
 **The correction isn't "self-host everything."**
 
 It's **selective self-hosting based on:**
+
 1. Cost analysis (5-year TCO)
 2. Technical capacity (do you have DevOps skills?)
 3. Data sensitivity (compliance requirements)
 4. Vendor lock-in risk (can you export data easily?)
 
 **Companies that thrive:**
+
 - Self-host commodity infrastructure
 - Use SaaS for specialized services
 - Maintain optionality (can switch either direction)
