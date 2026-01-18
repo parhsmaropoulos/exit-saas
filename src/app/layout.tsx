@@ -24,16 +24,30 @@ export const metadata: Metadata = {
     "cost savings",
     "software tools",
   ],
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "Exit-Saas.io | Exit the SaaS Tax",
     description:
       "Find open-source alternatives to expensive SaaS tools and calculate your savings.",
     type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 800,
+        alt: "Exit-Saas.io Logo",
+      },
+    ],
   },
   // twitter: {
   //   card: "summary_large_image",
   //   title: "Exit-Saas.io | Exit the SaaS Tax",
   //   description: "Find open-source alternatives to expensive SaaS tools and calculate your savings.",
+  //   images: ["/logo.png"],
   // },
 };
 
