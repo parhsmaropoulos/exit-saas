@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Rocket, Server, CheckCircle, ArrowRight, Gift } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { motion } from "framer-motion";
+import { Rocket, Server, CheckCircle, ArrowRight, Gift } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface HostingCallToActionProps {
   toolName: string;
 }
 
 export function HostingCallToAction({ toolName }: HostingCallToActionProps) {
-  const referralUrl = process.env.NEXT_PUBLIC_DO_REFERRAL || 'https://m.do.co/c/your-referral-code';
+  const referralUrl = process.env.NEXT_PUBLIC_DO_REFERRAL;
 
   const benefits = [
-    'Deploy in under 5 minutes',
-    '$200 free credits for 60 days',
-    'No credit card required to start',
-    'Automatic backups included',
+    "Deploy in under 5 minutes",
+    "$200 free credits for 60 days",
+    "No credit card required to start",
+    "Automatic backups included",
   ];
 
   return (
@@ -42,7 +42,9 @@ export function HostingCallToAction({ toolName }: HostingCallToActionProps) {
                 Ready to Switch?
               </h3>
               <p className="text-white/80 text-lg">
-                Deploy <span className="font-semibold text-white">{toolName}</span> on DigitalOcean in 1-click
+                Deploy{" "}
+                <span className="font-semibold text-white">{toolName}</span> on
+                DigitalOcean in 1-click
               </p>
             </div>
           </div>
@@ -69,8 +71,12 @@ export function HostingCallToAction({ toolName }: HostingCallToActionProps) {
               <Gift className="w-5 h-5 text-emerald-300" />
             </div>
             <div>
-              <p className="text-white font-semibold">Get $200 in Free Credits</p>
-              <p className="text-white/70 text-sm">New users receive $200 credit valid for 60 days</p>
+              <p className="text-white font-semibold">
+                Get $200 in Free Credits
+              </p>
+              <p className="text-white/70 text-sm">
+                New users receive $200 credit valid for 60 days
+              </p>
             </div>
           </div>
 
@@ -78,7 +84,7 @@ export function HostingCallToAction({ toolName }: HostingCallToActionProps) {
           <Button
             size="lg"
             className="w-full bg-white hover:bg-gray-100 text-[#0066CC] font-bold text-lg h-14 shadow-lg shadow-black/20"
-            onClick={() => window.open(referralUrl, '_blank')}
+            onClick={() => window.open(referralUrl, "_blank")}
           >
             <Server className="w-5 h-5 mr-2" />
             Deploy {toolName} Now
