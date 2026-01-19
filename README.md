@@ -2,7 +2,7 @@
 
 **Stop paying "SaaS Taxes."** Exit-Saas is a curated, community-driven directory that helps developers and businesses find high-quality, open-source alternatives to expensive subscription software.
 
-[Live Demo](https://your-link.vercel.app) | [Contribute a Tool](https://www.google.com/search?q=%23-contributing) | [Report a Bug](https://github.com/parhsmaropoulos/exit-saas/issues)
+[Live Demo](https://exit-saas.io/) | [Contribute a Tool](https://exit-saas.io/submit) | [Report a Bug](https://github.com/parhsmaropoulos/exit-saas/issues)
 
 ---
 
