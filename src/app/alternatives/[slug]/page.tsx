@@ -14,6 +14,10 @@ import { generateSlug } from "@/lib/slug";
 import { getSaasPrice } from "@/lib/saas-pricing";
 import { mockTools } from "@/lib/mock-data";
 import { Tool } from "@/types/database";
+import {
+  generateBreadcrumbSchema,
+  generateToolBreadcrumbs,
+} from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -213,7 +217,7 @@ export default async function AlternativePage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Schema.org JSON-LD for SEO */}
+        {/* SoftwareApplication Schema */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -235,6 +239,18 @@ export default async function AlternativePage({ params }: PageProps) {
                 ratingCount: Math.floor(tool.stars / 100),
               },
             }),
+          }}
+        />
+
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              generateBreadcrumbSchema(
+                generateToolBreadcrumbs(tool.name, slug)
+              )
+            ),
           }}
         />
       </main>

@@ -5,6 +5,13 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { HostingCallToAction } from "@/components/monetization/hosting-call-to-action";
 import { getAllBlogSlugs, getBlogPostBySlug } from "@/lib/blog";
+import { RelatedPosts } from "@/components/blog/related-posts";
+import { getRelatedPosts } from "@/lib/related-posts-map";
+import {
+  generateBlogPostingSchema,
+  generateBreadcrumbSchema,
+  generateBlogBreadcrumbs,
+} from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -201,31 +208,37 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="mt-12 mb-8">
             <HostingCallToAction toolName="Your Open-Source Stack" />
           </div>
+
+          {/* Related Posts */}
+          <RelatedPosts currentSlug={slug} relatedSlugs={getRelatedPosts(slug)} />
         </article>
 
-        {/* Schema.org JSON-LD for SEO */}
+        {/* BlogPosting Schema with optional FAQs */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BlogPosting",
-              headline: post.title,
-              description: post.description,
-              datePublished: post.date,
-              author: {
-                "@type": "Organization",
-                name: "Exit-Saas",
-              },
-              publisher: {
-                "@type": "Organization",
-                name: "Exit-Saas",
-                logo: {
-                  "@type": "ImageObject",
-                  url: "https://exit-saas.io/logo.png",
+            __html: JSON.stringify(
+              generateBlogPostingSchema(
+                {
+                  title: post.title,
+                  description: post.description,
+                  date: post.date,
                 },
-              },
-            }),
+                post.faqs
+              )
+            ),
+          }}
+        />
+
+        {/* Breadcrumb Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              generateBreadcrumbSchema(
+                generateBlogBreadcrumbs(post.category, post.title, slug)
+              )
+            ),
           }}
         />
       </main>

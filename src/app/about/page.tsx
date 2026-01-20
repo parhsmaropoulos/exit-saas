@@ -235,6 +235,174 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Popular Resources */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-foreground mb-6">
+            Popular Resources
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            Explore our most helpful guides to get started with self-hosting and
+            learn about the benefits of open-source alternatives.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Getting Started */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Getting Started
+                </span>
+              </div>
+              <Link
+                href="/blog/docker-101-self-hosting-beginners-guide"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Docker 101 for Self-Hosting →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Complete beginner&apos;s guide to understanding containers and
+                deploying self-hosted applications.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Decision Framework
+                </span>
+              </div>
+              <Link
+                href="/blog/should-you-self-host-tco-calculator"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Should You Self-Host? TCO Calculator →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Real numbers comparing infrastructure, labor, and hidden costs
+                over 5 years.
+              </p>
+            </div>
+
+            {/* Financial Analysis */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Financial Analysis
+                </span>
+              </div>
+              <Link
+                href="/blog/hidden-costs-saas-subscriptions-killing-profit-margins"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Hidden Costs of SaaS Subscriptions →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Uncover invisible expenses of SaaS: price escalations, data egress
+                fees, and vendor lock-in costs.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Financial Strategy
+                </span>
+              </div>
+              <Link
+                href="/blog/why-self-hosting-best-financial-move-startups-2026"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Why Self-Hosting is Best for Startups →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Why self-hosting is the smartest financial move for startups in
+                2026.
+              </p>
+            </div>
+
+            {/* Technical Guides */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Migration Guide
+                </span>
+              </div>
+              <Link
+                href="/blog/migrate-slack-to-mattermost-one-weekend"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Migrate from Slack to Mattermost →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Step-by-step guide to migrating your team from Slack in one
+                weekend.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Tool Comparison
+                </span>
+              </div>
+              <Link
+                href="/blog/plausible-vs-google-analytics-privacy-first"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Plausible vs Google Analytics →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Privacy-first analytics showdown comparing Plausible and Google
+                Analytics.
+              </p>
+            </div>
+
+            {/* Industry Trends */}
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Trends & Analysis
+                </span>
+              </div>
+              <Link
+                href="/blog/great-saas-exodus-companies-self-hosting"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                The Great SaaS Exodus →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Why companies are moving back to self-hosted infrastructure.
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-6">
+              <div className="mb-2">
+                <span className="text-xs font-medium text-primary">
+                  Practical Guide
+                </span>
+              </div>
+              <Link
+                href="/blog/startup-tech-stack-under-100-monthly"
+                className="text-lg font-semibold text-foreground hover:text-primary transition-colors block mb-2"
+              >
+                Startup Tech Stack Under $100/Month →
+              </Link>
+              <p className="text-sm text-muted-foreground">
+                Build a complete startup tech stack for under $100/month using
+                open-source tools.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 text-center">
+            <Link
+              href="/blog"
+              className="inline-flex items-center text-primary hover:underline font-medium"
+            >
+              View all blog posts →
+            </Link>
+          </div>
+        </section>
+
         {/* Community */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-foreground mb-6">

@@ -1,9 +1,22 @@
 ---
 title: "When NOT to Self-Host: Honest Assessment"
-description: "Critical evaluation of when self-hosting is the wrong choice. Email servers, payment processing, and other services better left to SaaS providers."
+description: "Know when SaaS beats self-hosting: email servers, payments, DNS, and accounting. Honest cost analysis shows where vendor lock-in makes financial sense."
 date: "2026-01-18"
 category: "Decision Frameworks"
 slug: "when-not-to-self-host-honest-assessment"
+faqs:
+  - question: "Why shouldn't I self-host an email server?"
+    answer: "Email deliverability is extremely difficult—your IP has no reputation, Gmail's spam algorithms are opaque, and one SPF misconfiguration blocks all outbound mail. Self-hosted email costs $11,000 per year when factoring in maintenance time, backup servers, and spam filtering, versus $1,440 per year for Google Workspace. Unless you're a mail service provider, use managed email."
+  - question: "Is self-hosted payment processing worth the PCI compliance cost?"
+    answer: "No for 99.9% of businesses. PCI DSS Level 1 compliance costs $50,000+ annually for audits, scans, and security controls. A single data breach averages $4.88 million. Stripe at 2.9% plus $0.30 per transaction is vastly cheaper and transfers liability. Only businesses processing $50M+ annually should consider direct processor relationships."
+  - question: "When does SaaS actually cost less than self-hosting?"
+    answer: "SaaS wins for small teams under 5 people, during hyper-growth phases with 2x annual scaling, or when you have zero DevOps capacity. Services requiring specialized compliance like payments, accounting, and healthcare are cheaper and safer with SaaS providers who handle regulatory complexity."
+  - question: "Should I self-host my DNS for better privacy?"
+    answer: "No. Self-hosting DNS requires geographically distributed servers ($36/month minimum), DDoS protection ($50/month), and complex anycast routing knowledge. Cloudflare DNS is free, has 10-30ms query times versus your 80-200ms, and includes enterprise-grade DDoS protection. Self-hosting DNS provides zero practical benefit."
+  - question: "What is the #1 mistake people make when deciding to self-host?"
+    answer: "Ignoring opportunity cost. Your CTO spending 8 hours monthly on infrastructure maintenance at $150/hour effective rate costs $72,000 over 5 years. If that time could generate more than $72,000 in product value, buy SaaS instead. Infrastructure should only be your focus if infrastructure IS your product."
+  - question: "When is a team too small to benefit from self-hosting?"
+    answer: "Teams under 5 people rarely benefit financially from self-hosting. The DevOps labor cost ($85/hour) for initial setup and monthly maintenance often exceeds SaaS subscription savings. Small teams should self-host only for learning, data sovereignty requirements, or when the founder already has deep DevOps expertise."
 ---
 
 # When NOT to Self-Host: Honest Assessment
