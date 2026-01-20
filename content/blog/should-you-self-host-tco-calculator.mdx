@@ -1,9 +1,22 @@
 ---
 title: "Should You Self-Host? TCO Calculator Breakdown"
-description: "Calculate total cost of ownership for self-hosting vs SaaS. Real numbers comparing infrastructure, labor, and hidden costs over 5 years."
+description: "Self-hosting TCO calculator: real numbers comparing infrastructure, DevOps labor, and hidden costs over 5 years. Typical savings: 60-90% for 10+ users."
 date: "2026-01-18"
 category: "Decision Frameworks"
 slug: "should-you-self-host-tco-calculator"
+faqs:
+  - question: "When does self-hosting save more money than SaaS?"
+    answer: "Self-hosting typically saves 60-90% for teams with 10+ users when you have technical capacity. The break-even point is usually 3-6 months for project management tools, CRMs, and analytics platforms. Small teams under 5 people often see minimal savings after factoring in DevOps time at $85/hour for setup and maintenance."
+  - question: "What hidden costs should I factor into self-hosting TCO?"
+    answer: "Include DevOps labor at $85/hour for setup and maintenance, backup storage ($2-10/month), SSL certificates, monitoring tools, and potential downtime impact. Most tools require 30-60 minutes monthly maintenance. Don't forget opportunity cost—could that DevOps time generate more value building product features instead?"
+  - question: "Do I need a DevOps engineer to self-host successfully?"
+    answer: "Not for basic tools. If you can SSH into a server, read Docker logs, and run docker-compose commands, you can self-host 80% of business tools. Complex services like email servers or video conferencing require specialized expertise or should stay with SaaS providers."
+  - question: "Which tools should I self-host first as a startup?"
+    answer: "Start with analytics (Plausible), password managers (Vaultwarden), and project management (Taiga). These have simple Docker deployments, minimal maintenance burden, and immediate cost savings. Avoid email servers, payment processing, and accounting software initially due to compliance complexity."
+  - question: "How do I calculate downtime cost for self-hosted tools?"
+    answer: "Multiply your hourly business value by expected downtime hours. For e-commerce, use revenue per hour. For SaaS apps, calculate signup rate times customer LTV per hour. For internal tools, use employee hourly rate times productivity impact. Amateur setups average 20-40 hours downtime yearly versus 8.76 hours for SaaS with 99.9% SLA."
+  - question: "What team size makes self-hosting financially worthwhile?"
+    answer: "Self-hosting becomes cost-effective at 10+ users for most tools due to per-user SaaS pricing. A 20-person team saves $37,000 over 5 years on project management tools alone. However, teams under 5 people rarely see significant savings after factoring in the $85/hour DevOps labor cost for setup and maintenance."
 ---
 
 # Should You Self-Host? TCO Calculator Breakdown

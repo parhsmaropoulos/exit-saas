@@ -1,9 +1,22 @@
 ---
 title: "Docker 101 for Self-Hosting: Complete Beginner's Guide"
-description: "Learn Docker fundamentals for self-hosting. Understand containers, images, volumes, and docker-compose with practical examples for deploying real applications."
+description: "Master Docker for self-hosting: containers, volumes, networks, and docker-compose explained. Deploy production apps with confidence in 30 minutes."
 date: "2026-01-18"
 category: "Decision Frameworks"
 slug: "docker-101-self-hosting-beginners-guide"
+faqs:
+  - question: "What is Docker and why do I need it for self-hosting?"
+    answer: "Docker packages applications with all their dependencies into containers that run identically everywhere. Instead of manually installing Python, PostgreSQL, and NGINX on your server, you run one docker-compose up command. Docker eliminates dependency conflicts, configuration drift, and 'works on my machine' problems that plagued traditional deployments."
+  - question: "What's the difference between a Docker image and container?"
+    answer: "A Docker image is a blueprint or template containing your application code and dependencies. A container is a running instance of that image, like an object instantiated from a class in programming. You can create multiple containers from one image, each running independently with its own filesystem and processes."
+  - question: "Do I need to learn Docker before self-hosting applications?"
+    answer: "Basic Docker knowledge is sufficient for 90% of self-hosted tools. You need to understand docker-compose up, docker logs, and volume mounting. Most open-source projects provide ready-to-use docker-compose.yml files. Advanced Docker features like multi-stage builds or custom networks are optional for beginners."
+  - question: "What are Docker volumes and why do they matter?"
+    answer: "Docker volumes persist data outside containers so it survives restarts and updates. Without volumes, your database data disappears when you restart a container. Always mount volumes for databases, uploaded files, and configuration that needs to persist. Example: ./data:/var/lib/postgresql/data mounts your local data folder to the PostgreSQL data directory."
+  - question: "How much does it cost to run Docker on a VPS?"
+    answer: "Docker itself is free and open-source. You only pay for VPS hosting which starts at $5/month for basic applications (1 vCPU, 1GB RAM) or $10-20/month for production workloads (2 vCPU, 2-4GB RAM). A single VPS can run 5-10 containerized applications simultaneously using docker-compose."
+  - question: "What's the easiest way to deploy a Docker application?"
+    answer: "Use docker-compose with a pre-made docker-compose.yml file from the project's GitHub repository. Three steps: 1) Copy the docker-compose.yml file, 2) Configure environment variables in a .env file, 3) Run docker-compose up -d. The application pulls images, creates containers, and starts running automatically."
 ---
 
 # Docker 101 for Self-Hosting: Complete Beginner's Guide

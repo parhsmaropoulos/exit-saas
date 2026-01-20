@@ -4,6 +4,11 @@ import matter from "gray-matter";
 
 const contentDirectory = path.join(process.cwd(), "content/blog");
 
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -11,6 +16,7 @@ export interface BlogPost {
   date: string;
   category: string;
   content: string;
+  faqs?: FAQ[]; // Optional FAQ array for schema.org markup
 }
 
 // Get all blog post slugs
@@ -40,6 +46,7 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
       date: data.date || "",
       category: data.category || "",
       content,
+      faqs: data.faqs || undefined, // Parse FAQs from frontmatter if present
     };
   } catch (error) {
     console.error(`Error reading blog post ${slug}:`, error);
