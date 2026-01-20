@@ -5,6 +5,8 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { HostingCallToAction } from "@/components/monetization/hosting-call-to-action";
 import { getAllBlogSlugs, getBlogPostBySlug } from "@/lib/blog";
+import { RelatedPosts } from "@/components/blog/related-posts";
+import { getRelatedPosts } from "@/lib/related-posts-map";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -201,6 +203,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="mt-12 mb-8">
             <HostingCallToAction toolName="Your Open-Source Stack" />
           </div>
+
+          {/* Related Posts */}
+          <RelatedPosts currentSlug={slug} relatedSlugs={getRelatedPosts(slug)} />
         </article>
 
         {/* Schema.org JSON-LD for SEO */}

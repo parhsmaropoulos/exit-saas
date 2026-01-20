@@ -14,7 +14,7 @@ Then something breaks. Your database loses data after a restart. Port 8080 confl
 
 You're stuck Googling error messages, patching together solutions from 5-year-old StackOverflow threads.
 
-This guide explains Docker from first principles: what containers are, why they exist, and how to use them confidently for self-hosting.
+This guide explains Docker from first principles: what containers are, why they exist, and how to use them confidently for self-hosting. Once you understand these basics, you can [deploy your own analytics suite](/blog/deploy-own-analytics-suite-under-10-minutes) or build a [complete startup tech stack for under $100/month](/blog/startup-tech-stack-under-100-monthly).
 
 ## What Docker Actually Is (And Why You Need It)
 
@@ -754,10 +754,14 @@ Docker democratized self-hosting. What used to require a sysadmin now takes a si
 - Scaling is `docker-compose up --scale app=3`
 - Reproducible deployments in seconds
 
+Before diving into self-hosting with Docker, make sure to read our guide on [whether you should self-host](/blog/should-you-self-host-tco-calculator) to understand the true costs and benefits
+
 Docker isn't perfect. It adds abstraction layers. But it removed the biggest barrier to self-hosting: deployment complexity.
 
 Browse our [tools directory](/tools) for Docker-based deployment guides for 800+ self-hosted applications.
 
 The best way to learn Docker is to deploy something. Pick one app, follow a guide, break it, fix it. You'll understand more from one failed deployment than from reading 10 tutorials.
+
+Ready to put Docker into practice? Check out our guides on [migrating from Slack to Mattermost](/blog/migrate-slack-to-mattermost-one-weekend) or [setting up GitLab for CI/CD](/blog/self-hosting-gitlab-complete-cicd-setup).
 
 The command line is less scary than vendor lock-in.
