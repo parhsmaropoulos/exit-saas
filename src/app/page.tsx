@@ -25,6 +25,22 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Organization Schema for brand recognition in Google */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Exit-Saas",
+            "url": "https://exit-saas.io",
+            "logo": "https://exit-saas.io/logo.png",
+            "description": "Find open-source alternatives to expensive SaaS tools and calculate your savings.",
+            "sameAs": []
+          })
+        }}
+      />
+
       <Header />
 
       <main>
