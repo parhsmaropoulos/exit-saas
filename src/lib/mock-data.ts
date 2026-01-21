@@ -14,6 +14,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 4,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'MIT',
+    fork_count: 5600,
+    top_contributors: ['mattermost-build:2500', 'jwilander:1800', 'hmhealey:1200', 'crspeller:950'],
+    languages: ['Go:850000', 'TypeScript:420000', 'JavaScript:180000', 'HTML:50000'],
   },
   {
     id: '2',
@@ -27,6 +32,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 5,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'AGPL-3.0',
+    fork_count: 5200,
+    top_contributors: ['pramitgaha:1650', 'aaryan610:1420', 'NarayanBavisetti:980'],
+    languages: ['TypeScript:720000', 'Python:280000', 'JavaScript:95000', 'CSS:45000'],
   },
   {
     id: '3',
@@ -40,6 +50,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 3,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'AGPL-3.0',
+    fork_count: 3800,
+    top_contributors: ['ukutaht:3200', 'metmarkosaric:820', 'RobertJoonas:540'],
+    languages: ['JavaScript:380000', 'Elixir:320000', 'HTML:65000', 'CSS:28000'],
   },
   {
     id: '4',
@@ -53,6 +68,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 6,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'AGPL-3.0',
+    fork_count: 3000,
+    top_contributors: ['charlesBochet:4800', 'FelixMalfait:2100', 'Weiko:1650'],
+    languages: ['TypeScript:890000', 'JavaScript:42000', 'CSS:28000'],
   },
   {
     id: '5',
@@ -66,6 +86,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 5,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'AGPL-3.0',
+    fork_count: 1300,
+    top_contributors: ['lovrosdusko:1850', 'ancorcruz:1240', 'josephjz:680'],
+    languages: ['Ruby:540000', 'TypeScript:180000', 'JavaScript:92000', 'HTML:35000'],
   },
   {
     id: '6',
@@ -79,6 +104,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 4,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'MIT',
+    fork_count: 4000,
+    top_contributors: ['sojan-official:2800', 'pranavrajs:1950', 'nithindavid:1100'],
+    languages: ['Ruby:620000', 'Vue:380000', 'JavaScript:140000', 'HTML:45000'],
   },
   {
     id: '7',
@@ -92,6 +122,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 2,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'AGPL-3.0',
+    fork_count: 2800,
+    top_contributors: ['knadh:4200', 'mr-karan:380', 'maxking:240'],
+    languages: ['Go:420000', 'JavaScript:95000', 'HTML:52000', 'Vue:38000'],
   },
   {
     id: '8',
@@ -105,6 +140,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 3,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'MIT',
+    fork_count: 8600,
+    top_contributors: ['lunny:7200', 'zeripath:3800', 'techknowlogick:2400', '6543:1950'],
+    languages: ['Go:1200000', 'HTML:280000', 'TypeScript:165000', 'JavaScript:95000'],
   },
   {
     id: '9',
@@ -118,6 +158,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 4,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'AGPL-3.0',
+    fork_count: 9000,
+    top_contributors: ['harshavardhana:12500', 'kannappanr:3200', 'poornas:2800', 'koolhead17:1650'],
+    languages: ['Go:1450000', 'Shell:82000', 'Python:45000', 'Makefile:28000'],
   },
   {
     id: '10',
@@ -131,6 +176,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 2,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'GPL-3.0',
+    fork_count: 7000,
+    top_contributors: ['dani-garcia:1850', 'BlackDex:1420', 'jjlin:980'],
+    languages: ['Rust:380000', 'HTML:95000', 'JavaScript:42000', 'CSS:18000'],
   },
   {
     id: '11',
@@ -144,6 +194,11 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 5,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'MIT',
+    fork_count: 7200,
+    top_contributors: ['himself65:8500', 'pengx17:3200', 'darkskygit:2100', 'lawvs:1680'],
+    languages: ['TypeScript:2100000', 'Rust:320000', 'JavaScript:85000', 'CSS:42000'],
   },
   {
     id: '12',
@@ -157,5 +212,10 @@ export const mockTools: Tool[] = [
     self_host_difficulty: 2,
     docker_ready: true,
     created_at: new Date().toISOString(),
+    // v2 fields
+    license_type: 'MIT',
+    fork_count: 4200,
+    top_contributors: ['mikecao:5800', 'briancao:1240', 'gnarlex:680'],
+    languages: ['TypeScript:520000', 'JavaScript:125000', 'CSS:38000', 'HTML:22000'],
   },
 ];

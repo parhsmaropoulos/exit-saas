@@ -9,6 +9,7 @@ import { TechSpecsSidebar } from "@/components/alternatives/tech-specs-sidebar";
 import { AffiliateBanner } from "@/components/alternatives/affiliate-banner";
 import { HostingCallToAction } from "@/components/monetization/hosting-call-to-action";
 import { SidebarAd } from "@/components/monetization/sidebar-ad";
+import { RepositoryInsights } from "@/components/alternatives/repository-insights";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { generateSlug } from "@/lib/slug";
 import { getSaasPrice } from "@/lib/saas-pricing";
@@ -160,6 +161,11 @@ export default async function AlternativePage({ params }: PageProps) {
                 {tool.saas_equivalent} vs {tool.name}: Feature Comparison
               </h2>
               <ComparisonTable tool={tool} />
+            </section>
+
+            {/* Repository Insights Section */}
+            <section>
+              <RepositoryInsights tool={tool} />
             </section>
 
             {/* Why Switch Section */}
