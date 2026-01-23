@@ -10,6 +10,7 @@ import { AffiliateBanner } from "@/components/alternatives/affiliate-banner";
 import { HostingCallToAction } from "@/components/monetization/hosting-call-to-action";
 import { SidebarAd } from "@/components/monetization/sidebar-ad";
 import { RepositoryPreview } from "@/components/alternatives/repository-preview";
+import { RepositoryInsights } from "@/components/alternatives/repository-insights";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { generateSlug } from "@/lib/slug";
 import { getSaasPrice } from "@/lib/saas-pricing";
@@ -185,6 +186,11 @@ export default async function AlternativePage({ params }: PageProps) {
               <ComparisonTable tool={tool} />
             </section>
 
+            {/* Repository Insights Section */}
+            <section>
+              <RepositoryInsights tool={tool} />
+            </section>
+
             {/* Why Switch Section */}
             <section className="prose prose-invert max-w-none">
               <h2 className="text-2xl font-bold text-foreground mb-4">
@@ -271,8 +277,8 @@ export default async function AlternativePage({ params }: PageProps) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
               generateBreadcrumbSchema(
-                generateToolBreadcrumbs(tool.name, slug)
-              )
+                generateToolBreadcrumbs(tool.name, slug),
+              ),
             ),
           }}
         />
