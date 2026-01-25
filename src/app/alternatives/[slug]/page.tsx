@@ -20,10 +20,7 @@ import {
   generateBreadcrumbSchema,
   generateToolBreadcrumbs,
 } from "@/lib/schema";
-import {
-  getGitHubPreviewImage,
-  getFallbackPreviewUrl,
-} from "@/lib/github-preview";
+import { getGitHubPreviewUrl } from "@/lib/github-preview";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -79,11 +76,9 @@ export async function generateMetadata({
     };
   }
 
-  // Fetch GitHub preview image for Open Graph
-  const previewUrl =
-    (await getGitHubPreviewImage(tool.github_url)) ||
-    getFallbackPreviewUrl(tool.github_url);
-
+  // Get GitHub preview image for Open Graph
+  // const previewUrl = getGitHubPreviewUrl(tool.preview_url, tool.github_url);
+  const previewUrl = null;
   const title = `${tool.name}: Best ${tool.saas_equivalent} Alternative (Open Source) | Exit-Saas.io`;
   const description = `Looking for a ${tool.saas_equivalent} alternative? ${tool.name} is an open-source, self-hosted solution. Calculate your savings and learn how to deploy ${tool.name} today.`;
 
@@ -125,10 +120,9 @@ export default async function AlternativePage({ params }: PageProps) {
     notFound();
   }
 
-  // Fetch GitHub preview image
-  const previewUrl =
-    (await getGitHubPreviewImage(tool.github_url)) ||
-    getFallbackPreviewUrl(tool.github_url);
+  // Get GitHub preview image
+  // const previewUrl = getGitHubPreviewUrl(tool.preview_url, tool.github_url);
+  const previewUrl = null;
 
   const saasPrice = getSaasPrice(tool.saas_equivalent);
   // Calculate default savings for hosting CTA (25 users)

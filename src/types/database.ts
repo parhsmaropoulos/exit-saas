@@ -29,6 +29,7 @@ export interface Tool {
   fork_count?: number; // number (optional for backwards compatibility)
   top_contributors?: string[] | string; // e.g. ["alice:150", "bob:100"] or JSON string from DB
   languages?: string[] | string; // e.g. ['JavaScript:10000', 'TypeScript:40'] or JSON string from DB
+  preview_url?: string | null; // GitHub Open Graph preview image URL
 }
 
 export interface ToolSubmission {

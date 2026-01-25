@@ -1,41 +1,18 @@
 /**
- * Fetch GitHub repository Open Graph image URL
- * This function extracts the og:image meta tag from GitHub's HTML
+ * Get GitHub preview URL from database or fallback
+ * No API calls - uses preview_url from database
  */
-export async function getGitHubPreviewImage(
+export function getGitHubPreviewUrl(
+  previewUrl: string | null | undefined,
   githubUrl: string,
-): Promise<string | null> {
-  try {
-    // Validate GitHub URL
-    if (!githubUrl.includes("github.com")) return null;
-
-    // Fetch the HTML page
-    const response = await fetch(githubUrl, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; Exit-Saas/1.0)",
-      },
-      next: { revalidate: 86400 }, // Cache for 24 hours
-    });
-
-    if (!response.ok) return null;
-
-    const html = await response.text();
-
-    // Extract og:image using regex
-    const ogImageMatch = html.match(
-      /<meta property="og:image" content="([^"]+)"/,
-    );
-
-    if (ogImageMatch && ogImageMatch[1]) {
-      return ogImageMatch[1];
-    }
-
-    // If no og:image found, return null (fallback will be used)
-    return null;
-  } catch (error) {
-    console.error("Error fetching GitHub preview:", error);
-    return null;
+): string {
+  // Use preview_url from database if available
+  if (previewUrl) {
+    return previewUrl;
   }
+
+  // Otherwise use fallback
+  return getFallbackPreviewUrl(githubUrl);
 }
 
 /**

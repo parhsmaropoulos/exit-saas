@@ -1,0 +1,1063 @@
+---
+title: "The Complete Guide to Self-Hosting for Startups Under $50/Month"
+description: "Build your entire startup tech stack for $50/month: analytics, team chat, CI/CD, docs, CRM, email, and more. Complete deployment guide with cost breakdowns."
+date: "2026-01-25"
+category: "Cost Analysis"
+slug: "complete-guide-self-hosting-startups-under-50-monthly"
+faqs:
+  - question: "Is it really possible to run an entire startup on $50/month?"
+    answer: "Yes, with self-hosted open source tools. A typical stack includes: team chat (Mattermost), analytics (Plausible), CI/CD (GitLab), docs (Outline), CRM (Twenty), password manager (Vaultwarden), and monitoring (Uptime Kuma). All run on 2-3 VPS servers ($10-20 each). Compare to SaaS equivalents: Slack ($870/year), Google Analytics ($0 but data mining), GitHub ($2,280/year), Notion ($1,800/year) = $5,000+/year. Self-hosted: $600/year."
+  - question: "What if I'm not technical enough to self-host?"
+    answer: "If you can use Git and run terminal commands, you can self-host. Modern tools use docker-compose (one command deployment). No sysadmin expertise required. Learning curve: 20 hours to understand Docker basics, 2-4 hours/month for maintenance. Alternative: Hire a DevOps contractor for initial setup ($500-1,000 one-time), then maintain yourself. Still cheaper than one month of SaaS subscriptions."
+  - question: "How much time does maintenance actually take?"
+    answer: "After initial setup (10-40 hours total): Weekly: 10 minutes checking monitoring dashboards. Monthly: 1-2 hours updating Docker containers and verifying backups. Quarterly: 2-3 hours reviewing security patches and optimization. Total: ~30 hours/year ongoing. At $10,000/year savings, that's $333/hour return on your time. Even hiring a contractor at $100/hour leaves $7,000/year net savings."
+  - question: "What happens when we grow to 50+ people?"
+    answer: "Self-hosted costs scale much better than SaaS. At 50 people: upgrade VPS from $20/month to $40-60/month (total: $120-180/month). SaaS equivalent: Slack alone costs $4,350/year (50 users). Your total infrastructure: ~$2,000/year vs $10,000-15,000/year in SaaS. Savings actually increase as you grow because SaaS charges per-user while infrastructure scales more efficiently."
+  - question: "Is self-hosted as reliable as SaaS?"
+    answer: "With proper setup, yes. Key practices: automated monitoring (Uptime Kuma alerts you within 2 minutes of downtime), automated backups (daily to S3, restore in 15 minutes), health checks (auto-restart containers if they crash). Well-configured self-hosted apps achieve 99.5%+ uptime. SaaS promises 99.9% (43 minutes/month downtime). Reality: SaaS outages happen (Slack down for hours multiple times/year). Trade-off: you control incident response."
+  - question: "Should we self-host from day one or wait until we have revenue?"
+    answer: "Self-host from day one if: 1) Founder is technical (DevOps or backend experience), 2) Runway is tight (need maximum burn efficiency), 3) Data privacy matters (healthcare, finance). Use SaaS initially if: 1) Non-technical founding team (focus on product), 2) Well-funded (optimize for speed over cost), 3) Complex compliance requirements (managed services reduce audit scope). Optimal: Start with SaaS for customer-facing tools, self-host internal tools immediately. Migrate customer-facing tools once stable."
+---
+
+# The Complete Guide to Self-Hosting for Startups Under $50/Month
+
+Your startup pays $500-2,000/month in SaaS subscriptions before you've made your first dollar.
+
+Slack. GitHub. Google Workspace. Notion. Intercom. HubSpot. Each one is "just $10/user/month." Each one is essential. Together, they consume 20-40% of your runway.
+
+Meanwhile, successful bootstrapped startups run their entire operation on $50/month in server costs.
+
+Same features. Better performance. Complete ownership.
+
+This guide shows you how to build a production-ready startup tech stack for under $50/month using self-hosted open source alternatives. You'll get deployment instructions, cost breakdowns, and a migration roadmap.
+
+If you're new to self-hosting, start with our [Docker 101 guide](/blog/docker-101-self-hosting-beginners-guide) to understand the fundamentals.
+
+## The $50/Month Startup Stack
+
+Here's the complete infrastructure:
+
+### Core Stack Components
+
+| Category           | Tool        | Replaces              | Monthly Cost |
+| ------------------ | ----------- | --------------------- | ------------ |
+| **Team Chat**      | Mattermost  | Slack                 | Included     |
+| **Analytics**      | Plausible   | Google Analytics      | Included     |
+| **Code Hosting**   | GitLab CE   | GitHub                | Included     |
+| **CI/CD**          | GitLab CI   | GitHub Actions        | Included     |
+| **Documentation**  | Outline     | Notion/Confluence     | Included     |
+| **Password Mgmt**  | Vaultwarden | 1Password             | Included     |
+| **Monitoring**     | Uptime Kuma | Pingdom               | Included     |
+| **Email**          | SendGrid    | SendGrid (same)       | $0 (free tier) |
+| **File Storage**   | Nextcloud   | Google Drive          | Included     |
+| **Customer Support** | Chatwoot  | Intercom              | Included     |
+| **Infrastructure** | Hetzner VPS | DigitalOcean/AWS      | **$39/month** |
+| **Backups**        | Backblaze B2| AWS S3                | **$7/month**  |
+
+**Total Monthly Cost: $46/month ($552/year)**
+
+**SaaS Equivalent Cost (10-person team):**
+
+- Slack Pro: $72.50/month
+- GitHub Team: $44/month (4 devs)
+- Notion: $150/month (10 users)
+- 1Password: $80/month (10 users)
+- Plausible: $19/month
+- Intercom: $74/month + usage
+- Uptime monitoring: $10-20/month
+- Google Workspace: $120/month
+
+**Total SaaS: $570-600/month ($6,840/year)**
+
+**Savings: $524/month ($6,288/year) = 91% cost reduction**
+
+## Infrastructure Setup
+
+### Server Architecture
+
+**Option A: Single Server (Budget - $20/month)**
+
+Best for: Teams of 5-10, early stage, minimal traffic
+
+- **Provider:** Hetzner CPX31 (4 vCPU, 8GB RAM, 160GB SSD)
+- **Cost:** €19/month (~$20)
+- **Runs:** Mattermost + Plausible + Outline + Vaultwarden + Monitoring
+- **Limitation:** Can't run GitLab (needs 4GB RAM alone)
+
+**Option B: Two-Server Setup (Recommended - $39/month)**
+
+Best for: Teams of 10-20, production workloads
+
+- **Server 1 - Apps:** Hetzner CPX21 (3 vCPU, 4GB RAM, 80GB SSD) - €9/month
+  - Runs: Mattermost, Outline, Vaultwarden, Chatwoot, Uptime Kuma
+- **Server 2 - GitLab:** Hetzner CPX31 (4 vCPU, 8GB RAM, 160GB SSD) - €19/month
+  - Runs: GitLab CE with built-in CI/CD and registry
+- **Server 3 - Analytics:** Hetzner CPX11 (2 vCPU, 2GB RAM, 40GB SSD) - €5/month
+  - Runs: Plausible Analytics
+
+**Total: €33/month (~$36)**
+
+**Option C: Three-Server Setup (Production - $50/month)**
+
+Best for: Teams of 20-50, high availability needed
+
+- Same as Option B but with redundancy and load balancing
+- Add: Backup server, staging environment
+
+### Initial Server Setup (All Servers)
+
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# Install Docker Compose
+sudo apt install docker-compose-plugin -y
+
+# Install fail2ban (security)
+sudo apt install fail2ban -y
+
+# Configure firewall
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22    # SSH
+sudo ufw allow 80    # HTTP
+sudo ufw allow 443   # HTTPS
+sudo ufw enable
+```
+
+### Domain Setup
+
+Register domains (~$12/year total):
+
+- `chat.yourdomain.com` → Mattermost
+- `git.yourdomain.com` → GitLab
+- `docs.yourdomain.com` → Outline
+- `analytics.yourdomain.com` → Plausible
+- `status.yourdomain.com` → Uptime Kuma
+- `support.yourdomain.com` → Chatwoot
+
+**DNS Configuration:**
+
+Add A records pointing each subdomain to appropriate server IP.
+
+## Tool-by-Tool Deployment
+
+### 1. Reverse Proxy (Caddy) - Deploy First
+
+Caddy handles HTTPS certificates automatically for all services.
+
+```bash
+mkdir -p ~/caddy
+cd ~/caddy
+nano Caddyfile
+```
+
+```
+chat.yourdomain.com {
+    reverse_proxy localhost:8065
+}
+
+docs.yourdomain.com {
+    reverse_proxy localhost:3010
+}
+
+analytics.yourdomain.com {
+    reverse_proxy localhost:8000
+}
+
+status.yourdomain.com {
+    reverse_proxy localhost:3001
+}
+
+support.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+```
+
+```yaml
+# docker-compose.yml
+version: "3.8"
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
+volumes:
+  caddy-data:
+  caddy-config:
+```
+
+```bash
+docker compose up -d
+```
+
+### 2. Mattermost (Team Chat)
+
+```bash
+mkdir -p ~/mattermost
+cd ~/mattermost
+nano docker-compose.yml
+```
+
+```yaml
+version: "3.8"
+services:
+  postgres:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: mmuser
+      POSTGRES_PASSWORD: ${MM_DB_PASSWORD}
+      POSTGRES_DB: mattermost
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  mattermost:
+    image: mattermost/mattermost-team-edition:latest
+    restart: always
+    ports:
+      - "8065:8065"
+    environment:
+      MM_SQLSETTINGS_DRIVERNAME: postgres
+      MM_SQLSETTINGS_DATASOURCE: "postgres://mmuser:${MM_DB_PASSWORD}@postgres:5432/mattermost?sslmode=disable"
+      MM_SERVICESETTINGS_SITEURL: https://chat.yourdomain.com
+    volumes:
+      - mattermost-config:/mattermost/config
+      - mattermost-data:/mattermost/data
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
+  mattermost-config:
+  mattermost-data:
+```
+
+Create `.env`:
+
+```bash
+nano .env
+```
+
+```
+MM_DB_PASSWORD=your_secure_password_here
+```
+
+Deploy:
+
+```bash
+docker compose up -d
+```
+
+**Resource Usage:** ~400MB RAM, 10-20% CPU
+
+### 3. GitLab CE (Code Hosting + CI/CD)
+
+Deploy on dedicated server (needs 4GB+ RAM):
+
+```bash
+mkdir -p ~/gitlab
+cd ~/gitlab
+```
+
+```yaml
+# docker-compose.yml
+version: "3.8"
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    hostname: git.yourdomain.com
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://git.yourdomain.com'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        # Reduce memory usage for small teams
+        puma['worker_processes'] = 2
+        sidekiq['max_concurrency'] = 10
+    ports:
+      - "80:80"
+      - "443:443"
+      - "2222:22"
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
+
+volumes:
+  gitlab-config:
+  gitlab-logs:
+  gitlab-data:
+```
+
+```bash
+docker compose up -d
+```
+
+**First-time setup:** GitLab takes 5-10 minutes to start initially. Get root password:
+
+```bash
+docker compose exec gitlab grep 'Password:' /etc/gitlab/initial_root_password
+```
+
+**Resource Usage:** ~3GB RAM, 20-40% CPU
+
+**Features included:**
+
+- Git repositories (unlimited private repos)
+- CI/CD pipelines (unlimited minutes)
+- Container registry
+- Issue tracking
+- Wiki
+- Code review
+- Protected branches
+
+### 4. Plausible Analytics
+
+```bash
+mkdir -p ~/plausible
+cd ~/plausible
+```
+
+```yaml
+# docker-compose.yml
+version: "3.8"
+services:
+  plausible:
+    image: plausible/analytics:latest
+    restart: always
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    depends_on:
+      - postgres
+      - clickhouse
+    ports:
+      - "8000:8000"
+    environment:
+      BASE_URL: https://analytics.yourdomain.com
+      SECRET_KEY_BASE: ${PLAUSIBLE_SECRET}
+      DATABASE_URL: postgres://plausible:${DB_PASSWORD}@postgres:5432/plausible
+      CLICKHOUSE_DATABASE_URL: http://clickhouse:8123/plausible
+
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: plausible
+      POSTGRES_DB: plausible
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    restart: always
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+    environment:
+      CLICKHOUSE_DB: plausible
+
+volumes:
+  postgres-data:
+  clickhouse-data:
+```
+
+**Resource Usage:** ~500MB RAM, 5-15% CPU
+
+### 5. Outline (Documentation)
+
+```bash
+mkdir -p ~/outline
+cd ~/outline
+```
+
+```yaml
+# docker-compose.yml
+version: "3.8"
+services:
+  outline:
+    image: outlinewiki/outline:latest
+    restart: always
+    ports:
+      - "3010:3000"
+    environment:
+      DATABASE_URL: postgres://outline:${DB_PASSWORD}@postgres:5432/outline
+      REDIS_URL: redis://redis:6379
+      SECRET_KEY: ${SECRET_KEY}
+      UTILS_SECRET: ${UTILS_SECRET}
+      URL: https://docs.yourdomain.com
+      # Use Slack or Google for auth
+      SLACK_CLIENT_ID: ${SLACK_CLIENT_ID}
+      SLACK_CLIENT_SECRET: ${SLACK_CLIENT_SECRET}
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: outline
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: outline
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+volumes:
+  postgres-data:
+```
+
+**Resource Usage:** ~300MB RAM, 5-10% CPU
+
+### 6. Vaultwarden (Password Manager)
+
+```bash
+mkdir -p ~/vaultwarden
+cd ~/vaultwarden
+```
+
+```yaml
+# docker-compose.yml
+version: "3.8"
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      DOMAIN: https://vault.yourdomain.com
+      SIGNUPS_ALLOWED: true
+      INVITATIONS_ALLOWED: true
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+    volumes:
+      - vaultwarden-data:/data
+
+volumes:
+  vaultwarden-data:
+```
+
+**Resource Usage:** ~50MB RAM, less than 5% CPU
+
+### 7. Uptime Kuma (Monitoring)
+
+```bash
+mkdir -p ~/uptime-kuma
+cd ~/uptime-kuma
+```
+
+```bash
+docker run -d \
+  --name uptime-kuma \
+  --restart always \
+  -p 3001:3001 \
+  -v uptime-kuma-data:/app/data \
+  louislam/uptime-kuma:latest
+```
+
+**Configure monitors for:**
+
+- All deployed services (HTTP checks every 60s)
+- Server health (CPU, RAM, disk)
+- SSL certificate expiry
+- Alerts via email/Slack/Discord
+
+**Resource Usage:** ~100MB RAM, less than 5% CPU
+
+### 8. Chatwoot (Customer Support)
+
+```bash
+mkdir -p ~/chatwoot
+cd ~/chatwoot
+```
+
+```yaml
+# docker-compose.yml (simplified version from earlier)
+version: "3.8"
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: chatwoot
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: chatwoot_production
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  chatwoot:
+    image: chatwoot/chatwoot:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      POSTGRES_HOST: postgres
+      POSTGRES_USERNAME: chatwoot
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DATABASE: chatwoot_production
+      REDIS_URL: redis://redis:6379
+      FRONTEND_URL: https://support.yourdomain.com
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - chatwoot-storage:/app/storage
+
+volumes:
+  postgres-data:
+  chatwoot-storage:
+```
+
+**Resource Usage:** ~400MB RAM, 10-20% CPU
+
+## Automated Backup Strategy
+
+### Daily Backups to Backblaze B2
+
+**Cost:** $0.005/GB/month storage + $0.01/GB download (much cheaper than AWS S3)
+
+**Setup Backblaze:**
+
+1. Create account at backblaze.com
+2. Create bucket: `startup-backups`
+3. Generate application key
+
+**Install rclone:**
+
+```bash
+curl https://rclone.org/install.sh | sudo bash
+rclone config  # Configure Backblaze B2
+```
+
+**Backup Script:**
+
+```bash
+nano ~/backup-all.sh
+```
+
+```bash
+#!/bin/bash
+# Backup all services to Backblaze B2
+
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/tmp/backups"
+mkdir -p $BACKUP_DIR
+
+# Backup PostgreSQL databases
+for service in mattermost gitlab plausible outline chatwoot; do
+  docker compose -f ~/$service/docker-compose.yml exec -T postgres \
+    pg_dumpall -U postgres | gzip > "$BACKUP_DIR/${service}_${TIMESTAMP}.sql.gz"
+done
+
+# Backup Vaultwarden data
+tar -czf "$BACKUP_DIR/vaultwarden_${TIMESTAMP}.tar.gz" ~/vaultwarden/vaultwarden-data
+
+# Upload to Backblaze
+rclone sync $BACKUP_DIR b2:startup-backups/$(date +%Y-%m-%d)/
+
+# Keep local backups for 7 days
+find $BACKUP_DIR -name "*.gz" -mtime +7 -delete
+
+# Verify backup
+rclone ls b2:startup-backups/ | tail -10
+
+echo "Backup completed: $(date)"
+```
+
+Make executable:
+
+```bash
+chmod +x ~/backup-all.sh
+```
+
+**Schedule with cron:**
+
+```bash
+crontab -e
+```
+
+```
+# Daily backup at 2 AM
+0 2 * * * /root/backup-all.sh >> /var/log/backups.log 2>&1
+```
+
+**Estimated backup size:**
+
+- Databases: 100MB-1GB (depends on usage)
+- Files: 1-5GB (depends on uploads)
+- **Total:** 2-6GB/month
+- **Backblaze cost:** $0.01-0.03/month
+
+**Retention policy:**
+
+- Daily backups: Keep 30 days
+- Weekly backups: Keep 12 weeks
+- Monthly backups: Keep forever
+
+```bash
+# Lifecycle policy (delete old daily backups)
+rclone delete b2:startup-backups/ --min-age 30d
+```
+
+## Cost Breakdown Analysis
+
+### Monthly Costs
+
+**Infrastructure:**
+
+- VPS Server 1 (Apps): €9 (~$10)
+- VPS Server 2 (GitLab): €19 (~$21)
+- VPS Server 3 (Analytics): €5 (~$5)
+- Backblaze B2 Storage: $0.03 (6GB × $0.005)
+- Domain registration: $1/month ($12/year ÷ 12)
+
+**Total: $37.03/month**
+
+**Optional Add-ons:**
+
+- SendGrid (email): $0 (free tier: 100 emails/day)
+- Cloudflare (CDN): $0 (free tier)
+- Let's Encrypt (SSL): $0 (free)
+
+**Grand Total: $37/month ($444/year)**
+
+### Year 1 Total Cost of Ownership
+
+**One-time costs:**
+
+- Domain registration: $12
+- Initial setup time: 40 hours × $0 (founder time)
+
+**Recurring costs:**
+
+- VPS hosting: $444/year
+- Backups: $4/year
+- **Total Year 1: $460**
+
+**SaaS equivalent (10-person team):**
+
+- Slack Pro: $870/year
+- GitHub Team: $528/year (4 devs)
+- Notion Plus: $1,800/year (10 users)
+- 1Password Teams: $960/year (10 users)
+- Intercom: $888/year (base + 500 chats)
+- Plausible: $228/year
+- Google Analytics: $0 (free, but data mining)
+- Pingdom: $120/year
+- **Total SaaS: $5,394/year**
+
+**Savings: $4,934/year (91% reduction)**
+
+### 3-Year Projection
+
+| Year | Self-Hosted | SaaS (10 users) | Savings   |
+| ---- | ----------- | --------------- | --------- |
+| 1    | $460        | $5,394          | $4,934    |
+| 2    | $444        | $5,700 (+6%)    | $5,256    |
+| 3    | $444        | $6,000 (+5%)    | $5,556    |
+| **Total** | **$1,348** | **$17,094** | **$15,746 (92%)** |
+
+**Note:** SaaS costs increase 5-10% annually. Self-hosted costs stay flat (actually decrease with VPS competition).
+
+### Team Size Scaling
+
+| Team Size | Self-Hosted | SaaS        | Savings     |
+| --------- | ----------- | ----------- | ----------- |
+| 5 users   | $444/year   | $3,000/year | $2,556 (85%)|
+| 10 users  | $444/year   | $5,400/year | $4,956 (92%)|
+| 20 users  | $720/year   | $10,800/year| $10,080 (93%)|
+| 50 users  | $1,440/year | $27,000/year| $25,560 (95%)|
+
+**Key insight:** Savings percentage *increases* as you scale because SaaS charges per-user while infrastructure scales more efficiently.
+
+## Maintenance Schedule
+
+### Daily (5 minutes)
+
+- Check Uptime Kuma dashboard
+- Review alerts (if any)
+- Spot-check one service (rotate daily)
+
+**Automation:** Set up Uptime Kuma to alert on failures. No daily check needed unless alert fires.
+
+### Weekly (15 minutes)
+
+- Review resource usage (`docker stats`)
+- Check disk space (`df -h`)
+- Review backup logs
+- Update one container (`docker compose pull && docker compose up -d`)
+
+### Monthly (1-2 hours)
+
+- Update all containers
+- Verify backup restore works (test one backup)
+- Review security updates
+- Check SSL certificate expiry (auto-renewed by Caddy, but verify)
+- Review monitoring data for trends
+
+### Quarterly (2-3 hours)
+
+- Full security audit
+- Review and update documentation
+- Test disaster recovery procedure
+- Optimize resource allocation
+- Plan capacity upgrades if needed
+
+### Total Time Investment
+
+- **Initial setup:** 40 hours (one-time)
+- **Ongoing maintenance:** 30 hours/year
+- **Total Year 1:** 70 hours
+
+**ROI:** $4,934 savings ÷ 70 hours = **$70.50/hour return on time investment**
+
+Even if you value your time at $200/hour, you break even and start saving in Year 2.
+
+## Common Issues & Solutions
+
+### Issue: Server Running Out of Memory
+
+**Symptom:** Services crashing, slow response times
+
+**Debug:**
+
+```bash
+# Check memory usage
+free -h
+docker stats
+
+# Identify memory hog
+docker stats --no-stream | sort -k 4 -h
+```
+
+**Solutions:**
+
+1. **Add swap space:**
+
+```bash
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+# Make permanent
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+2. **Optimize container resources:**
+
+```yaml
+# Add to docker-compose.yml
+services:
+  app:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+```
+
+3. **Upgrade VPS** (increase RAM for $5-10/month)
+
+### Issue: Disk Space Full
+
+**Debug:**
+
+```bash
+# Find large files
+du -sh /* | sort -h
+docker system df  # Docker disk usage
+```
+
+**Solutions:**
+
+```bash
+# Clean up Docker
+docker system prune -a  # Remove unused images
+docker volume prune     # Remove unused volumes
+
+# Clean up old logs
+journalctl --vacuum-time=7d
+
+# Clean up old backups
+find /tmp/backups -mtime +30 -delete
+```
+
+### Issue: Service Won't Start After Restart
+
+**Debug:**
+
+```bash
+# Check logs
+docker compose logs service-name
+
+# Common causes:
+# - Database not ready (wait 30s, try again)
+# - Port conflict (change port in docker-compose.yml)
+# - Volume permission issue (chown -R 1000:1000 volume-dir)
+```
+
+### Issue: Slow GitLab CI/CD
+
+**Optimize:**
+
+```yaml
+# In docker-compose.yml
+gitlab:
+  environment:
+    GITLAB_OMNIBUS_CONFIG: |
+      # Use shared runners more efficiently
+      gitlab_rails['ci_shared_runners_concurrency'] = 5
+      # Reduce Sidekiq overhead
+      sidekiq['max_concurrency'] = 5
+```
+
+Or use external CI runners on cheaper VPS.
+
+## Security Hardening Checklist
+
+### Essential Security Measures
+
+**1. Enable Automatic Security Updates**
+
+```bash
+sudo apt install unattended-upgrades
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+```
+
+**2. Configure Fail2Ban**
+
+```bash
+sudo apt install fail2ban
+sudo systemctl enable fail2ban
+```
+
+**3. SSH Hardening**
+
+```bash
+# Disable password auth (use SSH keys)
+sudo nano /etc/ssh/sshd_config
+```
+
+```
+PasswordAuthentication no
+PermitRootLogin no
+```
+
+**4. Enable Two-Factor Authentication**
+
+- Vaultwarden: Built-in 2FA support
+- Mattermost: Enable MFA in system console
+- GitLab: Enforce 2FA for all users
+
+**5. Regular Backups (Already Configured)**
+
+Verify backups work:
+
+```bash
+# Test restore from latest backup
+cd ~/test-restore
+# Extract and restore database
+```
+
+**6. Monitoring & Alerts**
+
+Configure Uptime Kuma to alert via:
+
+- Email (free via SendGrid)
+- Slack/Mattermost webhook
+- Discord webhook
+
+**7. Firewall Rules**
+
+```bash
+# Only allow necessary ports
+sudo ufw status
+# Should only show: 22 (SSH), 80 (HTTP), 443 (HTTPS)
+```
+
+**8. SSL/TLS**
+
+Caddy auto-renews Let's Encrypt certificates. Verify:
+
+```bash
+docker compose -f ~/caddy/docker-compose.yml logs | grep certificate
+```
+
+## Scaling Path
+
+### Phase 1: 1-10 Users (Current Setup)
+
+- Cost: $37/month
+- Servers: 3 VPS
+- No changes needed
+
+### Phase 2: 10-25 Users
+
+**Upgrade:**
+
+- GitLab server: €19 → €39 (8 vCPU, 16GB RAM)
+- Keep other servers same
+
+**New cost:** $57/month (+$20)
+**SaaS equivalent:** $13,500/year (25 users)
+**Savings:** $12,816/year (95%)
+
+### Phase 3: 25-50 Users
+
+**Upgrade:**
+
+- Add dedicated database server: €19/month
+- Move all PostgreSQL databases to dedicated server
+- Enable Redis caching across services
+- Add load balancer for Mattermost
+
+**New cost:** $96/month (+$39)
+**SaaS equivalent:** $27,000/year (50 users)
+**Savings:** $25,848/year (96%)
+
+### Phase 4: 50-100+ Users
+
+**Architecture changes:**
+
+- Horizontal scaling (multiple app servers)
+- Dedicated database cluster
+- S3 for file storage
+- CDN for static assets
+- Managed monitoring (Datadog free tier)
+
+**New cost:** $200-300/month
+**SaaS equivalent:** $54,000/year (100 users)
+**Savings:** $50,400/year (93%)
+
+**At this scale, consider:**
+
+- Hiring DevOps engineer part-time ($2,000/month)
+- Still cheaper than SaaS: $5,000/month vs $4,500/month
+- **Break-even point:** ~75 users
+
+## Migration Roadmap
+
+### Week 1: Infrastructure Setup
+
+**Days 1-2:**
+
+- Provision VPS servers
+- Configure domains and DNS
+- Set up SSH keys
+- Install Docker on all servers
+
+**Days 3-4:**
+
+- Deploy Caddy (reverse proxy)
+- Deploy Vaultwarden (password manager)
+- Migrate team passwords
+
+**Days 5-7:**
+
+- Deploy Mattermost
+- Create channels mirroring Slack
+- Invite team (run parallel with Slack)
+
+### Week 2: Development Tools
+
+**Days 8-9:**
+
+- Deploy GitLab
+- Mirror repositories from GitHub
+- Set up CI/CD pipelines
+
+**Days 10-11:**
+
+- Deploy Plausible Analytics
+- Add tracking script to website
+- Run parallel with Google Analytics
+
+**Days 12-14:**
+
+- Deploy Outline
+- Migrate documentation from Notion
+- Train team on new docs platform
+
+### Week 3: Support & Monitoring
+
+**Days 15-16:**
+
+- Deploy Chatwoot
+- Set up website widget
+- Configure email integration
+
+**Days 17-18:**
+
+- Deploy Uptime Kuma
+- Configure all monitors
+- Set up alerting
+
+**Days 19-21:**
+
+- Configure automated backups
+- Test restore procedures
+- Document all deployments
+
+### Week 4: Transition & Optimization
+
+**Days 22-24:**
+
+- Full team migration to self-hosted tools
+- Parallel run with SaaS for safety
+
+**Days 25-27:**
+
+- Monitor performance
+- Optimize resource usage
+- Fix any issues
+
+**Days 28-30:**
+
+- Cancel SaaS subscriptions
+- Final verification
+- Celebrate savings!
+
+## The Exit-Saas Perspective
+
+SaaS companies optimize for revenue per customer, not value per dollar. Their pricing is anchored to "enterprise software" from the 2000s, when self-hosting required dedicated sysadmins.
+
+Docker changed everything. One-command deployment democratized self-hosting. The complexity barrier collapsed.
+
+Yet SaaS pricing stayed the same. Slack still charges $7.25/user/month even though their costs-per-user decreased 10x with containerization and cloud optimization.
+
+**The arbitrage:** Your startup can capture that 10x improvement in economics. The complexity that justified SaaS pricing no longer exists, but the pricing remains.
+
+**The trade-off is real:** You invest time upfront (40 hours) and ongoing (30 hours/year). You're responsible for uptime, security, backups. For well-funded startups optimizing for speed, SaaS makes sense.
+
+But for bootstrapped startups optimizing for runway, self-hosting is mathematically superior:
+
+- **Year 1:** $4,934 saved = 2+ months of runway extension
+- **Year 3:** $15,746 saved = 6 months of runway
+- **Year 5:** $25,000+ saved = hire a senior engineer
+
+The opportunity cost of self-hosting is 70 hours/year. The opportunity cost of SaaS is $5,000-50,000/year in cash.
+
+Choose based on your constraints. If time is scarce and capital is abundant, use SaaS. If capital is scarce and you're technical, self-host.
+
+Ready to start? Begin with our [Docker 101 guide](/blog/docker-101-self-hosting-beginners-guide), then deploy your first tool. Or explore our [full directory of self-hosted alternatives](/tools).
+
+Your SaaS subscriptions are optional. Your runway is finite. Choose accordingly.
