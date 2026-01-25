@@ -9,6 +9,7 @@ import { TechSpecsSidebar } from "@/components/alternatives/tech-specs-sidebar";
 import { AffiliateBanner } from "@/components/alternatives/affiliate-banner";
 import { HostingCallToAction } from "@/components/monetization/hosting-call-to-action";
 import { SidebarAd } from "@/components/monetization/sidebar-ad";
+import { RepositoryPreview } from "@/components/alternatives/repository-preview";
 import { RepositoryInsights } from "@/components/alternatives/repository-insights";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { generateSlug } from "@/lib/slug";
@@ -19,6 +20,7 @@ import {
   generateBreadcrumbSchema,
   generateToolBreadcrumbs,
 } from "@/lib/schema";
+import { getGitHubPreviewUrl } from "@/lib/github-preview";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -74,6 +76,9 @@ export async function generateMetadata({
     };
   }
 
+  // Get GitHub preview image for Open Graph
+  // const previewUrl = getGitHubPreviewUrl(tool.preview_url, tool.github_url);
+  const previewUrl = null;
   const title = `${tool.name}: Best ${tool.saas_equivalent} Alternative (Open Source) | Exit-Saas.io`;
   const description = `Looking for a ${tool.saas_equivalent} alternative? ${tool.name} is an open-source, self-hosted solution. Calculate your savings and learn how to deploy ${tool.name} today.`;
 
@@ -94,6 +99,7 @@ export async function generateMetadata({
       description,
       type: "article",
       url: `/alternatives/${slug}`,
+      images: previewUrl ? [{ url: previewUrl }] : [],
     },
     // twitter: {
     //   card: 'summary_large_image',
@@ -113,6 +119,10 @@ export default async function AlternativePage({ params }: PageProps) {
   if (!tool) {
     notFound();
   }
+
+  // Get GitHub preview image
+  // const previewUrl = getGitHubPreviewUrl(tool.preview_url, tool.github_url);
+  const previewUrl = null;
 
   const saasPrice = getSaasPrice(tool.saas_equivalent);
   // Calculate default savings for hosting CTA (25 users)
@@ -139,6 +149,13 @@ export default async function AlternativePage({ params }: PageProps) {
           <p className="text-lg text-muted-foreground max-w-3xl">
             {tool.description}
           </p>
+
+          {/* GitHub Repository Preview */}
+          {previewUrl && (
+            <div className="mt-6 max-w-3xl">
+              <RepositoryPreview tool={tool} previewUrl={previewUrl} />
+            </div>
+          )}
         </div>
 
         {/* Main Content Grid */}
@@ -254,8 +271,8 @@ export default async function AlternativePage({ params }: PageProps) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(
               generateBreadcrumbSchema(
-                generateToolBreadcrumbs(tool.name, slug)
-              )
+                generateToolBreadcrumbs(tool.name, slug),
+              ),
             ),
           }}
         />

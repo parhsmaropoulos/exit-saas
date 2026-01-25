@@ -1,0 +1,727 @@
+---
+title: "Slack vs Mattermost vs Chatwoot: Which Open Source Chat is Right for You?"
+description: "Compare Slack alternatives: Mattermost for team chat, Chatwoot for customer support. Feature matrix, pricing breakdown, and migration guides for each platform."
+date: "2026-01-25"
+category: "Tool Comparisons"
+slug: "slack-vs-mattermost-vs-chatwoot-comparison"
+faqs:
+  - question: "What's the main difference between Mattermost and Chatwoot?"
+    answer: "Mattermost is for internal team communication (replaces Slack), while Chatwoot is for customer support (replaces Intercom/Zendesk Chat). Mattermost has channels, threads, and integrations for team collaboration. Chatwoot has live chat widgets, ticketing, and CRM features for customer conversations. Choose Mattermost for team chat, Chatwoot for customer support, or deploy both (they integrate together)."
+  - question: "Can Mattermost really replace Slack for a 50-person company?"
+    answer: "Yes. Mattermost matches Slack's core features: unlimited message history, channels, threads, file sharing, integrations (1,000+ plugins), mobile apps, and video calls. You lose Slack Connect (external org channels) and some third-party integrations. But you gain unlimited users for flat hosting costs ($20-40/month vs $4,350/year for 50 Slack users), complete data ownership, and enterprise features (SSO, advanced permissions) that Slack charges extra for."
+  - question: "How much does it actually cost to run Mattermost vs Chatwoot?"
+    answer: "Mattermost: $10-20/month VPS for teams up to 50 users, $40/month for 50-200 users. Chatwoot: $5-10/month VPS for small support teams, $20-40/month for high-volume support. Compare to Slack ($7.25/user/month) or Intercom ($74/month base + $0.99/conversation). A 20-person team saves $1,500/year switching from Slack to Mattermost. A startup handling 500 chats/month saves $600/year switching from Intercom to Chatwoot."
+  - question: "Which one is easier to set up and maintain?"
+    answer: "Chatwoot is simpler (deploys in 15 minutes with docker-compose, minimal configuration). Mattermost is moderately complex (30-minute setup, requires domain/SSL for production). Both are significantly easier than enterprise alternatives. Monthly maintenance is 1-2 hours for both (Docker updates, backups, monitoring). If you can run 'docker compose up', you can self-host either tool."
+  - question: "Can I migrate from Slack to Mattermost without losing message history?"
+    answer: "Yes, with partial fidelity. Mattermost provides official Slack import tool (mmetl) that migrates: channels, direct messages, message history, file uploads, and users. What transfers: text messages, threads, reactions, files. What doesn't: some integrations, custom emojis (manual re-upload), Slack Connect channels. Migration process: Export Slack workspace → Convert with mmetl → Import to Mattermost. Typically takes 2-6 hours for a 50-person team's history."
+  - question: "Do these tools work well together, or should I pick one?"
+    answer: "They complement each other perfectly. Mattermost for internal team chat + Chatwoot for customer support is a common setup. They integrate: route Chatwoot customer messages to Mattermost channels, get notified when customers need help, collaborate on support responses internally. Think 'Slack + Intercom' but self-hosted. Total cost: $30-40/month vs $1,000+/month for SaaS equivalents."
+---
+
+# Slack vs Mattermost vs Chatwoot: Which Open Source Chat is Right for You?
+
+Slack costs $7.25/user/month. Your 20-person team pays $1,740/year for chat that disappears after 90 days.
+
+Intercom costs $74/month base plus $0.99 per conversation. Your 500 monthly customer chats add up to $1,383/year.
+
+Combined SaaS chat expenses: $3,123/year for basic communication.
+
+Mattermost and Chatwoot give you the same features for $30/month in hosting costs. That's $360/year total, saving $2,763 (88% reduction).
+
+But here's the confusion: Mattermost and Chatwoot solve different problems. One replaces team chat, the other replaces customer support. Choosing the wrong tool means rebuilding your workflow.
+
+This guide compares Slack, Mattermost, and Chatwoot across features, pricing, and use cases. You'll learn exactly which tool fits your situation and how to deploy it.
+
+If you're evaluating other Slack alternatives, read our [complete comparison of the top 5 open source Slack alternatives](/blog/top-5-open-source-slack-alternatives-high-security-teams).
+
+## Quick Decision Matrix
+
+**Choose Mattermost if you need:**
+
+- Internal team communication (replacing Slack/Teams)
+- Channels and threads for organizing discussions
+- Integration with development tools (GitHub, GitLab, Jenkins)
+- Video calls for team meetings
+- Enterprise features (SSO, compliance, advanced permissions)
+
+**Choose Chatwoot if you need:**
+
+- Customer support chat (replacing Intercom/Zendesk/Drift)
+- Live chat widget on your website
+- Ticketing system for support requests
+- Multiple communication channels (web, email, Facebook, WhatsApp)
+- CRM features (customer profiles, conversation history)
+
+**Choose both if you need:**
+
+- Mattermost for internal team collaboration
+- Chatwoot for customer-facing support
+- Integration between them (customer issues → team channels)
+
+**Stick with Slack if:**
+
+- You heavily use Slack Connect (external organization channels)
+- Your entire workflow depends on Slack-specific integrations
+- Team is non-technical and change-averse
+
+## Detailed Feature Comparison
+
+### Mattermost: Team Chat Platform
+
+**What it is:** Open source Slack alternative for internal team communication
+
+**Core Features:**
+
+- **Channels:** Public channels (company-wide), private channels (teams), direct messages
+- **Threads:** Organized conversations within channels
+- **Reactions:** Emojis, custom emojis, GIFs
+- **Search:** Full-text search across all message history
+- **File sharing:** Unlimited uploads (limited only by server storage)
+- **Integrations:** 1,000+ plugins (GitHub, GitLab, Jira, Jenkins, etc.)
+- **Webhooks:** Incoming/outgoing webhooks for custom integrations
+- **Bots:** Create custom bots for automation
+- **Mobile apps:** iOS and Android (native apps)
+- **Desktop apps:** Windows, Mac, Linux
+- **Video calls:** Via Calls plugin (up to 200 participants)
+- **Screen sharing:** Built into video calls
+- **Notifications:** Desktop, mobile, email notifications
+- **Mentions:** @user, @channel, @here
+- **Message formatting:** Markdown, code syntax highlighting
+- **Slash commands:** Custom commands (/remind, /todo, etc.)
+
+**Enterprise Features (Free in Self-Hosted):**
+
+- SSO (SAML, OAuth, LDAP, Active Directory)
+- Advanced team permissions and roles
+- Compliance exports and eDiscovery
+- Data retention policies
+- Guest accounts (limited access for contractors)
+- Advanced security (MFA, session management)
+- High availability clustering
+- Read receipts
+
+**What You Lose vs Slack:**
+
+- ❌ Slack Connect (channels with external organizations)
+- ❌ Some third-party app integrations (but most have alternatives)
+- ❌ Slack AI features
+- ❌ Huddles (audio-first spaces) - use video calls instead
+- ❌ Canvas (built-in docs) - use integrations with Outline/Notion
+
+**Resource Requirements:**
+
+- **Small team (1-50 users):** 2 vCPU, 2-4GB RAM, $10-20/month VPS
+- **Medium team (50-200 users):** 4 vCPU, 8GB RAM, $40/month VPS
+- **Large team (200-1000 users):** 8 vCPU, 16GB RAM, $80/month VPS
+
+**Deployment Complexity:** ⭐⭐⭐ (Moderate - requires PostgreSQL, S3 for files optional)
+
+### Chatwoot: Customer Support Platform
+
+**What it is:** Open source Intercom/Zendesk Chat alternative for customer support
+
+**Core Features:**
+
+- **Live chat widget:** Embed on website for real-time customer support
+- **Multi-channel inbox:** Website, email, Facebook, Twitter, WhatsApp, Telegram, Line
+- **Conversations:** Threaded customer conversations with full history
+- **Team collaboration:** Assign conversations, private notes, mentions
+- **Canned responses:** Pre-written replies for common questions
+- **Labels and tags:** Organize conversations by topic/priority
+- **Contact management:** Customer profiles with conversation history
+- **Teams:** Organize agents by department (Sales, Support, Engineering)
+- **Business hours:** Set available hours, auto-responders when offline
+- **Reports:** Response time, resolution time, agent performance
+- **Mobile apps:** iOS and Android (for agents)
+- **Integrations:** Webhooks, Slack, Discord, WhatsApp Business API
+- **Custom attributes:** Track custom data on contacts (plan type, MRR, etc.)
+- **Automations:** Auto-assign conversations, send messages based on rules
+- **Knowledge base:** Public help center (FAQ, documentation)
+
+**What You Lose vs Intercom:**
+
+- ❌ Advanced product tours and onboarding flows
+- ❌ Extensive third-party integration marketplace
+- ❌ AI-powered suggested replies (coming soon to Chatwoot)
+- ❌ Advanced segmentation and targeting
+- ❌ Built-in marketing automation (use with n8n for workflows)
+
+**Resource Requirements:**
+
+- **Low volume (less than 100 chats/day):** 1 vCPU, 2GB RAM, $5-10/month VPS
+- **Medium volume (100-500 chats/day):** 2 vCPU, 4GB RAM, $20/month VPS
+- **High volume (500+ chats/day):** 4 vCPU, 8GB RAM, $40/month VPS
+
+**Deployment Complexity:** ⭐⭐ (Easy - simple docker-compose setup)
+
+### Slack: The SaaS Benchmark
+
+**What it is:** Cloud-based team messaging with extensive integrations
+
+**Core Features:**
+
+Everything Mattermost has, plus:
+
+- **Slack Connect:** Shared channels with external organizations
+- **Canvas:** Built-in collaborative documents
+- **Huddles:** Drop-in audio spaces
+- **Clips:** Short video/audio recordings
+- **Workflow Builder:** No-code automation
+- **Advanced integrations:** 2,500+ apps in marketplace
+- **Enterprise features:** (Only on expensive plans)
+  - Enterprise Key Management
+  - Data exports for eDiscovery
+  - HIPAA compliance
+  - Dedicated support
+
+**Pricing Tiers:**
+
+- **Free:** 90-day message history, 10 integrations, 1:1 video calls
+- **Pro:** $7.25/user/month - unlimited history, unlimited integrations
+- **Business+:** $12.50/user/month - SSO, compliance, 99.99% uptime SLA
+- **Enterprise Grid:** Custom pricing ($1M+/year) - advanced security, unlimited workspaces
+
+**Real Cost Examples:**
+
+- 10 users: $870/year (Pro)
+- 50 users: $4,350/year (Pro)
+- 100 users: $8,700/year (Pro) or $15,000/year (Business+)
+
+## Use Case Decision Tree
+
+### Scenario 1: Internal Team of 20 Developers
+
+**Need:** Code collaboration, CI/CD notifications, quick decisions, knowledge sharing
+
+**Best Choice:** **Mattermost**
+
+**Why:**
+
+- Native integrations with GitHub, GitLab, Jenkins
+- Markdown and code syntax highlighting
+- Slash commands for DevOps workflows
+- Unlimited message history for searchable knowledge base
+- SSO with company directory
+
+**Deployment:**
+
+- 2 vCPU, 4GB RAM VPS ($12/month)
+- PostgreSQL database
+- S3 bucket for file uploads ($2/month)
+- **Total cost: $14/month ($168/year)**
+
+**vs Slack Pro:** $1,740/year - **Savings: $1,572/year (90%)**
+
+### Scenario 2: SaaS Startup with 500 Customer Chats/Month
+
+**Need:** Website live chat, email support, conversation history, CRM
+
+**Best Choice:** **Chatwoot**
+
+**Why:**
+
+- Live chat widget for website
+- Multi-channel support (email, social, web)
+- Customer profiles and conversation history
+- Team collaboration on support tickets
+- Reports on response times and CSAT
+
+**Deployment:**
+
+- 2 vCPU, 4GB RAM VPS ($12/month)
+- PostgreSQL + Redis
+- Email delivery via SendGrid (free tier covers 500 emails)
+- **Total cost: $12/month ($144/year)**
+
+**vs Intercom:** $74/month base + $500 conversations ($495) = $1,383/year - **Savings: $1,239/year (90%)**
+
+### Scenario 3: 50-Person Company with Customer Support Team
+
+**Need:** Internal team chat + customer support on website
+
+**Best Choice:** **Both Mattermost + Chatwoot**
+
+**Why:**
+
+- Mattermost for internal team collaboration
+- Chatwoot for customer-facing support
+- Integration: Route customer issues to Mattermost channels
+- Collaborate on complex support cases in Mattermost
+- Unified communication stack
+
+**Deployment:**
+
+- Option A: Both on same VPS (4 vCPU, 8GB RAM, $24/month)
+- Option B: Separate VPS for each ($12 × 2 = $24/month)
+- **Total cost: $24/month ($288/year)**
+
+**vs Slack + Intercom:**
+
+- Slack: $4,350/year (50 users)
+- Intercom: $1,383/year (500 chats/month)
+- **Total SaaS: $5,733/year**
+- **Savings: $5,445/year (95%)**
+
+### Scenario 4: Enterprise with 500 Employees and Compliance Requirements
+
+**Need:** Enterprise chat, SSO, compliance exports, high availability
+
+**Best Choice:** **Mattermost Enterprise** (still cheaper than Slack Enterprise)
+
+**Why:**
+
+- Self-hosted meets data sovereignty requirements
+- SSO with corporate LDAP/SAML
+- Compliance exports for eDiscovery
+- Advanced permissions and data retention policies
+- Clustering for high availability
+
+**Deployment:**
+
+- 3-node cluster (16 vCPU, 32GB RAM total, $240/month)
+- S3 for file storage ($50/month)
+- Load balancer ($10/month)
+- **Total cost: $300/month ($3,600/year)**
+
+**vs Slack Enterprise Grid:**
+
+- Estimated cost: $100,000-500,000/year (500 users)
+- **Savings: $96,400-496,400/year (95-99%)**
+
+Note: For this scale, consider Mattermost's hosted offering or paid support ($10/user/year for self-hosted support).
+
+## Feature Matrix Comparison
+
+| Feature                      | Slack Free | Slack Pro | Mattermost | Chatwoot |
+| ---------------------------- | ---------- | --------- | ---------- | -------- |
+| **Message History**          | 90 days    | Unlimited | Unlimited  | Unlimited |
+| **Users**                    | Unlimited  | Unlimited | Unlimited  | Unlimited |
+| **Channels**                 | ✅         | ✅        | ✅         | ❌ (Conversations instead) |
+| **Direct Messages**          | ✅         | ✅        | ✅         | ✅ (Private notes) |
+| **Threads**                  | ✅         | ✅        | ✅         | ✅ |
+| **File Sharing**             | 5GB total  | Unlimited | Unlimited  | Unlimited |
+| **Search**                   | ✅         | ✅        | ✅         | ✅ |
+| **Mobile Apps**              | ✅         | ✅        | ✅         | ✅ (for agents) |
+| **Video Calls**              | 1:1 only   | ✅        | ✅         | ❌ (integrate Zoom/Jitsi) |
+| **Screen Sharing**           | ❌         | ✅        | ✅         | ❌ |
+| **Integrations**             | 10 apps    | 2,500+    | 1,000+     | Limited (webhooks, API) |
+| **Custom Emojis**            | ✅         | ✅        | ✅         | ✅ |
+| **SSO (SAML/OAuth)**         | ❌         | Business+ | ✅         | ✅ |
+| **Two-Factor Auth**          | ✅         | ✅        | ✅         | ✅ |
+| **Guest Accounts**           | ❌         | Business+ | ✅         | N/A (customer-facing) |
+| **Data Retention Policies**  | ❌         | Enterprise | ✅        | ✅ |
+| **Compliance Exports**       | ❌         | Business+ | ✅         | ✅ |
+| **Live Chat Widget**         | ❌         | ❌        | ❌         | ✅ |
+| **Email Support Inbox**      | ❌         | ❌        | ❌         | ✅ |
+| **Social Media Integration** | ❌         | ❌        | ❌         | ✅ (FB, Twitter, WhatsApp) |
+| **Ticketing System**         | ❌         | ❌        | ❌         | ✅ |
+| **Knowledge Base**           | ❌         | ❌        | ❌         | ✅ |
+| **Canned Responses**         | ❌         | ❌        | ✅ (via plugin) | ✅ |
+| **Reports & Analytics**      | ❌         | Basic     | ✅         | ✅ (detailed) |
+| **API Access**               | ✅         | ✅        | ✅         | ✅ |
+| **Webhooks**                 | ✅         | ✅        | ✅         | ✅ |
+| **Self-Hosted Option**       | ❌         | ❌        | ✅         | ✅ |
+| **Data Ownership**           | ❌         | ❌        | ✅         | ✅ |
+
+## Deployment Guides
+
+### Deploy Mattermost (30 Minutes)
+
+**Step 1: Server Setup**
+
+```bash
+# Install Docker
+curl -fsSL https://get.docker.com | sh
+
+# Create directory
+mkdir -p ~/mattermost && cd ~/mattermost
+```
+
+**Step 2: Create docker-compose.yml**
+
+```yaml
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=mmuser
+      - POSTGRES_PASSWORD=mmuser_password
+      - POSTGRES_DB=mattermost
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  mattermost:
+    image: mattermost/mattermost-team-edition:latest
+    restart: always
+    ports:
+      - "8065:8065"
+    environment:
+      - MM_SQLSETTINGS_DRIVERNAME=postgres
+      - MM_SQLSETTINGS_DATASOURCE=postgres://mmuser:mmuser_password@postgres:5432/mattermost?sslmode=disable
+      - MM_SERVICESETTINGS_SITEURL=https://chat.yourdomain.com
+    volumes:
+      - mattermost-config:/mattermost/config
+      - mattermost-data:/mattermost/data
+      - mattermost-logs:/mattermost/logs
+      - mattermost-plugins:/mattermost/plugins
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
+  mattermost-config:
+  mattermost-data:
+  mattermost-logs:
+  mattermost-plugins:
+```
+
+**Step 3: Launch**
+
+```bash
+docker compose up -d
+```
+
+**Step 4: Configure HTTPS (Production)**
+
+Use Caddy for automatic SSL:
+
+```
+# Caddyfile
+chat.yourdomain.com {
+    reverse_proxy localhost:8065
+}
+```
+
+**Step 5: Initial Setup**
+
+1. Navigate to `https://chat.yourdomain.com`
+2. Create admin account
+3. Create team
+4. Invite users
+
+**Full migration guide:** [Migrate from Slack to Mattermost in One Weekend](/blog/migrate-slack-to-mattermost-one-weekend)
+
+### Deploy Chatwoot (15 Minutes)
+
+**Step 1: Server Setup**
+
+```bash
+mkdir -p ~/chatwoot && cd ~/chatwoot
+```
+
+**Step 2: Create docker-compose.yml**
+
+```yaml
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=chatwoot
+      - POSTGRES_PASSWORD=chatwoot_password
+      - POSTGRES_DB=chatwoot_production
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+
+  chatwoot:
+    image: chatwoot/chatwoot:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=production
+      - SECRET_KEY_BASE=replace_with_random_string_min_128_chars
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USERNAME=chatwoot
+      - POSTGRES_PASSWORD=chatwoot_password
+      - POSTGRES_DATABASE=chatwoot_production
+      - REDIS_URL=redis://redis:6379
+      - FRONTEND_URL=https://support.yourdomain.com
+      - DEFAULT_LOCALE=en
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - chatwoot-storage:/app/storage
+
+volumes:
+  postgres-data:
+  chatwoot-storage:
+```
+
+**Step 3: Generate SECRET_KEY_BASE**
+
+```bash
+docker run --rm chatwoot/chatwoot:latest bundle exec rake secret
+# Copy output and replace SECRET_KEY_BASE in docker-compose.yml
+```
+
+**Step 4: Launch**
+
+```bash
+docker compose up -d
+
+# Create database
+docker compose exec chatwoot bundle exec rails db:chatwoot_prepare
+```
+
+**Step 5: Initial Setup**
+
+1. Navigate to `https://support.yourdomain.com`
+2. Create admin account
+3. Create inbox (website, email, or social)
+4. Add live chat widget to your website
+
+**Widget Installation:**
+
+```html
+<!-- Add before </body> tag -->
+<script>
+(function(d,t) {
+  var BASE_URL="https://support.yourdomain.com";
+  var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=BASE_URL+"/packs/js/sdk.js";
+  s.parentNode.insertBefore(g,s);
+  g.onload=function(){
+    window.chatwootSDK.run({
+      websiteToken: 'YOUR_WEBSITE_TOKEN',
+      baseUrl: BASE_URL
+    })
+  }
+})(document,"script");
+</script>
+```
+
+## Integration: Mattermost + Chatwoot
+
+Route customer support issues to internal team channels.
+
+### Chatwoot → Mattermost Webhook
+
+**In Chatwoot:**
+
+1. Settings → Integrations → Webhooks
+2. Add webhook URL: `https://chat.yourdomain.com/hooks/YOUR_WEBHOOK_ID`
+3. Select events: `conversation_created`, `conversation_status_changed`
+
+**In Mattermost:**
+
+1. Integrations → Incoming Webhooks → Add
+2. Select channel (e.g., `#customer-support`)
+3. Copy webhook URL
+
+**Result:** New customer chats appear in Mattermost `#customer-support` channel. Team can discuss, then respond in Chatwoot.
+
+### Advanced: Auto-Assign Based on Keywords
+
+Use n8n (workflow automation) to intelligently route:
+
+```
+Trigger: Chatwoot new conversation
+Condition: Message contains "billing"
+Action: Assign to billing team + notify #billing channel in Mattermost
+```
+
+## Migration Strategies
+
+### Migrating from Slack to Mattermost
+
+**1. Export Slack Data**
+
+- Slack workspace → Settings → Import/Export → Export workspace data
+- Download ZIP file (includes messages, files, users)
+
+**2. Convert with mmetl (Mattermost Migration Tool)**
+
+```bash
+# Install mmetl
+wget https://github.com/mattermost/mmetl/releases/download/v1.0.8/mmetl-linux-amd64
+chmod +x mmetl-linux-amd64
+mv mmetl-linux-amd64 mmetl
+
+# Convert Slack export to Mattermost format
+./mmetl transform slack --team myteam --file slack-export.zip --output mattermost-import.jsonl
+```
+
+**3. Import to Mattermost**
+
+```bash
+# Via CLI
+docker compose exec mattermost mattermost import bulk mattermost-import.jsonl --workers 4
+```
+
+**4. Verify Migration**
+
+- Check channels created
+- Verify message history
+- Test file uploads
+- Confirm user accounts
+
+**5. Parallel Run**
+
+Run Slack and Mattermost simultaneously for 2 weeks. Move team gradually:
+
+- Week 1: Engineering team pilots Mattermost
+- Week 2: All teams join, Slack read-only
+- Week 3: Cancel Slack subscription
+
+**What transfers:**
+
+- ✅ Channels and direct messages
+- ✅ Message history (all text)
+- ✅ File uploads
+- ✅ Reactions
+- ✅ Threads (structure preserved)
+
+**What doesn't:**
+
+- ❌ Custom integrations (rebuild in Mattermost)
+- ❌ Slack Connect channels
+- ❌ Some formatting (minor cleanup needed)
+
+### Migrating from Intercom to Chatwoot
+
+**1. Export Intercom Data**
+
+Intercom → Settings → Data → Export data (CSV format)
+
+**2. Import to Chatwoot**
+
+Chatwoot doesn't have direct import yet. Two options:
+
+**Option A: Manual migration (small volume)**
+
+- Start fresh with Chatwoot
+- Keep Intercom data for reference
+- New conversations go to Chatwoot
+
+**Option B: API migration (high volume)**
+
+Use script to import via API:
+
+```python
+# import-intercom.py
+import csv
+import requests
+
+CHATWOOT_API = "https://support.yourdomain.com/api/v1"
+CHATWOOT_TOKEN = "your_api_token"
+
+with open('intercom-export.csv') as f:
+    for row in csv.DictReader(f):
+        # Create contact
+        contact = requests.post(f"{CHATWOOT_API}/accounts/1/contacts",
+            headers={"api_access_token": CHATWOOT_TOKEN},
+            json={"name": row["name"], "email": row["email"]}
+        )
+        # Import historical conversations...
+```
+
+**3. Update Website Widget**
+
+Replace Intercom widget with Chatwoot widget (see deployment guide above).
+
+**4. Train Team on Chatwoot**
+
+- Demo session (1 hour)
+- Side-by-side comparison guide
+- Canned responses setup
+
+## Performance and Scalability
+
+### Mattermost Performance Benchmarks
+
+| Team Size | Hardware              | Messages/Day | Response Time |
+| --------- | --------------------- | ------------ | ------------- |
+| 10 users  | 1 vCPU, 2GB RAM       | 500          | less than 50ms         |
+| 50 users  | 2 vCPU, 4GB RAM       | 2,500        | less than 100ms        |
+| 200 users | 4 vCPU, 8GB RAM       | 10,000       | less than 150ms        |
+| 1000 users| 8 vCPU, 16GB RAM      | 50,000       | less than 200ms        |
+
+**Optimization Tips:**
+
+- Use PostgreSQL (not MySQL) for better performance
+- Enable Redis for caching
+- Use S3 for file storage (scales infinitely)
+- Enable CDN for file downloads
+
+### Chatwoot Performance Benchmarks
+
+| Chat Volume        | Hardware           | Agents | Response Time |
+| ------------------ | ------------------ | ------ | ------------- |
+| less than 50 chats/day      | 1 vCPU, 2GB RAM    | 1-5    | less than 100ms        |
+| 50-200 chats/day   | 2 vCPU, 4GB RAM    | 5-15   | less than 150ms        |
+| 200-1000 chats/day | 4 vCPU, 8GB RAM    | 15-50  | less than 200ms        |
+| 1000+ chats/day    | 8 vCPU, 16GB RAM   | 50+    | less than 250ms        |
+
+**Optimization Tips:**
+
+- Enable Redis caching
+- Use PostgreSQL connection pooling
+- Offload email delivery to SendGrid/SES
+- Use CDN for widget loading
+
+## Security Considerations
+
+### Authentication
+
+**Mattermost:**
+
+- Built-in user accounts (email/password)
+- SSO via SAML, OAuth, LDAP, Active Directory
+- Multi-factor authentication (TOTP, hardware keys)
+- Session management (timeout, concurrent sessions)
+
+**Chatwoot:**
+
+- Built-in accounts for agents
+- SSO via OAuth (Google, GitHub)
+- API tokens for integrations
+- IP whitelisting (for admin panel)
+
+### Data Security
+
+**Both tools:**
+
+- HTTPS required (Let's Encrypt)
+- Database encryption at rest
+- Encrypted backups to S3
+- Regular security updates
+
+**Mattermost-specific:**
+
+- End-to-end encryption for mobile apps (Enterprise)
+- Compliance exports (retain/delete based on policy)
+- Audit logs for all actions
+
+**Chatwoot-specific:**
+
+- Customer data encrypted in database
+- Conversation exports for GDPR requests
+- Automatic PII detection (flag sensitive data)
+
+## The Exit-Saas Perspective
+
+Slack proved team chat is worth paying for. Then they kept raising prices: $7.25/user/month, then mandatory Business+ for features that should be standard, then Enterprise Grid that costs six figures.
+
+The value didn't increase. The extraction did.
+
+Mattermost gives you Slack circa 2018 (when it was still good) without the rent-seeking. Chatwoot gives you Intercom's core features without the conversation-based pricing that punishes success.
+
+**The trade-off:** You manage the servers. That's 30 minutes of setup and 1-2 hours/month of maintenance. For most teams, that's worth $1,500-5,000/year in savings.
+
+**The benefit:** Your chat history isn't held hostage. Your data doesn't train someone else's AI. Your costs don't scale with your team size. You own the infrastructure.
+
+Ready to deploy? Start with our [complete migration guide from Slack to Mattermost](/blog/migrate-slack-to-mattermost-one-weekend). Or explore our [full directory of self-hosted tools](/tools) to replace your entire SaaS stack.
+
+Chat is infrastructure, not a service. Treat it accordingly.

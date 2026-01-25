@@ -1,0 +1,943 @@
+---
+title: "How to Self-Host Notion: Complete AFFiNE Setup Guide"
+description: "Deploy AFFiNE, the best Notion alternative, in 30 minutes. Self-hosted knowledge base with real-time collaboration, offline mode, and complete data ownership."
+date: "2026-01-25"
+category: "Tutorials"
+slug: "how-to-self-host-notion-complete-affine-setup-guide"
+faqs:
+  - question: "Is AFFiNE really as good as Notion for daily use?"
+    answer: "AFFiNE matches Notion's core functionality: blocks-based editing, databases, templates, and real-time collaboration. It adds features Notion lacks: true offline mode, local-first architecture, and canvas mode for visual thinking. Trade-off: Notion has more third-party integrations and 10+ years of polish. For most users (note-taking, docs, knowledge bases), AFFiNE is feature-complete."
+  - question: "How much does it cost to self-host AFFiNE vs paying for Notion?"
+    answer: "Notion Plus costs $10/user/month ($120/year for one user, $1,200/year for 10 users). Self-hosted AFFiNE runs on a $5-10/month VPS ($60-120/year) for unlimited users. Savings: $60/year for individuals, $1,080/year for 10-person teams. Plus you get unlimited file uploads (Notion limits file size) and complete data privacy."
+  - question: "What's the difference between AFFiNE and other Notion alternatives like Anytype or AppFlowy?"
+    answer: "AFFiNE is the most production-ready open source Notion alternative. Compared to alternatives: AFFiNE has better real-time collaboration (Anytype is peer-to-peer only), more stable sync (AppFlowy still in beta), and mature self-hosting (Outline is markdown-only). AFFiNE combines local-first architecture (works offline) with cloud sync (team collaboration)."
+  - question: "Can I migrate my existing Notion workspace to AFFiNE?"
+    answer: "Partial migration is possible. Export Notion pages as Markdown/HTML, then import to AFFiNE. Formatting mostly transfers (headings, lists, tables). Manual cleanup needed for: databases with complex views, embedded content, and third-party integrations. Simple pages (documentation, notes) migrate cleanly. Complex project management databases require rebuilding."
+  - question: "What happens if I need to scale to 100+ users?"
+    answer: "AFFiNE scales horizontally. For 100+ users: upgrade to 4 vCPU, 8GB RAM VPS ($40-60/month), use PostgreSQL instead of SQLite, add Redis for caching, and enable S3 for file storage. Total cost: ~$80/month vs $10,000/month for Notion Enterprise. Notion charges $18/user/month for 100 users ($21,600/year), while AFFiNE scales to $960/year in infrastructure."
+  - question: "Is my data secure in self-hosted AFFiNE?"
+    answer: "Security depends on your deployment. Use HTTPS (Let's Encrypt), strong passwords, and regular backups to S3/Backblaze. Data lives on your server (not AFFiNE's), so you control encryption, access logs, and compliance. For maximum security: enable end-to-end encryption (AFFiNE supports it), use VPN for access, and implement 2FA via reverse proxy (Authelia/Authentik)."
+---
+
+# How to Self-Host Notion: Complete AFFiNE Setup Guide
+
+Notion costs $10/user/month. Your 10-person team pays $1,200/year for notes, docs, and project tracking.
+
+Meanwhile, your data lives on Notion's servers. Search content goes to their AI for training. File uploads are capped at 5MB on free plans. You're locked into their ecosystem.
+
+AFFiNE gives you Notion's block-based editing, databases, and collaboration without the subscription or surveillance. Deploy to your server in 30 minutes. Own your data forever.
+
+This guide walks through deploying AFFiNE with Docker, configuring collaboration features, and migrating from Notion. By the end, you'll have a production-ready knowledge base running on your infrastructure.
+
+If you're new to self-hosting, start with our [Docker 101 guide](/blog/docker-101-self-hosting-beginners-guide) to understand the basics.
+
+## What is AFFiNE?
+
+**AFFiNE = Notion + Miro + Markdown**
+
+AFFiNE combines:
+
+- **Notion's block-based editing** (drag-and-drop content blocks)
+- **Miro's canvas mode** (visual whiteboarding and mind mapping)
+- **Markdown's simplicity** (keyboard-first shortcuts)
+- **Local-first architecture** (works offline, syncs when online)
+
+### Core Features
+
+**Editing & Collaboration:**
+
+- Real-time collaborative editing (multiple users, live cursors)
+- Block-based content (text, images, code, tables, embeds)
+- Databases with views (table, kanban, gallery)
+- Templates for quick starts
+- Version history (restore previous versions)
+- Comments and mentions (@user notifications)
+
+**Organization:**
+
+- Nested pages (unlimited hierarchy)
+- Favorites and recent pages
+- Full-text search
+- Tags and labels
+- Workspaces (separate environments)
+
+**Unique to AFFiNE:**
+
+- **Canvas mode:** Visual thinking with flowcharts and diagrams
+- **True offline mode:** Full functionality without internet
+- **Local-first:** Data stored locally, synced to server
+- **Privacy-focused:** No analytics, no tracking, no AI training on your data
+
+### AFFiNE vs Notion
+
+| Feature                     | Notion            | AFFiNE (Self-Hosted) |
+| --------------------------- | ----------------- | -------------------- |
+| **Real-time collaboration** | ✅                | ✅                   |
+| **Databases**               | ✅ (advanced)     | ✅ (basic)           |
+| **Templates**               | ✅ (1,000s)       | ✅ (growing)         |
+| **Mobile apps**             | ✅                | ✅                   |
+| **Offline mode**            | ⚠️ (view only)    | ✅ (full editing)    |
+| **File uploads**            | 5MB free/file     | Unlimited            |
+| **Third-party integrations**| ✅ (50+)          | ⚠️ (limited)         |
+| **AI features**             | ✅ (paid)         | 🚧 (in development)  |
+| **Canvas/whiteboard**       | ❌                | ✅                   |
+| **Local-first architecture**| ❌                | ✅                   |
+| **Data ownership**          | Notion's servers  | Your server          |
+| **Cost (10 users/year)**    | $1,200            | $60-120              |
+
+**When to choose AFFiNE:**
+
+- Privacy matters (healthcare, legal, sensitive data)
+- Need true offline editing (field work, poor connectivity)
+- Team size scales (50+ users makes SaaS expensive)
+- Want visual thinking tools (canvas for brainstorming)
+
+**When to stick with Notion:**
+
+- Heavy reliance on third-party integrations (Zapier, Slack, etc.)
+- Need advanced database features (complex formulas, rollups)
+- Team is non-technical (managed service reduces friction)
+
+## Prerequisites
+
+Before deploying AFFiNE, you'll need:
+
+### 1. VPS Server
+
+**Minimum Requirements:**
+
+- 2 vCPU
+- 2GB RAM
+- 20GB storage
+- Ubuntu 22.04 LTS (or similar)
+
+**Recommended Providers:**
+
+- **Hetzner:** €4.5/month (2 vCPU, 4GB RAM) - Best value
+- **DigitalOcean:** $12/month (2 vCPU, 2GB RAM) - Great docs
+- **Linode:** $12/month (2 vCPU, 4GB RAM) - Reliable
+- **Vultr:** $12/month (2 vCPU, 4GB RAM) - Global locations
+
+### 2. Domain Name
+
+For production use (HTTPS, custom domain):
+
+- Register domain ($12/year on Namecheap, Cloudflare)
+- Point A record to your server IP
+- Example: `affine.yourdomain.com → 123.45.67.89`
+
+### 3. Basic Tools
+
+On your local machine:
+
+- SSH client (Terminal on Mac/Linux, PuTTY on Windows)
+- Text editor (for config files)
+
+On your server (install if missing):
+
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Install Docker Compose
+sudo apt install docker-compose-plugin -y
+
+# Verify installation
+docker --version
+docker compose version
+```
+
+## Deployment Method 1: Docker Compose (Recommended)
+
+This method deploys AFFiNE with PostgreSQL database and Redis for caching.
+
+### Step 1: Create Directory Structure
+
+```bash
+# Create directory for AFFiNE
+mkdir -p ~/affine
+cd ~/affine
+
+# Create subdirectories for data persistence
+mkdir -p ./postgres-data
+mkdir -p ./redis-data
+mkdir -p ./affine-data
+```
+
+### Step 2: Create docker-compose.yml
+
+Create the configuration file:
+
+```bash
+nano docker-compose.yml
+```
+
+Paste this configuration:
+
+```yaml
+version: "3.8"
+
+services:
+  affine:
+    image: ghcr.io/toeverything/affine-graphql:stable
+    container_name: affine
+    restart: always
+    ports:
+      - "3010:3010"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://affine:affine_password@postgres:5432/affine
+      - REDIS_SERVER_HOST=redis
+      - REDIS_SERVER_PORT=6379
+      - AFFINE_SERVER_HOST=affine.yourdomain.com
+      - AFFINE_SERVER_PORT=3010
+      - AFFINE_SERVER_HTTPS=true
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./affine-data:/root/.affine/storage
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: affine_postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=affine
+      - POSTGRES_PASSWORD=affine_password
+      - POSTGRES_DB=affine
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U affine"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: affine_redis
+    restart: always
+    volumes:
+      - ./redis-data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  postgres-data:
+  redis-data:
+  affine-data:
+```
+
+**Configuration Explained:**
+
+- `POSTGRES_PASSWORD`: Change `affine_password` to strong random password
+- `AFFINE_SERVER_HOST`: Your domain (or server IP for testing)
+- `AFFINE_SERVER_HTTPS`: Set to `false` if testing without HTTPS
+- Ports: AFFiNE runs on 3010 (accessible at http://your-ip:3010)
+
+### Step 3: Start AFFiNE
+
+```bash
+# Start all services
+docker compose up -d
+
+# Verify containers are running
+docker compose ps
+
+# Should show three containers: affine, affine_postgres, affine_redis
+# All should be "Up" status
+```
+
+### Step 4: Check Logs
+
+```bash
+# View AFFiNE logs
+docker compose logs -f affine
+
+# You should see:
+# "Server started at http://0.0.0.0:3010"
+# "Database connected"
+# "Redis connected"
+```
+
+### Step 5: Access AFFiNE
+
+Open browser and navigate to:
+
+- Local testing: `http://your-server-ip:3010`
+- With domain: `http://affine.yourdomain.com:3010`
+
+You should see the AFFiNE welcome screen.
+
+**First-Time Setup:**
+
+1. Create admin account (email + password)
+2. Create your first workspace
+3. Start adding pages
+
+## Setting Up HTTPS with Caddy (Production)
+
+For production deployment, use HTTPS with automatic SSL certificates.
+
+### Install Caddy
+
+```bash
+# Create Caddyfile
+nano Caddyfile
+```
+
+Paste this configuration:
+
+```
+affine.yourdomain.com {
+    reverse_proxy localhost:3010
+}
+```
+
+### Add Caddy to docker-compose.yml
+
+Edit your docker-compose.yml:
+
+```bash
+nano docker-compose.yml
+```
+
+Add Caddy service:
+
+```yaml
+services:
+  # ... existing services (affine, postgres, redis) ...
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: affine_caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
+
+volumes:
+  # ... existing volumes ...
+  caddy-data:
+  caddy-config:
+```
+
+### Update AFFiNE Environment Variables
+
+In docker-compose.yml, update affine service:
+
+```yaml
+affine:
+  # ... existing config ...
+  environment:
+    # ... existing env vars ...
+    - AFFINE_SERVER_HOST=affine.yourdomain.com
+    - AFFINE_SERVER_HTTPS=true
+  # Remove ports (Caddy handles external access)
+  # ports:
+  #   - "3010:3010"
+```
+
+### Restart Stack
+
+```bash
+# Restart with new configuration
+docker compose down
+docker compose up -d
+
+# Check Caddy logs (should show certificate obtained)
+docker compose logs caddy
+```
+
+Access AFFiNE at `https://affine.yourdomain.com` (note HTTPS).
+
+## Configuring Collaboration Features
+
+### Enable User Registration
+
+By default, only the first user (admin) can create an account. To allow team signup:
+
+Edit docker-compose.yml affine service:
+
+```yaml
+environment:
+  # ... existing vars ...
+  - AFFINE_ENABLE_SIGNUP=true
+```
+
+Restart:
+
+```bash
+docker compose up -d affine
+```
+
+Now team members can create accounts at `https://affine.yourdomain.com/signup`.
+
+### Invite Users to Workspace
+
+1. Open your workspace
+2. Click workspace settings (top right)
+3. Go to "Members" tab
+4. Click "Invite members"
+5. Enter email addresses
+6. Set permissions (Owner, Admin, Member, Guest)
+
+**Permission Levels:**
+
+- **Owner:** Full control (delete workspace, manage billing)
+- **Admin:** Manage members, workspace settings
+- **Member:** Create/edit pages, databases
+- **Guest:** View-only or specific page access
+
+### Configure Email for Invitations (Optional)
+
+For email invitations, configure SMTP:
+
+```yaml
+affine:
+  environment:
+    # ... existing vars ...
+    - MAILER_HOST=smtp.sendgrid.net
+    - MAILER_PORT=587
+    - MAILER_USER=apikey
+    - MAILER_PASSWORD=your_sendgrid_api_key
+    - MAILER_FROM=noreply@yourdomain.com
+```
+
+**Free SMTP providers:**
+
+- SendGrid (100 emails/day free)
+- Mailgun (5,000 emails/month free)
+- Amazon SES ($0.10 per 1,000 emails)
+
+## Migrating from Notion
+
+### Export from Notion
+
+1. Go to Notion workspace settings
+2. Click "Settings & Members" → "Settings"
+3. Scroll to "Export content"
+4. Select "Export all workspace content"
+5. Choose format: **Markdown & CSV**
+6. Click "Export"
+7. Download the ZIP file
+
+### Import to AFFiNE
+
+**Option 1: Manual Import (Simple Pages)**
+
+1. Extract Notion export ZIP
+2. For each page:
+   - Create new page in AFFiNE
+   - Copy markdown content from Notion export
+   - Paste into AFFiNE (formatting mostly preserved)
+
+**Option 2: Bulk Import Script (Multiple Pages)**
+
+Create import script:
+
+```bash
+nano import-notion.sh
+```
+
+```bash
+#!/bin/bash
+# Import Notion markdown files to AFFiNE
+
+NOTION_EXPORT_DIR="/path/to/extracted/notion/export"
+AFFINE_WORKSPACE_DIR="/path/to/affine-data/workspaces/your-workspace-id"
+
+# Copy all markdown files
+find "$NOTION_EXPORT_DIR" -name "*.md" -exec cp {} "$AFFINE_WORKSPACE_DIR/" \;
+
+echo "Import complete. Restart AFFiNE to see imported pages."
+```
+
+Run:
+
+```bash
+chmod +x import-notion.sh
+./import-notion.sh
+docker compose restart affine
+```
+
+### What Transfers vs. What Needs Rebuilding
+
+**Transfers Well:**
+
+- ✅ Text content (headings, paragraphs, lists)
+- ✅ Basic formatting (bold, italic, code)
+- ✅ Tables (structure preserved)
+- ✅ Links (internal converted to markdown links)
+- ✅ Images (included in export)
+
+**Needs Manual Rebuilding:**
+
+- ❌ Databases with complex formulas
+- ❌ Linked databases (relations)
+- ❌ Embedded content (Figma, Miro, etc.)
+- ❌ Integrations (Zapier, Slack bots)
+- ❌ Advanced database views (timeline, calendar with filters)
+
+**Migration Strategy:**
+
+1. **Phase 1:** Migrate documentation and simple pages (80% of content)
+2. **Phase 2:** Rebuild databases in AFFiNE (20% of content, 80% of effort)
+3. **Phase 3:** Run Notion and AFFiNE in parallel for 2-4 weeks
+4. **Phase 4:** Cancel Notion subscription once team is comfortable
+
+## Backup Strategy
+
+**Critical:** Set up automated backups before trusting AFFiNE with important data.
+
+### Daily Database Backups
+
+Create backup script:
+
+```bash
+nano backup.sh
+```
+
+```bash
+#!/bin/bash
+# Backup AFFiNE PostgreSQL database to S3
+
+BACKUP_DIR="/tmp/affine-backups"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="affine_backup_$TIMESTAMP.sql.gz"
+
+# Create backup directory
+mkdir -p $BACKUP_DIR
+
+# Dump database and compress
+docker compose exec -T postgres pg_dump -U affine affine | gzip > "$BACKUP_DIR/$BACKUP_FILE"
+
+# Upload to S3 (requires AWS CLI configured)
+aws s3 cp "$BACKUP_DIR/$BACKUP_FILE" s3://your-backup-bucket/affine/
+
+# Keep local backups for 7 days
+find $BACKUP_DIR -name "affine_backup_*.sql.gz" -mtime +7 -delete
+
+echo "Backup completed: $BACKUP_FILE"
+```
+
+Make executable:
+
+```bash
+chmod +x backup.sh
+```
+
+### Schedule with Cron
+
+```bash
+# Edit crontab
+crontab -e
+
+# Add daily backup at 3 AM
+0 3 * * * /root/affine/backup.sh >> /var/log/affine-backup.log 2>&1
+```
+
+### Restore from Backup
+
+```bash
+# Stop AFFiNE
+docker compose down
+
+# Extract backup
+gunzip affine_backup_20260125_030000.sql.gz
+
+# Restore to database
+docker compose up -d postgres
+cat affine_backup_20260125_030000.sql | docker compose exec -T postgres psql -U affine affine
+
+# Start AFFiNE
+docker compose up -d
+```
+
+### File Storage Backups
+
+Backup user-uploaded files:
+
+```bash
+# Backup files to S3
+aws s3 sync ./affine-data s3://your-backup-bucket/affine-files/
+
+# Schedule daily file backup
+0 4 * * * aws s3 sync /root/affine/affine-data s3://your-backup-bucket/affine-files/ >> /var/log/affine-files-backup.log 2>&1
+```
+
+## Monitoring and Maintenance
+
+### Health Checks
+
+Create monitoring script:
+
+```bash
+nano health-check.sh
+```
+
+```bash
+#!/bin/bash
+# Check if AFFiNE is responding
+
+AFFINE_URL="https://affine.yourdomain.com"
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" $AFFINE_URL)
+
+if [ $HTTP_CODE -eq 200 ]; then
+  echo "AFFiNE is healthy (HTTP $HTTP_CODE)"
+else
+  echo "AFFiNE is down (HTTP $HTTP_CODE)"
+  # Restart services
+  cd /root/affine
+  docker compose restart
+  # Send alert (optional)
+  # curl -X POST https://hooks.slack.com/... -d '{"text":"AFFiNE is down!"}'
+fi
+```
+
+Schedule health checks:
+
+```bash
+crontab -e
+
+# Check every 5 minutes
+*/5 * * * * /root/affine/health-check.sh >> /var/log/affine-health.log 2>&1
+```
+
+### Update AFFiNE
+
+```bash
+# Pull latest images
+docker compose pull
+
+# Restart with new version
+docker compose up -d
+
+# Check logs for errors
+docker compose logs -f affine
+```
+
+Schedule monthly updates:
+
+```bash
+crontab -e
+
+# Update first Sunday of each month at 2 AM
+0 2 1-7 * 0 cd /root/affine && docker compose pull && docker compose up -d
+```
+
+### Resource Monitoring
+
+Check resource usage:
+
+```bash
+# Container resource usage
+docker stats
+
+# Expected usage for 10-user team:
+# affine: 200-500MB RAM, 10-30% CPU
+# postgres: 100-200MB RAM, 5-15% CPU
+# redis: 50-100MB RAM, 1-5% CPU
+```
+
+If RAM usage exceeds 80%, upgrade VPS or optimize:
+
+```yaml
+# Add resource limits to docker-compose.yml
+services:
+  affine:
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+```
+
+## Troubleshooting Common Issues
+
+### Issue 1: AFFiNE Won't Start
+
+**Symptom:** Container exits immediately
+
+**Debug:**
+
+```bash
+docker compose logs affine
+
+# Common errors:
+# "Cannot connect to database" → postgres not ready
+# "Port 3010 already in use" → another service using port
+```
+
+**Fix database connection:**
+
+```bash
+# Ensure postgres is healthy
+docker compose ps postgres
+# Should show "Up" and "healthy"
+
+# If postgres is down, check logs
+docker compose logs postgres
+```
+
+**Fix port conflict:**
+
+```bash
+# Find what's using port 3010
+sudo lsof -i :3010
+
+# Either kill that process or change AFFiNE port in docker-compose.yml
+ports:
+  - "3011:3010"  # Use 3011 instead
+```
+
+### Issue 2: Slow Performance
+
+**Causes:**
+
+1. Insufficient server resources
+2. Database not optimized
+3. Too many large files
+
+**Solutions:**
+
+```bash
+# 1. Check resource usage
+docker stats
+
+# If RAM > 80%, upgrade VPS
+
+# 2. Optimize PostgreSQL
+# Edit docker-compose.yml postgres service:
+postgres:
+  command: postgres -c shared_buffers=256MB -c max_connections=200
+
+# 3. Enable Redis caching (already in our config)
+# Verify Redis is working:
+docker compose exec redis redis-cli ping
+# Should return "PONG"
+```
+
+### Issue 3: Data Loss After Restart
+
+**Cause:** Volumes not mounted correctly
+
+**Fix:**
+
+```bash
+# Ensure volumes are defined in docker-compose.yml:
+volumes:
+  - ./postgres-data:/var/lib/postgresql/data  # Must be here
+  - ./affine-data:/root/.affine/storage       # And here
+
+# Verify data directories exist:
+ls -la postgres-data affine-data
+
+# If empty, data was not persisted (restore from backup)
+```
+
+### Issue 4: Can't Access via HTTPS
+
+**Cause:** Caddy not obtaining certificate
+
+**Debug:**
+
+```bash
+docker compose logs caddy
+
+# Common issues:
+# "Port 80/443 not accessible" → firewall blocking
+# "Domain not pointing to this server" → DNS not configured
+```
+
+**Fix firewall:**
+
+```bash
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw status
+```
+
+**Fix DNS:**
+
+```bash
+# Check if domain points to your server
+dig affine.yourdomain.com +short
+# Should return your server IP
+
+# If not, update A record at your DNS provider
+```
+
+## Scaling for Larger Teams
+
+### 10-50 Users: Optimize Current Setup
+
+```yaml
+# Upgrade to better VPS (4 vCPU, 8GB RAM)
+# Optimize PostgreSQL:
+postgres:
+  command: |
+    postgres
+    -c shared_buffers=512MB
+    -c effective_cache_size=2GB
+    -c max_connections=300
+    -c work_mem=4MB
+```
+
+### 50-200 Users: Add S3 for File Storage
+
+Store files in S3 instead of local disk:
+
+```yaml
+affine:
+  environment:
+    # ... existing vars ...
+    - AFFINE_STORAGE_PROVIDER=s3
+    - AWS_ACCESS_KEY_ID=your_key
+    - AWS_SECRET_ACCESS_KEY=your_secret
+    - AWS_S3_BUCKET=affine-files
+    - AWS_S3_REGION=us-east-1
+```
+
+**Cost:** ~$0.023/GB/month (much cheaper than VPS storage scaling)
+
+### 200+ Users: Horizontal Scaling
+
+Run multiple AFFiNE instances behind load balancer:
+
+```yaml
+# docker-compose.yml with 3 AFFiNE instances
+services:
+  affine-1:
+    image: ghcr.io/toeverything/affine-graphql:stable
+    # ... config ...
+
+  affine-2:
+    image: ghcr.io/toeverything/affine-graphql:stable
+    # ... config ...
+
+  affine-3:
+    image: ghcr.io/toeverything/affine-graphql:stable
+    # ... config ...
+
+  nginx-lb:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "3010:3010"
+```
+
+**nginx.conf for load balancing:**
+
+```nginx
+upstream affine_backend {
+    server affine-1:3010;
+    server affine-2:3010;
+    server affine-3:3010;
+}
+
+server {
+    listen 3010;
+    location / {
+        proxy_pass http://affine_backend;
+    }
+}
+```
+
+## Security Hardening
+
+### 1. Enable Two-Factor Authentication
+
+AFFiNE supports 2FA for user accounts:
+
+1. User settings → Security
+2. Enable 2FA
+3. Scan QR code with authenticator app (Google Authenticator, Authy)
+4. Enter verification code
+
+### 2. Implement SSO (Single Sign-On)
+
+For enterprise deployments, use OIDC:
+
+```yaml
+affine:
+  environment:
+    # ... existing vars ...
+    - AFFINE_OIDC_ENABLED=true
+    - AFFINE_OIDC_ISSUER=https://your-idp.com
+    - AFFINE_OIDC_CLIENT_ID=affine
+    - AFFINE_OIDC_CLIENT_SECRET=your_secret
+```
+
+Compatible with: Keycloak, Authentik, Auth0, Okta
+
+### 3. Rate Limiting
+
+Protect against brute-force attacks:
+
+```nginx
+# In nginx/Caddy configuration
+limit_req_zone $binary_remote_addr zone=login_limit:10m rate=5r/m;
+
+location /api/auth/login {
+    limit_req zone=login_limit burst=2 nodelay;
+    proxy_pass http://affine:3010;
+}
+```
+
+### 4. Regular Security Updates
+
+```bash
+# Weekly update routine
+docker compose pull
+docker compose up -d
+docker image prune -f  # Remove old images
+```
+
+## Cost Analysis
+
+### Notion vs Self-Hosted AFFiNE (3 Years)
+
+**Notion Plus (10 users):**
+
+- Monthly: $100
+- Annual: $1,200
+- 3 years: $3,600
+
+**Self-Hosted AFFiNE:**
+
+- Initial setup: 10 hours × $0 (your time)
+- VPS (3 years): $10/month × 36 = $360
+- Domain (3 years): $12/year × 3 = $36
+- Maintenance: 2 hours/month × 36 = 72 hours (your time)
+- **Total: $396 over 3 years**
+
+**Savings: $3,204 (89% reduction)**
+
+**ROI:** After 4 months, you've broken even. Everything after is pure savings.
+
+## The Exit-Saas Perspective
+
+Notion pioneered the block-based knowledge base. They proved the concept, built the market, and now extract rent from it.
+
+AFFiNE takes that same concept and gives you ownership. The features are 80% identical, but the economics are inverted: Notion's costs scale with your team, AFFiNE's stay flat.
+
+**The trade-off is real:** Self-hosting requires setup time and ongoing maintenance. You're responsible for backups, security, and uptime. For some teams, that's worth $1,200/year to avoid.
+
+But for teams that value privacy (legal, healthcare), control (data sovereignty), or cost savings (bootstrapped startups), self-hosting is the rational choice.
+
+The best part? You can start with Notion, prove the workflow works for your team, then migrate to AFFiNE once you're confident. The switching cost is one weekend of migration work for years of savings.
+
+Ready to deploy more self-hosted tools? Check out our [complete guide to self-hosting for startups under $50/month](/blog/startup-tech-stack-under-100-monthly) or browse our [tools directory](/tools) for 20+ alternatives.
+
+The subscription is optional. The ownership is permanent.
