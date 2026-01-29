@@ -19,7 +19,7 @@ export function Header() {
 
   const navLinks = [
     { href: "/#tools", label: "Browse Tools" },
-    { href: "/#calculator", label: "Calculator" },
+    { href: "/calculator", label: "Calculator" },
     { href: "/blog", label: "Blog" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
@@ -68,7 +68,7 @@ export function Header() {
               onClick={() =>
                 window.open(
                   "https://github.com/parhsmaropoulos/exit-saas",
-                  "_blank"
+                  "_blank",
                 )
               }
             >
@@ -115,7 +115,7 @@ export function Header() {
                   onClick={() =>
                     window.open(
                       "https://github.com/parhsmaropoulos/exit-saas",
-                      "_blank"
+                      "_blank",
                     )
                   }
                 >
