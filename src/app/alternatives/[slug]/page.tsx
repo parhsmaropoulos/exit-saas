@@ -11,9 +11,11 @@ import { HostingCallToAction } from "@/components/monetization/hosting-call-to-a
 import { SidebarAd } from "@/components/monetization/sidebar-ad";
 import { RepositoryPreview } from "@/components/alternatives/repository-preview";
 import { RepositoryInsights } from "@/components/alternatives/repository-insights";
+import { RelatedTools } from "@/components/alternatives/related-tools";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { generateSlug } from "@/lib/slug";
 import { getSaasPrice } from "@/lib/saas-pricing";
+import { getRelatedTools } from "@/lib/related-tools";
 import { mockTools } from "@/lib/mock-data";
 import { Tool } from "@/types/database";
 import {
@@ -128,6 +130,9 @@ export default async function AlternativePage({ params }: PageProps) {
   // Calculate default savings for hosting CTA (25 users)
   const defaultAnnualSavings = saasPrice * 25 * 12 - 5 * 12;
 
+  // Fetch related tools
+  const relatedTools = await getRelatedTools(tool, 6);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -239,6 +244,9 @@ export default async function AlternativePage({ params }: PageProps) {
             <SidebarAd toolName={tool.name} />
           </div>
         </div>
+
+        {/* Related Tools Section */}
+        <RelatedTools tools={relatedTools} currentToolName={tool.name} />
 
         {/* SoftwareApplication Schema */}
         <script

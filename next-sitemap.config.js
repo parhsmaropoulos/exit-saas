@@ -10,8 +10,18 @@ module.exports = {
   priority: 0.7,
   // Transform function to customize sitemap entries
   transform: async (config, path) => {
-    // Higher priority for tool alternative pages (main SEO pages)
-    if (path.startsWith("/alternatives/")) {
+    // Homepage gets highest priority
+    if (path === "/") {
+      return {
+        loc: path,
+        changefreq: "daily",
+        priority: 1.0,
+        lastmod: new Date().toISOString(),
+      };
+    }
+
+    // "Alternative to [SaaS]" pages - very high priority for SEO
+    if (path.startsWith("/alternative-to/")) {
       return {
         loc: path,
         changefreq: "weekly",
@@ -20,12 +30,12 @@ module.exports = {
       };
     }
 
-    // Homepage gets highest priority
-    if (path === "/") {
+    // Higher priority for tool alternative pages (main SEO pages)
+    if (path.startsWith("/alternatives/")) {
       return {
         loc: path,
-        changefreq: "daily",
-        priority: 1.0,
+        changefreq: "weekly",
+        priority: 0.9,
         lastmod: new Date().toISOString(),
       };
     }
@@ -46,6 +56,16 @@ module.exports = {
         loc: path,
         changefreq: "weekly",
         priority: 0.8,
+        lastmod: new Date().toISOString(),
+      };
+    }
+
+    // Calculator page - high priority for SEO and backlinks
+    if (path === "/calculator") {
+      return {
+        loc: path,
+        changefreq: "monthly",
+        priority: 0.9,
         lastmod: new Date().toISOString(),
       };
     }
